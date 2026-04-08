@@ -5,7 +5,7 @@
   "experience": 0.35,
   "ingredient": [
     {
-      "item": "minecraft:cod"
+      "item": "minecraft:fish"
     },
     {
       "item": "farmersdelight:cod_slice"

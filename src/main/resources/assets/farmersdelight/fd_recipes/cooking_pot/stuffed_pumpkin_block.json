@@ -1,10 +1,10 @@
 {
   "ingredients": [
-    "ore:cropRice",
+    "farmersdelight:rice",
     "ore:cropOnion",
     "minecraft:brown_mushroom",
     "minecraft:potato",
-    "ore:listAllberry",
+    "ore:cropSweetBerry",
     "ore:listAllveggie"
   ],
   "cookingtime": 400,

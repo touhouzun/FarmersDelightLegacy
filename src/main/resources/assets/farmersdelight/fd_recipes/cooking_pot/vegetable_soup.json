@@ -3,7 +3,7 @@
     "minecraft:carrot",
     "minecraft:potato",
     "minecraft:beetroot",
-    "ore:listAllveggie"
+    "ore:cropCabbage"
   ],
   "cookingtime": 200,
   "result": {

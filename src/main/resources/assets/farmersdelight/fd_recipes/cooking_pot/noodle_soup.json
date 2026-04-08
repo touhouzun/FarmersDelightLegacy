@@ -1,8 +1,8 @@
 {
   "ingredients": [
-    "ore:pastaOrDough",
+    "ore:foodPasta",
     "ore:listAllEgg",
-    "minecraft:reeds",
+    "ore:mayBeKelp",
     "ore:listAllporkraw"
   ],
   "result": {

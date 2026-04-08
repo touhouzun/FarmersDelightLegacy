@@ -182,6 +182,20 @@ public class BlockCuttingBoard extends BlockHorizontal implements ITileEntityPro
     }
 
     @Override
+    public boolean canPlaceBlockAt(World worldIn, BlockPos pos) {
+        return super.canPlaceBlockAt(worldIn, pos) && worldIn.getBlockState(pos.down()).isSideSolid(worldIn, pos.down(), EnumFacing.UP);
+    }
+
+    @Override
+    public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, net.minecraft.block.Block blockIn, BlockPos fromPos) {
+        if (fromPos.getY() == pos.getY() - 1 && !worldIn.getBlockState(pos.down()).isSideSolid(worldIn, pos.down(), EnumFacing.UP)) {
+            worldIn.destroyBlock(pos, true);
+            return;
+        }
+        super.neighborChanged(state, worldIn, pos, blockIn, fromPos);
+    }
+
+    @Override
     public boolean isFullCube(IBlockState state) {
         return false;
     }
@@ -191,23 +205,37 @@ public class BlockCuttingBoard extends BlockHorizontal implements ITileEntityPro
         return false;
     }
 
+    @Override
+    public boolean hasComparatorInputOverride(IBlockState state) {
+        return true;
+    }
+
+    @Override
+    public int getComparatorInputOverride(IBlockState state, World worldIn, BlockPos pos) {
+        TileEntity tileEntity = worldIn.getTileEntity(pos);
+        if (tileEntity instanceof TileEntityCuttingBoard) {
+            return ((TileEntityCuttingBoard) tileEntity).isEmpty() ? 0 : 15;
+        }
+        return 0;
+    }
+
 
     public static void spawnCuttingParticles(World world, BlockPos pos, ItemStack stack, int count) {
         for (int i = 0; i < count; i++) {
             double motionX = (world.rand.nextFloat() - 0.5D) * 0.1D;
-            double motionY = Math.random() * 0.3D + 0.15D;
+            double motionY = Math.random() * 0.1D + 0.1D;
             double motionZ = (world.rand.nextFloat() - 0.5D) * 0.1D;
             if (world instanceof WorldServer) {
                 ((WorldServer) world).spawnParticle(
                         EnumParticleTypes.ITEM_CRACK,
                         pos.getX() + 0.5D,
-                        pos.getY() + 0.2D,
+                        pos.getY() + 0.1D,
                         pos.getZ() + 0.5D,
                         1,
                         motionX,
-                        motionY,
+                        motionY + 0.05D,
                         motionZ,
-                        0.08D,
+                        0.0D,
                         Item.getIdFromItem(stack.getItem()),
                         stack.getMetadata());
             } else {
@@ -217,7 +245,7 @@ public class BlockCuttingBoard extends BlockHorizontal implements ITileEntityPro
                         pos.getY() + 0.1D,
                         pos.getZ() + 0.5D,
                         motionX,
-                        motionY,
+                        motionY + 0.05D,
                         motionZ,
                         Item.getIdFromItem(stack.getItem()),
                         stack.getMetadata());

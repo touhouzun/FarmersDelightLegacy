@@ -1,11 +1,11 @@
 {
   "ingredients": [
-    "minecraft:jungle_sign"
+    "minecraft:sign"
   ],
   "tool": "ore:toolAxe",
   "result": [
     {
-      "item": "minecraft:jungle_planks",
+      "item": "minecraft:planks",
       "count": 1
     }
   ]

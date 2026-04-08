@@ -1,8 +1,8 @@
 {
   "ingredients": [
     "ore:listAllmuttonraw",
-    "ore:pastaOrDough",
-    "ore:tomatoOrSauce"
+    "ore:foodPasta",
+    "farmersdelight:tomato_sauce"
   ],
   "result": {
     "item": "farmersdelight:pasta_with_mutton_chop",

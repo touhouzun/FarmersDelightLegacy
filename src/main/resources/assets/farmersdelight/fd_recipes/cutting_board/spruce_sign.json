@@ -1,11 +1,11 @@
 {
   "ingredients": [
-    "minecraft:spruce_sign"
+    "minecraft:sign"
   ],
   "tool": "ore:toolAxe",
   "result": [
     {
-      "item": "minecraft:spruce_planks",
+      "item": "minecraft:planks",
       "count": 1
     }
   ]

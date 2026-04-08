@@ -16,7 +16,7 @@
       "chance": 0.2
     },
     {
-      "item": "minecraft:green_dye",
+      "item": "minecraft:dye",
       "count": 1,
       "chance": 0.1
     }

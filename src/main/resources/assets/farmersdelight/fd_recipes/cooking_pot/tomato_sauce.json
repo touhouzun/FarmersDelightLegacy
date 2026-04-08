@@ -1,7 +1,7 @@
 {
   "ingredients": [
-    "ore:tomatoOrSauce",
-    "ore:tomatoOrSauce"
+    "ore:cropTomato",
+    "ore:cropTomato"
   ],
   "cookingtime": 100,
   "result": {

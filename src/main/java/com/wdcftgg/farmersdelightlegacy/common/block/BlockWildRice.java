@@ -1,0 +1,162 @@
+package com.wdcftgg.farmersdelightlegacy.common.block;
+
+import com.wdcftgg.farmersdelight.Tags;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockBush;
+import net.minecraft.block.BlockDoublePlant;
+import net.minecraft.block.IGrowable;
+import net.minecraft.block.SoundType;
+import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.PropertyEnum;
+import net.minecraft.block.state.BlockStateContainer;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
+
+import java.util.Random;
+
+public class BlockWildRice extends BlockBush implements IGrowable {
+    private static final AxisAlignedBB SHAPE = new AxisAlignedBB(0.125D, 0.0D, 0.125D, 0.875D, 1.0D, 0.875D);
+    public static final PropertyEnum<BlockDoublePlant.EnumBlockHalf> HALF = PropertyEnum.create("half", BlockDoublePlant.EnumBlockHalf.class);
+
+    public BlockWildRice() {
+        super(Material.PLANTS);
+        this.setHardness(0.0F);
+        this.setSoundType(SoundType.PLANT);
+        this.setTickRandomly(true);
+        this.setDefaultState(this.blockState.getBaseState().withProperty(HALF, BlockDoublePlant.EnumBlockHalf.LOWER));
+    }
+
+    @Override
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+        return SHAPE;
+    }
+
+    @Override
+    protected boolean canSustainBush(IBlockState state) {
+        Block block = state.getBlock();
+        return block == Blocks.GRASS || block == Blocks.DIRT || block == Blocks.SAND || block == Blocks.FARMLAND;
+    }
+
+    @Override
+    public boolean canPlaceBlockAt(World worldIn, BlockPos pos) {
+        return super.canPlaceBlockAt(worldIn, pos)
+                && worldIn.isAirBlock(pos.up())
+                && this.hasNearbyWater(worldIn, pos.down());
+    }
+
+    @Override
+    public boolean canBlockStay(World worldIn, BlockPos pos, IBlockState state) {
+        BlockDoublePlant.EnumBlockHalf half = state.getValue(HALF);
+        if (half == BlockDoublePlant.EnumBlockHalf.UPPER) {
+            IBlockState belowState = worldIn.getBlockState(pos.down());
+            return belowState.getBlock() == this && belowState.getValue(HALF) == BlockDoublePlant.EnumBlockHalf.LOWER;
+        }
+
+        IBlockState soilState = worldIn.getBlockState(pos.down());
+        return this.canSustainBush(soilState) && this.hasNearbyWater(worldIn, pos.down()) && worldIn.getBlockState(pos.up()).getBlock() == this;
+    }
+
+    @Override
+    public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state) {
+        if (!worldIn.isRemote && state.getValue(HALF) == BlockDoublePlant.EnumBlockHalf.LOWER && worldIn.isAirBlock(pos.up())) {
+            worldIn.setBlockState(pos.up(), this.getDefaultState().withProperty(HALF, BlockDoublePlant.EnumBlockHalf.UPPER), 2);
+        }
+        super.onBlockAdded(worldIn, pos, state);
+    }
+
+    @Override
+    public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos) {
+        if (!this.canBlockStay(worldIn, pos, state)) {
+            worldIn.setBlockToAir(pos);
+            if (state.getValue(HALF) == BlockDoublePlant.EnumBlockHalf.LOWER && worldIn.getBlockState(pos.up()).getBlock() == this) {
+                worldIn.setBlockToAir(pos.up());
+            }
+            if (state.getValue(HALF) == BlockDoublePlant.EnumBlockHalf.UPPER && worldIn.getBlockState(pos.down()).getBlock() == this) {
+                worldIn.setBlockToAir(pos.down());
+            }
+        }
+    }
+
+    @Override
+    public Item getItemDropped(IBlockState state, Random rand, int fortune) {
+        if (state.getValue(HALF) == BlockDoublePlant.EnumBlockHalf.UPPER) {
+            return Item.getItemFromBlock(Blocks.AIR);
+        }
+        Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(Tags.MOD_ID, "wild_rice"));
+        return item != null ? item : Item.getItemFromBlock(this);
+    }
+
+    @Override
+    public int quantityDropped(Random random) {
+        return 1;
+    }
+
+    @Override
+    public boolean canGrow(World worldIn, BlockPos pos, IBlockState state, boolean isClient) {
+        return true;
+    }
+
+    @Override
+    public boolean canUseBonemeal(World worldIn, Random rand, BlockPos pos, IBlockState state) {
+        return rand.nextFloat() < 0.3F;
+    }
+
+    @Override
+    public void grow(World worldIn, Random rand, BlockPos pos, IBlockState state) {
+        if (state.getValue(HALF) == BlockDoublePlant.EnumBlockHalf.UPPER) {
+            pos = pos.down();
+            state = worldIn.getBlockState(pos);
+        }
+
+        if (state.getBlock() != this || state.getValue(HALF) != BlockDoublePlant.EnumBlockHalf.LOWER) {
+            return;
+        }
+
+        Block.spawnAsEntity(worldIn, pos, new net.minecraft.item.ItemStack(this));
+    }
+
+    @Override
+    public IBlockState getStateFromMeta(int meta) {
+        return this.getDefaultState().withProperty(HALF, (meta & 1) == 1
+                ? BlockDoublePlant.EnumBlockHalf.UPPER
+                : BlockDoublePlant.EnumBlockHalf.LOWER);
+    }
+
+    @Override
+    public int getMetaFromState(IBlockState state) {
+        return state.getValue(HALF) == BlockDoublePlant.EnumBlockHalf.UPPER ? 1 : 0;
+    }
+
+    @Override
+    protected BlockStateContainer createBlockState() {
+        return new BlockStateContainer(this, HALF);
+    }
+
+    @Override
+    public IBlockState withRotation(IBlockState state, net.minecraft.util.Rotation rot) {
+        return state;
+    }
+
+    @Override
+    public IBlockState withMirror(IBlockState state, net.minecraft.util.Mirror mirrorIn) {
+        return state;
+    }
+
+    private boolean hasNearbyWater(World worldIn, BlockPos soilPos) {
+        for (EnumFacing facing : EnumFacing.Plane.HORIZONTAL) {
+            if (worldIn.getBlockState(soilPos.offset(facing)).getMaterial() == Material.WATER) {
+                return true;
+            }
+        }
+        return worldIn.getBlockState(soilPos).getMaterial() == Material.WATER;
+    }
+}
+

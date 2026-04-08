@@ -3,7 +3,7 @@
     "ore:rawOrSlicedCod",
     "minecraft:potato",
     "ore:listAllEgg",
-    "ore:tomatoOrSauce"
+    "ore:cropTomato"
   ],
   "result": {
     "item": "farmersdelight:baked_cod_stew",

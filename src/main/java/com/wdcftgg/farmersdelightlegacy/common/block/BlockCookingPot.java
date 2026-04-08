@@ -4,9 +4,13 @@ import com.wdcftgg.farmersdelightlegacy.FarmersDelightLegacy;
 import com.wdcftgg.farmersdelightlegacy.common.gui.ModGuiHandler;
 import com.wdcftgg.farmersdelightlegacy.common.registry.ModSounds;
 import com.wdcftgg.farmersdelightlegacy.common.tile.TileEntityCookingPot;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.PropertyBool;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.ItemStack;
@@ -24,12 +28,15 @@ import java.util.Random;
 
 public class BlockCookingPot extends BlockContainer {
 
+    public static final PropertyBool SUPPORT = PropertyBool.create("support");
     private static final AxisAlignedBB POT_SHAPE = new AxisAlignedBB(2.0D / 16.0D, 0.0D, 2.0D / 16.0D, 14.0D / 16.0D, 10.0D / 16.0D, 14.0D / 16.0D);
+    private static final AxisAlignedBB POT_SHAPE_WITH_TRAY = new AxisAlignedBB(0.0D, -1.0D / 16.0D, 0.0D, 1.0D, 10.0D / 16.0D, 1.0D);
 
     public BlockCookingPot() {
         super(Material.IRON);
         this.setHardness(2.0F);
         this.setResistance(4.0F);
+        this.setDefaultState(this.blockState.getBaseState().withProperty(SUPPORT, false));
     }
 
     @Override
@@ -81,7 +88,28 @@ public class BlockCookingPot extends BlockContainer {
 
     @Override
     public AxisAlignedBB getCollisionBoundingBox(IBlockState state, IBlockAccess worldIn, BlockPos pos) {
-        return POT_SHAPE;
+        return state.getValue(SUPPORT) ? POT_SHAPE_WITH_TRAY : POT_SHAPE;
+    }
+
+    @Override
+    public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
+        return this.getDefaultState().withProperty(SUPPORT, getTrayState(worldIn, pos));
+    }
+
+    @Override
+    public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state) {
+        super.onBlockAdded(worldIn, pos, state);
+        boolean support = getTrayState(worldIn, pos);
+        if (support != state.getValue(SUPPORT)) {
+            worldIn.setBlockState(pos, state.withProperty(SUPPORT, support), 2);
+        }
+    }
+
+    @Override
+    public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos) {
+        if (fromPos.getY() == pos.getY() - 1 || fromPos.getY() == pos.getY() + 1) {
+            worldIn.setBlockState(pos, state.withProperty(SUPPORT, getTrayState(worldIn, pos)), 2);
+        }
     }
 
     @Override
@@ -118,6 +146,29 @@ public class BlockCookingPot extends BlockContainer {
                     false
             );
         }
+    }
+
+    @Override
+    protected BlockStateContainer createBlockState() {
+        return new BlockStateContainer(this, SUPPORT);
+    }
+
+    @Override
+    public IBlockState getStateFromMeta(int meta) {
+        return this.getDefaultState().withProperty(SUPPORT, (meta & 1) != 0);
+    }
+
+    @Override
+    public int getMetaFromState(IBlockState state) {
+        return state.getValue(SUPPORT) ? 1 : 0;
+    }
+
+    private boolean getTrayState(World world, BlockPos pos) {
+        IBlockState stateBelow = world.getBlockState(pos.down());
+        Block blockBelow = stateBelow.getBlock();
+        return blockBelow == net.minecraft.init.Blocks.FIRE
+                || blockBelow == net.minecraft.init.Blocks.LAVA
+                || blockBelow == net.minecraft.init.Blocks.FLOWING_LAVA;
     }
 }
 

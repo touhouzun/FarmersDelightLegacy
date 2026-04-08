@@ -1,5 +1,7 @@
 {
+  "parent": "farmersdelight:block/template_canvas_sign",
   "textures": {
-    "particle": "minecraft:block/spruce_planks"
+    "texture": "farmersdelight:item/canvas_sign",
+    "particle": "farmersdelight:item/canvas_sign"
   }
 }

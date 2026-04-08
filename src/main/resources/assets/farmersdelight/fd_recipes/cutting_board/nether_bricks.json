@@ -5,7 +5,7 @@
   "tool": "ore:toolPickaxe",
   "result": [
     {
-      "item": "minecraft:nether_brick",
+      "item": "minecraft:netherbrick",
       "count": 4
     }
   ]

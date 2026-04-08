@@ -1,7 +1,10 @@
 {
   "variants": {
-    "normal": {
+    "support=false": {
       "model": "farmersdelight:cooking_pot"
+    },
+    "support=true": {
+      "model": "farmersdelight:cooking_pot_tray"
     }
   }
 }

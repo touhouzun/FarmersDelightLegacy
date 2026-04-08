@@ -4,11 +4,24 @@ import com.wdcftgg.farmersdelight.Tags;
 import com.wdcftgg.farmersdelightlegacy.common.ModCreativeTab;
 import com.wdcftgg.farmersdelightlegacy.common.block.BlockBasket;
 import com.wdcftgg.farmersdelightlegacy.common.block.BlockCabinet;
+import com.wdcftgg.farmersdelightlegacy.common.block.BlockCanvasStandingSign;
+import com.wdcftgg.farmersdelightlegacy.common.block.BlockCanvasWallSign;
 import com.wdcftgg.farmersdelightlegacy.common.block.BlockCookingPot;
 import com.wdcftgg.farmersdelightlegacy.common.block.BlockCuttingBoard;
 import com.wdcftgg.farmersdelightlegacy.common.block.BlockFeast;
+import com.wdcftgg.farmersdelightlegacy.common.block.BlockHoneyGlazedHamFeast;
+import com.wdcftgg.farmersdelightlegacy.common.block.BlockMushroomColony;
 import com.wdcftgg.farmersdelightlegacy.common.block.BlockSkillet;
 import com.wdcftgg.farmersdelightlegacy.common.block.BlockStove;
+import com.wdcftgg.farmersdelightlegacy.common.block.BlockRiceRollMedley;
+import com.wdcftgg.farmersdelightlegacy.common.block.BlockRoastChickenFeast;
+import com.wdcftgg.farmersdelightlegacy.common.block.BlockPie;
+import com.wdcftgg.farmersdelightlegacy.common.block.BlockSandyShrub;
+import com.wdcftgg.farmersdelightlegacy.common.block.BlockSimpleShape;
+import com.wdcftgg.farmersdelightlegacy.common.block.BlockShepherdsPieFeast;
+import com.wdcftgg.farmersdelightlegacy.common.block.BlockWildCrop;
+import com.wdcftgg.farmersdelightlegacy.common.block.BlockWildRice;
+import com.wdcftgg.farmersdelightlegacy.common.item.ItemCanvasSign;
 import com.wdcftgg.farmersdelightlegacy.common.item.ItemSkillet;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockCrops;
@@ -18,6 +31,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
@@ -31,13 +45,29 @@ public final class ModBlocks {
 
     public static final Map<String, Block> BLOCKS = new LinkedHashMap<>();
     public static final List<Item> BLOCK_ITEMS = new ArrayList<>();
+    private static final AxisAlignedBB HANGING_CANVAS_SIGN_SHAPE = new AxisAlignedBB(0.0D, 0.25D, 0.4375D, 1.0D, 1.0D, 0.5625D);
+    private static final AxisAlignedBB WALL_HANGING_CANVAS_SIGN_SHAPE = new AxisAlignedBB(0.0D, 0.25D, 0.875D, 1.0D, 1.0D, 1.0D);
 
     public static final Block TOMATOES = registerBlockOnly("tomatoes", new ModCropBlock("tomato_seeds", "tomato"));
     public static final Block RICE = registerBlockOnly("rice", new ModCropBlock("rice", "rice_panicle"));
+    public static final Block CABBAGES = registerBlockOnly("cabbages", new ModCropBlock("cabbage_seeds", "cabbage"));
+    public static final Block ONIONS = registerBlockOnly("onions", new ModCropBlock("onion", "onion"));
+    public static final Block BUDDING_TOMATOES = registerBlockOnly("budding_tomatoes", new ModCropBlock("tomato_seeds", "tomato", 4));
+    public static final Block RICE_PANICLES = registerBlockOnly("rice_panicles", new ModCropBlock("rice", "rice_panicle", 3));
 
     public static final Block COOKING_POT = register("cooking_pot", new BlockCookingPot());
     public static final Block CUTTING_BOARD = register("cutting_board", new BlockCuttingBoard());
     public static final Block BASKET = register("basket", new BlockBasket());
+    public static final Block CARROT_CRATE = register("carrot_crate", basicBlock(Material.WOOD, SoundType.WOOD, 2.0F));
+    public static final Block POTATO_CRATE = register("potato_crate", basicBlock(Material.WOOD, SoundType.WOOD, 2.0F));
+    public static final Block BEETROOT_CRATE = register("beetroot_crate", basicBlock(Material.WOOD, SoundType.WOOD, 2.0F));
+    public static final Block CABBAGE_CRATE = register("cabbage_crate", basicBlock(Material.WOOD, SoundType.WOOD, 2.0F));
+    public static final Block TOMATO_CRATE = register("tomato_crate", basicBlock(Material.WOOD, SoundType.WOOD, 2.0F));
+    public static final Block ONION_CRATE = register("onion_crate", basicBlock(Material.WOOD, SoundType.WOOD, 2.0F));
+    public static final Block RICE_BALE = register("rice_bale", basicBlock(Material.CLOTH, SoundType.PLANT, 0.5F));
+    public static final Block RICE_BAG = register("rice_bag", basicBlock(Material.CLOTH, SoundType.CLOTH, 0.8F));
+    public static final Block STRAW_BALE = register("straw_bale", basicBlock(Material.CLOTH, SoundType.PLANT, 0.5F));
+    public static final Block SAFETY_NET = register("safety_net", basicBlock(Material.CLOTH, SoundType.CLOTH, 0.2F));
     public static final Block ACACIA_CABINET = register("acacia_cabinet", new BlockCabinet());
     public static final Block BAMBOO_CABINET = register("bamboo_cabinet", new BlockCabinet());
     public static final Block BIRCH_CABINET = register("birch_cabinet", new BlockCabinet());
@@ -51,17 +81,36 @@ public final class ModBlocks {
     public static final Block WARPED_CABINET = register("warped_cabinet", new BlockCabinet());
     public static final Block STOVE = register("stove", new BlockStove());
     public static final Block SKILLET = register("skillet", new BlockSkillet(), ItemSkillet::new);
-    public static final Block ROAST_CHICKEN_BLOCK = register("roast_chicken_block", new BlockFeast(4, "roast_chicken", null));
-    public static final Block HONEY_GLAZED_HAM_BLOCK = register("honey_glazed_ham_block", new BlockFeast(4, "honey_glazed_ham", null));
-    public static final Block SHEPHERDS_PIE_BLOCK = register("shepherds_pie_block", new BlockFeast(4, "shepherds_pie", "minecraft:bowl"));
-    public static final Block STUFFED_PUMPKIN_BLOCK = register("stuffed_pumpkin_block", new BlockFeast(4, "stuffed_pumpkin", null));
-    public static final Block RICE_ROLL_MEDLEY_BLOCK = register("rice_roll_medley_block", new BlockFeast(8, "kelp_roll_slice", null));
+    public static final Block ROAST_CHICKEN_BLOCK = register("roast_chicken_block", new BlockRoastChickenFeast(4, "roast_chicken", "minecraft:bowl", true));
+    public static final Block HONEY_GLAZED_HAM_BLOCK = register("honey_glazed_ham_block", new BlockHoneyGlazedHamFeast(4, "honey_glazed_ham", "minecraft:bowl", true));
+    public static final Block SHEPHERDS_PIE_BLOCK = register("shepherds_pie_block", new BlockShepherdsPieFeast(4, "shepherds_pie", "minecraft:bowl", true));
+    public static final Block STUFFED_PUMPKIN_BLOCK = register("stuffed_pumpkin_block", new BlockFeast(4, "stuffed_pumpkin", "minecraft:bowl", false));
+    public static final Block RICE_ROLL_MEDLEY_BLOCK = register("rice_roll_medley_block", new BlockRiceRollMedley());
     public static final Block ORGANIC_COMPOST = register("organic_compost", basicBlock(Material.GROUND, SoundType.GROUND, 0.7F));
+    public static final Block RICH_SOIL = register("rich_soil", basicBlock(Material.GROUND, SoundType.GROUND, 0.7F));
     public static final Block RICH_SOIL_FARMLAND = register("rich_soil_farmland", basicBlock(Material.GROUND, SoundType.GROUND, 0.7F));
+    public static final Block APPLE_PIE = register("apple_pie", new BlockPie("apple_pie_slice"));
+    public static final Block SWEET_BERRY_CHEESECAKE = register("sweet_berry_cheesecake", new BlockPie("sweet_berry_cheesecake_slice"));
+    public static final Block CHOCOLATE_PIE = register("chocolate_pie", new BlockPie("chocolate_pie_slice"));
+    public static final Block SANDY_SHRUB = register("sandy_shrub", new BlockSandyShrub());
+    public static final Block WILD_CABBAGES = register("wild_cabbages", new BlockWildCrop());
+    public static final Block WILD_ONIONS = register("wild_onions", new BlockWildCrop());
+    public static final Block WILD_TOMATOES = register("wild_tomatoes", new BlockWildCrop());
+    public static final Block WILD_CARROTS = register("wild_carrots", new BlockWildCrop());
+    public static final Block WILD_POTATOES = register("wild_potatoes", new BlockWildCrop());
+    public static final Block WILD_BEETROOTS = register("wild_beetroots", new BlockWildCrop());
+    public static final Block WILD_RICE = register("wild_rice", new BlockWildRice());
+    public static final Block BROWN_MUSHROOM_COLONY = register("brown_mushroom_colony", new BlockMushroomColony("minecraft:brown_mushroom"));
+    public static final Block RED_MUSHROOM_COLONY = register("red_mushroom_colony", new BlockMushroomColony("minecraft:red_mushroom"));
     public static final Block ROPE = register("rope", basicBlock(Material.CLOTH, SoundType.CLOTH, 0.3F));
     public static final Block CANVAS_RUG = register("canvas_rug", basicBlock(Material.CLOTH, SoundType.CLOTH, 0.2F));
     public static final Block TATAMI = register("tatami", basicBlock(Material.CLOTH, SoundType.CLOTH, 0.2F));
     public static final Block FULL_TATAMI_MAT = register("full_tatami_mat", basicBlock(Material.CLOTH, SoundType.CLOTH, 0.2F));
+    public static final Block HALF_TATAMI_MAT = register("half_tatami_mat", basicBlock(Material.CLOTH, SoundType.CLOTH, 0.2F));
+
+    static {
+        registerCanvasSignFamily();
+    }
 
     private ModBlocks() {
     }
@@ -107,6 +156,95 @@ public final class ModBlocks {
         return new BasicBlock(material, soundType, hardness);
     }
 
+    private static Block hangingCanvasSignShapeBlock() {
+        return new BlockSimpleShape(Material.WOOD, SoundType.WOOD, 1.0F, HANGING_CANVAS_SIGN_SHAPE, true);
+    }
+
+    private static Block wallHangingCanvasSignShapeBlock() {
+        return new BlockSimpleShape(Material.WOOD, SoundType.WOOD, 1.0F, WALL_HANGING_CANVAS_SIGN_SHAPE, true);
+    }
+
+    private static void registerCanvasSignFamily() {
+        registerCanvasSignPair("", "canvas_sign", "canvas_wall_sign");
+        register("hanging_canvas_sign", hangingCanvasSignShapeBlock());
+        registerBlockOnly("wall_hanging_canvas_sign", wallHangingCanvasSignShapeBlock());
+
+        registerCanvasSignPair("white", "white_canvas_sign", "white_canvas_wall_sign");
+        register("white_hanging_canvas_sign", hangingCanvasSignShapeBlock());
+        registerBlockOnly("white_wall_hanging_canvas_sign", wallHangingCanvasSignShapeBlock());
+
+        registerCanvasSignPair("orange", "orange_canvas_sign", "orange_canvas_wall_sign");
+        register("orange_hanging_canvas_sign", hangingCanvasSignShapeBlock());
+        registerBlockOnly("orange_wall_hanging_canvas_sign", wallHangingCanvasSignShapeBlock());
+
+        registerCanvasSignPair("magenta", "magenta_canvas_sign", "magenta_canvas_wall_sign");
+        register("magenta_hanging_canvas_sign", hangingCanvasSignShapeBlock());
+        registerBlockOnly("magenta_wall_hanging_canvas_sign", wallHangingCanvasSignShapeBlock());
+
+        registerCanvasSignPair("light_blue", "light_blue_canvas_sign", "light_blue_canvas_wall_sign");
+        register("light_blue_hanging_canvas_sign", hangingCanvasSignShapeBlock());
+        registerBlockOnly("light_blue_wall_hanging_canvas_sign", wallHangingCanvasSignShapeBlock());
+
+        registerCanvasSignPair("yellow", "yellow_canvas_sign", "yellow_canvas_wall_sign");
+        register("yellow_hanging_canvas_sign", hangingCanvasSignShapeBlock());
+        registerBlockOnly("yellow_wall_hanging_canvas_sign", wallHangingCanvasSignShapeBlock());
+
+        registerCanvasSignPair("lime", "lime_canvas_sign", "lime_canvas_wall_sign");
+        register("lime_hanging_canvas_sign", hangingCanvasSignShapeBlock());
+        registerBlockOnly("lime_wall_hanging_canvas_sign", wallHangingCanvasSignShapeBlock());
+
+        registerCanvasSignPair("pink", "pink_canvas_sign", "pink_canvas_wall_sign");
+        register("pink_hanging_canvas_sign", hangingCanvasSignShapeBlock());
+        registerBlockOnly("pink_wall_hanging_canvas_sign", wallHangingCanvasSignShapeBlock());
+
+        registerCanvasSignPair("gray", "gray_canvas_sign", "gray_canvas_wall_sign");
+        register("gray_hanging_canvas_sign", hangingCanvasSignShapeBlock());
+        registerBlockOnly("gray_wall_hanging_canvas_sign", wallHangingCanvasSignShapeBlock());
+
+        registerCanvasSignPair("light_gray", "light_gray_canvas_sign", "light_gray_canvas_wall_sign");
+        register("light_gray_hanging_canvas_sign", hangingCanvasSignShapeBlock());
+        registerBlockOnly("light_gray_wall_hanging_canvas_sign", wallHangingCanvasSignShapeBlock());
+
+        registerCanvasSignPair("cyan", "cyan_canvas_sign", "cyan_canvas_wall_sign");
+        register("cyan_hanging_canvas_sign", hangingCanvasSignShapeBlock());
+        registerBlockOnly("cyan_wall_hanging_canvas_sign", wallHangingCanvasSignShapeBlock());
+
+        registerCanvasSignPair("purple", "purple_canvas_sign", "purple_canvas_wall_sign");
+        register("purple_hanging_canvas_sign", hangingCanvasSignShapeBlock());
+        registerBlockOnly("purple_wall_hanging_canvas_sign", wallHangingCanvasSignShapeBlock());
+
+        registerCanvasSignPair("blue", "blue_canvas_sign", "blue_canvas_wall_sign");
+        register("blue_hanging_canvas_sign", hangingCanvasSignShapeBlock());
+        registerBlockOnly("blue_wall_hanging_canvas_sign", wallHangingCanvasSignShapeBlock());
+
+        registerCanvasSignPair("brown", "brown_canvas_sign", "brown_canvas_wall_sign");
+        register("brown_hanging_canvas_sign", hangingCanvasSignShapeBlock());
+        registerBlockOnly("brown_wall_hanging_canvas_sign", wallHangingCanvasSignShapeBlock());
+
+        registerCanvasSignPair("green", "green_canvas_sign", "green_canvas_wall_sign");
+        register("green_hanging_canvas_sign", hangingCanvasSignShapeBlock());
+        registerBlockOnly("green_wall_hanging_canvas_sign", wallHangingCanvasSignShapeBlock());
+
+        registerCanvasSignPair("red", "red_canvas_sign", "red_canvas_wall_sign");
+        register("red_hanging_canvas_sign", hangingCanvasSignShapeBlock());
+        registerBlockOnly("red_wall_hanging_canvas_sign", wallHangingCanvasSignShapeBlock());
+
+        registerCanvasSignPair("black", "black_canvas_sign", "black_canvas_wall_sign");
+        register("black_hanging_canvas_sign", hangingCanvasSignShapeBlock());
+        registerBlockOnly("black_wall_hanging_canvas_sign", wallHangingCanvasSignShapeBlock());
+    }
+
+    private static void registerCanvasSignPair(String colorName, String standingPath, String wallPath) {
+        ResourceLocation texture = signTexture(colorName);
+        Block wallBlock = registerBlockOnly(wallPath, new BlockCanvasWallSign(texture, standingPath));
+        register(standingPath, new BlockCanvasStandingSign(texture), block -> new ItemCanvasSign(block, wallBlock));
+    }
+
+    private static ResourceLocation signTexture(String colorName) {
+        String path = colorName.isEmpty() ? "textures/entity/signs/canvas.png" : "textures/entity/signs/canvas_" + colorName + ".png";
+        return new ResourceLocation(Tags.MOD_ID, path);
+    }
+
     private static final class BasicBlock extends Block {
         private BasicBlock(Material material, SoundType soundType, float hardness) {
             super(material);
@@ -119,13 +257,24 @@ public final class ModBlocks {
     private static final class ModCropBlock extends BlockCrops {
         private final ResourceLocation seedName;
         private final ResourceLocation cropName;
+        private final int maxAge;
 
         private ModCropBlock(String seedPath, String cropPath) {
+            this(seedPath, cropPath, 7);
+        }
+
+        private ModCropBlock(String seedPath, String cropPath, int maxAge) {
             this.seedName = new ResourceLocation(Tags.MOD_ID, seedPath);
             this.cropName = new ResourceLocation(Tags.MOD_ID, cropPath);
+            this.maxAge = maxAge;
             this.setTickRandomly(true);
             this.setHardness(0.0F);
             this.setSoundType(SoundType.PLANT);
+        }
+
+        @Override
+        public int getMaxAge() {
+            return this.maxAge;
         }
 
         @Override

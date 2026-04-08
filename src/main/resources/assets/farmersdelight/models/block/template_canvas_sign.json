@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/standing_sign",
+  "textures": {
+    "particle": "#texture",
+    "texture": "farmersdelight:item/canvas_sign"
+  }
+}

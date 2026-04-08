@@ -1,0 +1,6 @@
+{
+  "parent": "farmersdelight:block/template_wall_hanging_canvas_sign",
+  "textures": {
+    "all": "farmersdelight:item/orange_hanging_canvas_sign"
+  }
+}

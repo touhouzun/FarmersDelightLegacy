@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    { "type": "forge:ore_dict", "ore": "listAllberry" },
+    { "item": "minecraft:sugar" },
+    { "type": "forge:ore_dict", "ore": "listAllberry" },
+    { "type": "forge:ore_dict", "ore": "listAllberry" },
+    { "item": "farmersdelight:smoked_ham" },
+    { "type": "forge:ore_dict", "ore": "listAllberry" },
+    { "item": "farmersdelight:cooked_rice" },
+    { "item": "minecraft:bowl" },
+    { "item": "farmersdelight:cooked_rice" }
+  ],
+  "result": {
+    "item": "farmersdelight:honey_glazed_ham_block"
+  }
+}
+

@@ -2,7 +2,6 @@ package com.wdcftgg.farmersdelightlegacy.common.block;
 
 import com.wdcftgg.farmersdelightlegacy.common.registry.ModSounds;
 import com.wdcftgg.farmersdelightlegacy.common.tile.TileEntitySkillet;
-import com.wdcftgg.farmersdelightlegacy.common.util.HeatSourceHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.ITileEntityProvider;
@@ -12,6 +11,7 @@ import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumBlockRenderType;
@@ -101,10 +101,8 @@ public class BlockSkillet extends BlockHorizontal implements ITileEntityProvider
         if (!worldIn.isRemote) {
             if (heldStack.isEmpty()) {
                 ItemStack extracted = skillet.removeItem();
-                if (!extracted.isEmpty()) {
-                    if (!playerIn.inventory.addItemStackToInventory(extracted)) {
-                        playerIn.dropItem(extracted, false);
-                    }
+                if (!extracted.isEmpty() && !playerIn.capabilities.isCreativeMode) {
+                    playerIn.setHeldItem(hand, extracted);
                 }
             } else {
                 ItemStack remainder = skillet.addItemToCook(heldStack, playerIn);
@@ -203,7 +201,11 @@ public class BlockSkillet extends BlockHorizontal implements ITileEntityProvider
     }
 
     private boolean getTrayState(World world, BlockPos pos) {
-        return HeatSourceHelper.isDirectHeatSource(world, pos.down());
+        IBlockState stateBelow = world.getBlockState(pos.down());
+        Block blockBelow = stateBelow.getBlock();
+        return blockBelow == Blocks.FIRE
+                || blockBelow == Blocks.LAVA
+                || blockBelow == Blocks.FLOWING_LAVA;
     }
 
     public static int getSkilletCookingTime(int originalCookingTime, int fireAspectLevel) {

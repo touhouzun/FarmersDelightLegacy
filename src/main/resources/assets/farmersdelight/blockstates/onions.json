@@ -1,0 +1,28 @@
+{
+  "variants": {
+    "age=0": {
+      "model": "farmersdelight:onions_stage0"
+    },
+    "age=1": {
+      "model": "farmersdelight:onions_stage0"
+    },
+    "age=2": {
+      "model": "farmersdelight:onions_stage1"
+    },
+    "age=3": {
+      "model": "farmersdelight:onions_stage1"
+    },
+    "age=4": {
+      "model": "farmersdelight:onions_stage2"
+    },
+    "age=5": {
+      "model": "farmersdelight:onions_stage2"
+    },
+    "age=6": {
+      "model": "farmersdelight:onions_stage2"
+    },
+    "age=7": {
+      "model": "farmersdelight:onions_stage3"
+    }
+  }
+}

@@ -2,8 +2,8 @@
   "ingredients": [
     "ore:listAllmushroom",
     "ore:listAllmushroom",
-    "ore:cropRice",
-    "ore:listAllveggie"
+    "farmersdelight:rice",
+    "ore:mushroomRiceIngredients"
   ],
   "result": {
     "item": "farmersdelight:mushroom_rice",

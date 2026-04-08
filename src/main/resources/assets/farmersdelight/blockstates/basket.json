@@ -1,30 +1,56 @@
 {
   "variants": {
-    "facing=down": {
+    "enabled=true,facing=down": {
       "model": "farmersdelight:basket",
       "x": 180
     },
-    "facing=east": {
+    "enabled=false,facing=down": {
       "model": "farmersdelight:basket",
-      "x": 90,
-      "y": 90
+      "x": 180
     },
-    "facing=north": {
+    "enabled=true,facing=up": {
+      "model": "farmersdelight:basket"
+    },
+    "enabled=false,facing=up": {
+      "model": "farmersdelight:basket"
+    },
+    "enabled=true,facing=north": {
       "model": "farmersdelight:basket",
       "x": 90
     },
-    "facing=south": {
+    "enabled=false,facing=north": {
+      "model": "farmersdelight:basket",
+      "x": 90
+    },
+    "enabled=true,facing=south": {
       "model": "farmersdelight:basket",
       "x": 90,
       "y": 180
     },
-    "facing=up": {
-      "model": "farmersdelight:basket"
+    "enabled=false,facing=south": {
+      "model": "farmersdelight:basket",
+      "x": 90,
+      "y": 180
     },
-    "facing=west": {
+    "enabled=true,facing=west": {
       "model": "farmersdelight:basket",
       "x": 90,
       "y": 270
+    },
+    "enabled=false,facing=west": {
+      "model": "farmersdelight:basket",
+      "x": 90,
+      "y": 270
+    },
+    "enabled=true,facing=east": {
+      "model": "farmersdelight:basket",
+      "x": 90,
+      "y": 90
+    },
+    "enabled=false,facing=east": {
+      "model": "farmersdelight:basket",
+      "x": 90,
+      "y": 90
     }
   }
 }

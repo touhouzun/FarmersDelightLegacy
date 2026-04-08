@@ -11,11 +11,11 @@
       "count": 1
     },
     {
-      "item": "minecraft:magenta_dye",
+      "item": "minecraft:dye",
       "count": 2
     },
     {
-      "item": "minecraft:lime_dye",
+      "item": "minecraft:dye",
       "count": 1,
       "chance": 0.1
     }

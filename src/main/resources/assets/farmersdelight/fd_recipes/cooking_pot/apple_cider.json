@@ -8,5 +8,9 @@
   "result": {
     "item": "farmersdelight:apple_cider",
     "count": 1
+  },
+  "container": {
+    "item": "minecraft:glass_bottle",
+    "count": 1
   }
 }

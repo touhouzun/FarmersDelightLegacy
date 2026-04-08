@@ -1,0 +1,9 @@
+{
+  "parent": "minecraft:block/cube_bottom_top",
+  "textures": {
+    "side": "farmersdelight:block/rice_bag_side_tied",
+    "bottom": "farmersdelight:block/rice_bag_bottom",
+    "top": "farmersdelight:block/rice_bag_top"
+  }
+}
+

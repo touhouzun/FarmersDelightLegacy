@@ -2,8 +2,8 @@
   "ingredients": [
     "minecraft:carrot",
     "minecraft:brown_mushroom",
-    "ore:pastaOrDough",
-    "ore:listAllveggie",
+    "ore:foodPasta",
+    "ore:cropCabbage",
     "ore:listAllveggie"
   ],
   "result": {

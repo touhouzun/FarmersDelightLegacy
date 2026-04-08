@@ -1,11 +1,15 @@
 {
   "ingredients": [
     "ore:cropCabbage",
-    "ore:listAllveggie"
+    "ore:cabbageRoolIngredients"
   ],
   "cookingtime": 100,
   "result": {
     "item": "farmersdelight:cabbage_rolls",
+    "count": 1
+  },
+  "container": {
+    "item": "minecraft:air",
     "count": 1
   }
 }

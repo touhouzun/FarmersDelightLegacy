@@ -1,0 +1,7 @@
+{
+  "parent": "farmersdelight:block/template_canvas_wall_sign",
+  "textures": {
+    "texture": "farmersdelight:item/magenta_canvas_sign",
+    "particle": "farmersdelight:item/magenta_canvas_sign"
+  }
+}

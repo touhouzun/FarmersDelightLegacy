@@ -1,7 +1,7 @@
 {
   "ingredients": [
     "ore:listAllfishraw",
-    "ore:tomatoOrSauce",
+    "farmersdelight:tomato_sauce",
     "ore:cropOnion"
   ],
   "result": {

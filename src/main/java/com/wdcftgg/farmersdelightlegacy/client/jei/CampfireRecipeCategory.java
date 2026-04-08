@@ -20,8 +20,8 @@ public final class CampfireRecipeCategory implements IRecipeCategory<CampfireJei
     private final IDrawableAnimated arrow;
     private final IDrawableAnimated flame;
 
-    private static final int OUTPUT_X = 61;
-    private static final int OUTPUT_Y = 9;
+    private static final int OUTPUT_X = 60;
+    private static final int OUTPUT_Y = 8;
     private static final int ARROW_X = 24;
     private static final int ARROW_Y = 8;
     private static final int TIME_ICON_X = 1;

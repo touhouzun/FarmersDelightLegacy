@@ -1,0 +1,57 @@
+{
+  "parent": "block/block",
+  "textures": {
+    "particle": "#all",
+    "all": "farmersdelight:item/hanging_canvas_sign"
+  },
+  "elements": [
+    {
+      "from": [1, 4, 7.5],
+      "to": [15, 12, 8.5],
+      "faces": {
+        "down": { "texture": "#all" },
+        "up": { "texture": "#all" },
+        "north": { "texture": "#all" },
+        "south": { "texture": "#all" },
+        "west": { "texture": "#all" },
+        "east": { "texture": "#all" }
+      }
+    },
+    {
+      "from": [0, 12, 7],
+      "to": [16, 13, 9],
+      "faces": {
+        "down": { "texture": "#all" },
+        "up": { "texture": "#all" },
+        "north": { "texture": "#all" },
+        "south": { "texture": "#all" },
+        "west": { "texture": "#all" },
+        "east": { "texture": "#all" }
+      }
+    },
+    {
+      "from": [2, 13, 7.5],
+      "to": [3, 16, 8.5],
+      "faces": {
+        "down": { "texture": "#all" },
+        "up": { "texture": "#all" },
+        "north": { "texture": "#all" },
+        "south": { "texture": "#all" },
+        "west": { "texture": "#all" },
+        "east": { "texture": "#all" }
+      }
+    },
+    {
+      "from": [13, 13, 7.5],
+      "to": [14, 16, 8.5],
+      "faces": {
+        "down": { "texture": "#all" },
+        "up": { "texture": "#all" },
+        "north": { "texture": "#all" },
+        "south": { "texture": "#all" },
+        "west": { "texture": "#all" },
+        "east": { "texture": "#all" }
+      }
+    }
+  ]
+}

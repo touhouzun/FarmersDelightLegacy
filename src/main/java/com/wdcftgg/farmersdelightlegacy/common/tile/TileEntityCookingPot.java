@@ -33,12 +33,6 @@ public class TileEntityCookingPot extends TileEntity implements IInventory, ITic
     private static final int MEAL_DISPLAY_SLOT = 6;
     private static final int CONTAINER_SLOT = 7;
     private static final int OUTPUT_SLOT = 8;
-    private static final Set<String> DRINK_MEAL_ITEMS = new HashSet<>(Arrays.asList(
-            "apple_cider",
-            "melon_juice",
-            "hot_cocoa",
-            "milk_bottle"
-    ));
 
     private final List<ItemStack> itemStacks;
     private int cookTime;
@@ -460,9 +454,6 @@ public class TileEntityCookingPot extends TileEntity implements IInventory, ITic
             return ItemStack.EMPTY;
         }
 
-        if (isDrinkMealStatic(mealStack)) {
-            return new ItemStack(Items.GLASS_BOTTLE);
-        }
         // 上游语义：多数餐食默认使用碗分装。
         return new ItemStack(Items.BOWL);
     }
@@ -509,18 +500,6 @@ public class TileEntityCookingPot extends TileEntity implements IInventory, ITic
                 || stack.getItem() == Items.GLASS_BOTTLE
                 || stack.getItem() == Items.BUCKET
                 || isContainerValid(stack);
-    }
-
-    private boolean isDrinkMeal(ItemStack mealStack) {
-        return isDrinkMealStatic(mealStack);
-    }
-
-    private static boolean isDrinkMealStatic(ItemStack mealStack) {
-        if (mealStack.isEmpty() || mealStack.getItem().getRegistryName() == null) {
-            return false;
-        }
-        ResourceLocation mealId = mealStack.getItem().getRegistryName();
-        return Tags.MOD_ID.equals(mealId.getNamespace()) && DRINK_MEAL_ITEMS.contains(mealId.getPath());
     }
 
     @Override

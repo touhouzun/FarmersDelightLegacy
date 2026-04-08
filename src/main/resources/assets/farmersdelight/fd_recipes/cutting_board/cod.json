@@ -1,6 +1,6 @@
 {
   "ingredients": [
-    "minecraft:cod"
+    "minecraft:fish"
   ],
   "tool": {
     "tag": "forge:tools/knives"

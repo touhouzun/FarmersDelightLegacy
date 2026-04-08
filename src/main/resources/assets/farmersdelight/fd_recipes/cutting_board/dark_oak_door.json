@@ -5,7 +5,7 @@
   "tool": "ore:toolAxe",
   "result": [
     {
-      "item": "minecraft:dark_oak_planks",
+      "item": "minecraft:planks",
       "count": 1
     }
   ]

@@ -1,6 +1,6 @@
 {
   "ingredients": [
-    "minecraft:cooked_salmon"
+    "minecraft:cooked_fish"
   ],
   "tool": {
     "tag": "forge:tools/knives"

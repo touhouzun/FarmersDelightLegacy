@@ -2,8 +2,8 @@
   "ingredients": [
     "minecraft:rotten_flesh",
     "ore:dyeWhite",
-    "ore:listAllmeatraw",
-    "ore:cropRice"
+    "ore:dogPrey",
+    "farmersdelight:rice"
   ],
   "result": {
     "item": "farmersdelight:dog_food",

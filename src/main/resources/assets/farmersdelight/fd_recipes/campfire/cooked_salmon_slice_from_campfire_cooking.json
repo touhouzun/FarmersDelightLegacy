@@ -5,7 +5,7 @@
   "experience": 0.35,
   "ingredient": [
     {
-      "item": "minecraft:salmon"
+      "item": "minecraft:fish"
     },
     {
       "item": "farmersdelight:salmon_slice"
