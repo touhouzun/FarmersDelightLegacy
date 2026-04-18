@@ -1,6 +1,6 @@
 # Farmer's Delight
 
-<a href="https://www.curseforge.com/minecraft/mc-mods/farmers-delight">
+<a href="https://www.curseforge.com/minecraft/mc-mods/farmers-delight-legacy">
   <img src="http://cf.way2muchnoise.eu/full_398521_downloads.svg" alt="Curseforge Downloads">
 </a>
 <br>
