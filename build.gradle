@@ -123,6 +123,10 @@ repositories {
             includeGroup 'curse.maven'
         }
     }
+    maven {
+        url 'https://maven.blamejared.com'
+        name 'BlameJared Maven'
+    }
 }
 
 dependencies {
@@ -184,6 +188,9 @@ dependencies {
 
     //村庄建筑更新
     implementation rfg.deobf('curse.maven:Village Names-259230:5886882')
+
+    //crt
+    implementation rfg.deobf('CraftTweaker2:CraftTweaker2-MC1120-Main:1.12-4.1.20.698')
 
 }
 

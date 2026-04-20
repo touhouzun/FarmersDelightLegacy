@@ -3,19 +3,23 @@ package com.wdcftgg.farmersdelightlegacy.common.recipe;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.wdcftgg.farmersdelightlegacy.FarmersDelightLegacy;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 public final class CookingPotRecipeManager {
 
     private static final float DEFAULT_RECIPE_EXPERIENCE = 0.35F;
 
     private static final List<CookingPotRecipe> RECIPES = new ArrayList<>();
+    private static final Map<String, CookingPotRecipe> SCRIPT_RECIPES = new LinkedHashMap<>();
     private static boolean loaded;
 
     private CookingPotRecipeManager() {
@@ -23,7 +27,7 @@ public final class CookingPotRecipeManager {
 
     public static CookingPotRecipe findRecipe(List<ItemStack> inputStacks) {
         ensureLoaded();
-        for (CookingPotRecipe recipe : RECIPES) {
+        for (CookingPotRecipe recipe : getAllRecipes()) {
             if (matches(recipe, inputStacks)) {
                 return recipe;
             }
@@ -33,7 +37,56 @@ public final class CookingPotRecipeManager {
 
     public static List<CookingPotRecipe> getRecipes() {
         ensureLoaded();
-        return new ArrayList<>(RECIPES);
+        return getAllRecipes();
+    }
+
+    public static boolean registerScriptRecipe(String key, String[] ingredientPaths, ItemStack resultStack, ItemStack outputContainer,
+                                               int cookTime, float experience, boolean hasContainerDefinition) {
+        if (key == null || key.isEmpty() || ingredientPaths == null || resultStack.isEmpty()) {
+            return false;
+        }
+
+        List<CookingPotRecipe.IngredientEntry> ingredients = new ArrayList<>();
+        for (String ingredientPath : ingredientPaths) {
+            if (ingredientPath == null || ingredientPath.isEmpty()) {
+                return false;
+            }
+
+            if (ingredientPath.startsWith("ore:")) {
+                String oreDictName = ingredientPath.substring(4);
+                if (oreDictName.isEmpty()) {
+                    return false;
+                }
+                ingredients.add(CookingPotRecipe.IngredientEntry.forOreDict(oreDictName));
+                continue;
+            }
+
+            Item ingredientItem = itemOf(ingredientPath, FarmersDelightLegacy.MOD_ID);
+            if (ingredientItem == null) {
+                return false;
+            }
+            ingredients.add(CookingPotRecipe.IngredientEntry.forItem(ingredientItem));
+        }
+
+        if (ingredients.isEmpty()) {
+            return false;
+        }
+
+        CookingPotRecipe recipe = new CookingPotRecipe(ingredients, resultStack, outputContainer,
+                Math.max(1, cookTime), Math.max(0.0F, experience), hasContainerDefinition);
+        synchronized (SCRIPT_RECIPES) {
+            SCRIPT_RECIPES.put(key, recipe);
+        }
+        return true;
+    }
+
+    public static boolean unregisterScriptRecipe(String key) {
+        if (key == null || key.isEmpty()) {
+            return false;
+        }
+        synchronized (SCRIPT_RECIPES) {
+            return SCRIPT_RECIPES.remove(key) != null;
+        }
     }
 
     private static boolean matches(CookingPotRecipe recipe, List<ItemStack> inputStacks) {
@@ -166,6 +219,15 @@ public final class CookingPotRecipeManager {
             return ItemStack.EMPTY;
         }
         return new ItemStack(item, count);
+    }
+
+    private static List<CookingPotRecipe> getAllRecipes() {
+        List<CookingPotRecipe> result = new ArrayList<>();
+        synchronized (SCRIPT_RECIPES) {
+            result.addAll(SCRIPT_RECIPES.values());
+        }
+        result.addAll(RECIPES);
+        return result;
     }
 }
 

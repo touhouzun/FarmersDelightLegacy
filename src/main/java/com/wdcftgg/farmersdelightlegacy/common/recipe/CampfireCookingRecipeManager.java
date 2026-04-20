@@ -2,17 +2,21 @@ package com.wdcftgg.farmersdelightlegacy.common.recipe;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.wdcftgg.farmersdelightlegacy.FarmersDelightLegacy;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 public final class CampfireCookingRecipeManager {
 
     private static final List<CampfireCookingRecipe> RECIPES = new ArrayList<>();
+    private static final Map<String, CampfireCookingRecipe> SCRIPT_RECIPES = new LinkedHashMap<>();
     private static boolean loaded;
 
     private CampfireCookingRecipeManager() {
@@ -20,7 +24,7 @@ public final class CampfireCookingRecipeManager {
 
     public static CampfireCookingRecipe findRecipe(ItemStack input) {
         ensureLoaded();
-        for (CampfireCookingRecipe recipe : RECIPES) {
+        for (CampfireCookingRecipe recipe : getAllRecipes()) {
             if (recipe.matches(input)) {
                 return recipe;
             }
@@ -30,7 +34,62 @@ public final class CampfireCookingRecipeManager {
 
     public static List<CampfireCookingRecipe> getRecipes() {
         ensureLoaded();
-        return new ArrayList<>(RECIPES);
+        return getAllRecipes();
+    }
+
+    public static boolean registerScriptRecipe(String key, String[] ingredientTokens, ItemStack resultStack, int cookingTime) {
+        if (key == null || key.isEmpty() || ingredientTokens == null || resultStack.isEmpty()) {
+            return false;
+        }
+
+        List<CampfireCookingRecipe.IngredientEntry> ingredients = new ArrayList<>();
+        for (String token : ingredientTokens) {
+            if (token == null || token.isEmpty()) {
+                return false;
+            }
+            if (token.startsWith("ore:")) {
+                String oreDictName = token.substring(4);
+                if (oreDictName.isEmpty()) {
+                    return false;
+                }
+                ingredients.add(CampfireCookingRecipe.IngredientEntry.forOreDict(oreDictName));
+                continue;
+            }
+
+            Item ingredientItem = itemOf(token, FarmersDelightLegacy.MOD_ID);
+            if (ingredientItem == null) {
+                return false;
+            }
+            ingredients.add(CampfireCookingRecipe.IngredientEntry.forItem(ingredientItem));
+        }
+
+        if (ingredients.isEmpty()) {
+            return false;
+        }
+
+        CampfireCookingRecipe recipe = new CampfireCookingRecipe(ingredients, resultStack.copy(), Math.max(1, cookingTime));
+        synchronized (SCRIPT_RECIPES) {
+            SCRIPT_RECIPES.put(key, recipe);
+        }
+        return true;
+    }
+
+    public static boolean unregisterScriptRecipe(String key) {
+        if (key == null || key.isEmpty()) {
+            return false;
+        }
+        synchronized (SCRIPT_RECIPES) {
+            return SCRIPT_RECIPES.remove(key) != null;
+        }
+    }
+
+    private static List<CampfireCookingRecipe> getAllRecipes() {
+        List<CampfireCookingRecipe> result = new ArrayList<>();
+        synchronized (SCRIPT_RECIPES) {
+            result.addAll(SCRIPT_RECIPES.values());
+        }
+        result.addAll(RECIPES);
+        return result;
     }
 
     private static void ensureLoaded() {

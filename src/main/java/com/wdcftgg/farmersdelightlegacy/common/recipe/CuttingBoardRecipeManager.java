@@ -3,6 +3,7 @@ package com.wdcftgg.farmersdelightlegacy.common.recipe;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.wdcftgg.farmersdelightlegacy.FarmersDelightLegacy;
 import com.wdcftgg.farmersdelightlegacy.common.registry.ModOreDictionary;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -19,6 +20,7 @@ public final class CuttingBoardRecipeManager {
     private static final Map<String, String> TAG_TO_OREDICT = ModOreDictionary.getTagToOreDictMap();
 
     private static final List<CuttingRecipeEntry> RECIPES = new ArrayList<>();
+    private static final Map<String, CuttingRecipeEntry> SCRIPT_RECIPES = new LinkedHashMap<>();
     private static boolean loaded;
 
     private CuttingBoardRecipeManager() {
@@ -30,7 +32,7 @@ public final class CuttingBoardRecipeManager {
             return false;
         }
 
-        for (CuttingRecipeEntry recipeEntry : RECIPES) {
+        for (CuttingRecipeEntry recipeEntry : getAllRecipeEntries()) {
             if (recipeEntry.matches(inputStack, toolStack)) {
                 return true;
             }
@@ -44,7 +46,7 @@ public final class CuttingBoardRecipeManager {
             return Collections.emptyList();
         }
 
-        for (CuttingRecipeEntry recipeEntry : RECIPES) {
+        for (CuttingRecipeEntry recipeEntry : getAllRecipeEntries()) {
             if (recipeEntry.matches(inputStack, toolStack)) {
                 return recipeEntry.rollResults(random);
             }
@@ -57,7 +59,7 @@ public final class CuttingBoardRecipeManager {
         if (toolStack.isEmpty()) {
             return false;
         }
-        for (CuttingRecipeEntry recipeEntry : RECIPES) {
+        for (CuttingRecipeEntry recipeEntry : getAllRecipeEntries()) {
             if (recipeEntry.toolMatcher.matchesTool(toolStack)) {
                 return true;
             }
@@ -68,7 +70,7 @@ public final class CuttingBoardRecipeManager {
     public static List<CuttingBoardRecipeView> getRecipes() {
         ensureLoaded();
         List<CuttingBoardRecipeView> result = new ArrayList<>();
-        for (CuttingRecipeEntry recipeEntry : RECIPES) {
+        for (CuttingRecipeEntry recipeEntry : getAllRecipeEntries()) {
             result.add(new CuttingBoardRecipeView(
                     recipeEntry.inputMatcher.asStacks(),
                     recipeEntry.toolMatcher.asStacks(),
@@ -76,6 +78,62 @@ public final class CuttingBoardRecipeManager {
                     recipeEntry.getDisplayResultChances()));
         }
         return result;
+    }
+
+    public static boolean registerScriptRecipe(String key, String[] inputTokens, String[] toolTokens,
+                                               String[] resultTokens, int[] resultCounts, float[] resultChances) {
+        if (key == null || key.isEmpty() || inputTokens == null || resultTokens == null || resultTokens.length == 0) {
+            return false;
+        }
+
+        IngredientMatcher inputMatcher = IngredientMatcher.fromTokens(inputTokens, FarmersDelightLegacy.MOD_ID);
+        String[] resolvedToolTokens = toolTokens;
+        if (resolvedToolTokens == null || resolvedToolTokens.length == 0) {
+            resolvedToolTokens = new String[]{DEFAULT_TOOL_TOKEN};
+        }
+        IngredientMatcher toolMatcher = IngredientMatcher.fromTokens(resolvedToolTokens, FarmersDelightLegacy.MOD_ID);
+        if (!inputMatcher.isValid() || !toolMatcher.isValid()) {
+            return false;
+        }
+
+        List<ResultEntry> resultEntries = new ArrayList<>();
+        for (int i = 0; i < resultTokens.length; i++) {
+            String token = resultTokens[i];
+            if (token == null || token.isEmpty()) {
+                return false;
+            }
+            Item item = itemOf(token, FarmersDelightLegacy.MOD_ID);
+            if (item == null) {
+                return false;
+            }
+
+            int count = 1;
+            if (resultCounts != null && i < resultCounts.length) {
+                count = Math.max(1, resultCounts[i]);
+            }
+
+            float chance = 1.0F;
+            if (resultChances != null && i < resultChances.length) {
+                chance = clampChance(resultChances[i]);
+            }
+
+            resultEntries.add(new ResultEntry(new ItemStack(item, count), chance));
+        }
+
+        CuttingRecipeEntry recipeEntry = new CuttingRecipeEntry(inputMatcher, toolMatcher, resultEntries);
+        synchronized (SCRIPT_RECIPES) {
+            SCRIPT_RECIPES.put(key, recipeEntry);
+        }
+        return true;
+    }
+
+    public static boolean unregisterScriptRecipe(String key) {
+        if (key == null || key.isEmpty()) {
+            return false;
+        }
+        synchronized (SCRIPT_RECIPES) {
+            return SCRIPT_RECIPES.remove(key) != null;
+        }
     }
 
     public static final class CuttingBoardRecipeView {
@@ -377,6 +435,19 @@ public final class CuttingBoardRecipeManager {
             return new IngredientMatcher(itemStacks, oreDictNames);
         }
 
+        private static IngredientMatcher fromTokens(String[] tokens, String defaultNamespace) {
+            if (tokens == null || tokens.length == 0) {
+                return invalid();
+            }
+
+            List<ItemStack> itemStacks = new ArrayList<>();
+            List<String> oreDictNames = new ArrayList<>();
+            for (String token : tokens) {
+                addToken(token, OreDictionary.WILDCARD_VALUE, itemStacks, oreDictNames, defaultNamespace);
+            }
+            return new IngredientMatcher(itemStacks, oreDictNames);
+        }
+
         private static IngredientMatcher fromJson(JsonElement element, String defaultNamespace) {
             if (element == null || element.isJsonNull()) {
                 return invalid();
@@ -593,6 +664,15 @@ public final class CuttingBoardRecipeManager {
             itemId = new ResourceLocation(defaultNamespace, path);
         }
         return ForgeRegistries.ITEMS.getValue(itemId);
+    }
+
+    private static List<CuttingRecipeEntry> getAllRecipeEntries() {
+        List<CuttingRecipeEntry> result = new ArrayList<>();
+        synchronized (SCRIPT_RECIPES) {
+            result.addAll(SCRIPT_RECIPES.values());
+        }
+        result.addAll(RECIPES);
+        return result;
     }
 }
 
