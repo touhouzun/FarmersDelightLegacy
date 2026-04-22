@@ -1,6 +1,7 @@
 package com.wdcftgg.farmersdelightlegacy;
 
 import com.wdcftgg.farmersdelightlegacy.common.advancement.ModAdvancements;
+import com.wdcftgg.farmersdelightlegacy.common.compat.CampfireHeatSourceCompat;
 import com.wdcftgg.farmersdelightlegacy.common.compat.FutureMcSmithingCompat;
 import com.wdcftgg.farmersdelightlegacy.common.compat.VillageNamesVillageCompat;
 import com.wdcftgg.farmersdelightlegacy.common.event.HeatSourceExample;
@@ -51,6 +52,7 @@ public class FarmersDelightLegacy {
 
     @Mod.EventHandler
     public void init(FMLInitializationEvent event) {
+        CampfireHeatSourceCompat.registerAll();
         FutureMcSmithingCompat.registerAll();
         if (Loader.isModLoaded("villagenames")) {
             VillageNamesVillageCompat.registerAll();
