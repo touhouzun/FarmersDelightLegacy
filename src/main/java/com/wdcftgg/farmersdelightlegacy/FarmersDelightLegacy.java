@@ -5,6 +5,7 @@ import com.wdcftgg.farmersdelightlegacy.common.advancement.ModAdvancements;
 import com.wdcftgg.farmersdelightlegacy.common.compat.CampfireHeatSourceCompat;
 import com.wdcftgg.farmersdelightlegacy.common.compat.FutureMcSmithingCompat;
 import com.wdcftgg.farmersdelightlegacy.common.compat.VillageNamesVillageCompat;
+import com.wdcftgg.farmersdelightlegacy.common.compat.WanderingTradersBackportCompat;
 import com.wdcftgg.farmersdelightlegacy.common.event.HeatSourceExample;
 import com.wdcftgg.farmersdelightlegacy.common.registry.ModDispenserBehaviors;
 import com.wdcftgg.farmersdelightlegacy.common.event.ModVillagerTradeHandler;
@@ -27,7 +28,7 @@ import org.apache.logging.log4j.Logger;
         modid = FarmersDelightLegacy.MOD_ID,
         name = FarmersDelightLegacy.MOD_NAME,
         version = Tags.VERSION,
-        dependencies = "after:oe",
+        dependencies = "after:oe;after:traders",
         customProperties = {
                 @Mod.CustomProperty(k = "iconItem", v = "farmersdelight:stove"),
                 @Mod.CustomProperty(k = "license", v = "MIT License"),
@@ -47,6 +48,7 @@ public class FarmersDelightLegacy {
     public void preInit(FMLPreInitializationEvent event) {
         Configuration.load(event.getSuggestedConfigurationFile());
         Configuration.applyRuntimeOverrides();
+        WanderingTradersBackportCompat.syncTradeTable(event);
         ModAdvancements.registerAll();
         ModEntities.registerAll();
         ModTileEntities.registerAll();

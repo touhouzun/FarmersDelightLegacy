@@ -1,6 +1,7 @@
 package com.wdcftgg.farmersdelightlegacy.common;
 
 import com.wdcftgg.farmersdelightlegacy.FarmersDelightLegacy;
+import com.wdcftgg.farmersdelightlegacy.common.compat.WanderingTradersBackportCompat;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -74,12 +75,14 @@ public final class Configuration {
     private static final String[] ROPE_ORE_NAMES = new String[]{"fdRopes", "rope", "blockRope"};
     private static final Set<Item> STACK_SIZE_OVERRIDDEN_SOUPS = new HashSet<>();
     private static net.minecraftforge.common.config.Configuration config;
+    private static File configDirectory;
 
     private Configuration() {
     }
 
     public static void load(File configFile) {
         config = new net.minecraftforge.common.config.Configuration(configFile);
+        configDirectory = configFile.getParentFile();
         sync();
     }
 
@@ -93,9 +96,9 @@ public final class Configuration {
         enableVanillaCropCrates = config.getBoolean("enableVanillaCropCrates", CATEGORY_SETTINGS, true,
                 "Farmer's Delight adds crates (3x3) for vanilla crops, similar to Quark and Thermal Cultivation. Should they be craftable?");
         farmersBuyFDCrops = config.getBoolean("farmersBuyFDCrops", CATEGORY_SETTINGS, true,
-                "Should Novice and Apprentice Farmers buy this mod's crops? (Kept for upstream parity; vanilla 1.12.2 has no matching wandering-trade path here.)");
+                "Should Novice and Apprentice Farmers buy this mod's crops?");
         wanderingTraderSellsFDItems = config.getBoolean("wanderingTraderSellsFDItems", CATEGORY_SETTINGS, true,
-                "Should the Wandering Trader sell some of this mod's items? (Kept for upstream parity; vanilla 1.12.2 has no Wandering Trader.)");
+                "Should the Wandering Trader sell some of this mod's items when Wandering Traders Backport is loaded?");
         richSoilBoostChance = config.getFloat("richSoilBoostChance", CATEGORY_SETTINGS, 0.2F, 0.0F, 1.0F,
                 "How often should Rich Soil Farmland boost a plant's growth at each random tick? Set it to 0.0 to disable this.");
         cuttingBoardFortuneBonus = config.getFloat("cuttingBoardFortuneBonus", CATEGORY_SETTINGS, 0.1F, 0.0F, 1.0F,
@@ -279,6 +282,9 @@ public final class Configuration {
             }
             sync();
             applyRuntimeOverrides();
+            if (configDirectory != null) {
+                WanderingTradersBackportCompat.syncTradeTable(configDirectory);
+            }
         }
     }
 }

@@ -91,7 +91,7 @@ public final class ModBlocks {
             new BlockWildCrop("minecraft:potato", 2, null, 0.0F, null, 0, 0));
     public static final Block WILD_BEETROOTS = register("wild_beetroots",
             new BlockWildCrop("minecraft:beetroot_seeds", 2, "minecraft:beetroot", 0.2F, null, 0, 0));
-    public static final Block WILD_RICE = register("wild_rice", new BlockWildRice());
+    public static final Block WILD_RICE = register("wild_rice", createWildRiceBlock());
     public static final Block BROWN_MUSHROOM_COLONY = register("brown_mushroom_colony", new BlockMushroomColony("minecraft:brown_mushroom"), ItemMushroomColony::new);
     public static final Block RED_MUSHROOM_COLONY = register("red_mushroom_colony", new BlockMushroomColony("minecraft:red_mushroom"), ItemMushroomColony::new);
     public static final Block ROPE = register("rope", new BlockRope());
@@ -158,6 +158,15 @@ public final class ModBlocks {
 
         Block compatBlock = instantiateCompatBlock("com.wdcftgg.farmersdelightlegacy.common.compat.fluidlogged.BlockFluidloggedRice");
         return compatBlock != null ? compatBlock : new BlockRice();
+    }
+
+    private static Block createWildRiceBlock() {
+        if (!Loader.isModLoaded("fluidlogged_api")) {
+            return new BlockWildRice();
+        }
+
+        Block compatBlock = instantiateCompatBlock("com.wdcftgg.farmersdelightlegacy.common.compat.fluidlogged.BlockFluidloggedWildRice");
+        return compatBlock != null ? compatBlock : new BlockWildRice();
     }
 
     private static Block instantiateCompatBlock(String className) {

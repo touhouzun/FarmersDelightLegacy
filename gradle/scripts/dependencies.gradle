@@ -41,6 +41,9 @@ dependencies {
     implementation rfg.deobf("curse.maven:fluidlogged-api-485654:7581579")
 
     //樱花树
+    implementation rfg.deobf("curse.maven:Cherry_on_1.12.2-1122982:7760834")
+
+    //樱花树
     implementation rfg.deobf("curse.maven:sakura-reforged-1461245:7883662")
     runtimeOnly rfg.deobf("curse.maven:mysterious-mountain-lib-368098:3254750")
 
@@ -61,6 +64,12 @@ dependencies {
 
     //村庄建筑更新
     implementation rfg.deobf("curse.maven:village-names-259230:5886882")
+
+    //海洋更新
+    implementation rfg.deobf("curse.maven:Oceanic Expanse-840576:7009970")
+
+    //流浪商人联动
+    implementation rfg.deobf("curse.maven:Wandering Traders Backport-1257940:7743810")
 
     //crt
     implementation rfg.deobf('CraftTweaker2:CraftTweaker2-MC1120-Main:1.12-4.1.20.698')

@@ -3,6 +3,7 @@ package com.wdcftgg.farmersdelightlegacy.common.world;
 import com.wdcftgg.farmersdelightlegacy.common.Configuration;
 import com.wdcftgg.farmersdelightlegacy.common.block.BlockMushroomColony;
 import com.wdcftgg.farmersdelightlegacy.common.block.BlockWildRice;
+import com.wdcftgg.farmersdelightlegacy.common.compat.fluidlogged.BlockFluidloggedWildRice;
 import com.wdcftgg.farmersdelightlegacy.common.registry.ModBlocks;
 import net.minecraft.block.*;
 import net.minecraft.block.state.IBlockState;
@@ -304,14 +305,39 @@ public class WildCropWorldGenerator implements IWorldGenerator {
             return;
         }
 
+        if (Loader.isModLoaded("fluidlogged_api")) {
+            generateWildRiceWithFluidlogged(world, random, chunkX, chunkZ);
+            return;
+        }
+
+        generateWildRiceWithoutFluidlogged(world, random, chunkX, chunkZ);
+    }
+
+    private void generateWildRiceWithFluidlogged(World world, Random random, int chunkX, int chunkZ) {
         BlockPos origin = randomSurfaceOrigin(world, random, chunkX, chunkZ);
         for (int i = 0; i < 96; i++) {
             BlockPos pos = origin.add(randomOffset(random, 8), randomOffset(random, 4), randomOffset(random, 8));
             IBlockState state = world.getBlockState(pos);
-            if (!state.getMaterial().isReplaceable() || !world.isAirBlock(pos.up())) {
+            if (state.getBlock() != Blocks.WATER || state.getValue(BlockLiquid.LEVEL) != 0 || !world.isAirBlock(pos.up())) {
                 continue;
             }
             if (!ModBlocks.WILD_RICE.canPlaceBlockAt(world, pos)) {
+                continue;
+            }
+            if (!BlockFluidloggedWildRice.placeInWorld(world, pos)) {
+                continue;
+            }
+        }
+    }
+
+    private void generateWildRiceWithoutFluidlogged(World world, Random random, int chunkX, int chunkZ) {
+        BlockPos origin = randomSurfaceOrigin(world, random, chunkX, chunkZ);
+        for (int i = 0; i < 20; i++) {
+            BlockPos pos = origin.add(random.nextInt(4) - random.nextInt(4), 0, random.nextInt(4) - random.nextInt(4));
+            if (!world.isAirBlock(pos) || !world.isAirBlock(pos.up())) {
+                continue;
+            }
+            if (!hasAdjacentWater(world, pos.down()) || !ModBlocks.WILD_RICE.canPlaceBlockAt(world, pos)) {
                 continue;
             }
 
@@ -390,6 +416,15 @@ public class WildCropWorldGenerator implements IWorldGenerator {
             BlockPos pos = origin.add(randomOffset(random, spread), randomOffset(random, ySpread + 1), randomOffset(random, spread));
             secondaryPlacer.place(world, random, pos);
         }
+    }
+
+    private boolean hasAdjacentWater(World world, BlockPos soilPos) {
+        for (EnumFacing facing : EnumFacing.Plane.HORIZONTAL) {
+            if (world.getBlockState(soilPos.offset(facing)).getMaterial() == net.minecraft.block.material.Material.WATER) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private BlockPos randomSurfaceOrigin(World world, Random random, int chunkX, int chunkZ) {
