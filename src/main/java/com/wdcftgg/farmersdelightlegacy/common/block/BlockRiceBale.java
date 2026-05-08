@@ -1,6 +1,5 @@
 package com.wdcftgg.farmersdelightlegacy.common.block;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;

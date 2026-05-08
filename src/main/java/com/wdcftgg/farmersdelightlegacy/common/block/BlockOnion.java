@@ -1,6 +1,5 @@
 package com.wdcftgg.farmersdelightlegacy.common.block;
 
-import com.wdcftgg.farmersdelightlegacy.common.registry.ModBlocks;
 import com.wdcftgg.farmersdelightlegacy.common.registry.ModItems;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockCrops;

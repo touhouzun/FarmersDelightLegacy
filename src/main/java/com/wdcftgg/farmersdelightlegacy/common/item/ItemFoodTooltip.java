@@ -17,7 +17,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
 import java.util.List;
-import java.util.Locale;
 
 public class ItemFoodTooltip extends ItemFood {
 

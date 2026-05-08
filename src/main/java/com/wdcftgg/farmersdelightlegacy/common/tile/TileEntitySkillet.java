@@ -1,6 +1,5 @@
 package com.wdcftgg.farmersdelightlegacy.common.tile;
 
-import com.wdcftgg.farmersdelightlegacy.common.block.BlockCookingPot;
 import com.wdcftgg.farmersdelightlegacy.common.block.BlockSkillet;
 import com.wdcftgg.farmersdelightlegacy.common.recipe.CampfireCookingRecipe;
 import com.wdcftgg.farmersdelightlegacy.common.recipe.CampfireCookingRecipeManager;

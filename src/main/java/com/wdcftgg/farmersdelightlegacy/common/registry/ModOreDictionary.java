@@ -6,7 +6,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.oredict.OreDictionary;
-import thedarkcolour.futuremc.registry.FItems;
 
 import java.util.Collections;
 import java.util.LinkedHashMap;
