@@ -1,14 +1,5 @@
 package com.wdcftgg.farmersdelightlegacy.common.event;
 
-import com.wdcftgg.farmersdelightlegacy.api.heat.HeatSourceApi;
-import com.wdcftgg.farmersdelightlegacy.api.heat.HeatSourceOffsetApi;
-import com.wdcftgg.farmersdelightlegacy.api.heat.IHeatSourceOffsetPredicate;
-import com.wdcftgg.farmersdelightlegacy.api.heat.IHeatSourcePredicate;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.init.Blocks;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
-
 public class HeatSourceExample {
 
     public static void registerHeatSourceExample() {
