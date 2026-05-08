@@ -42,7 +42,6 @@ public final class ModOreDictionary {
         registerOre("cropOnion", "onion");
         registerOre("cropRice", "rice");
         registerOre("cropRice", "rice_panicle");
-//        registerOre("cropSweetBerry", "sweet_berry_cookie");
 
         registerOre("foodDough", "wheat_dough");
         registerOre("foodPasta", "raw_pasta");
@@ -72,13 +71,14 @@ public final class ModOreDictionary {
         registerOre("listAllveggie", "tomato");
         registerOre("listAllveggie", "onion");
 
-//        registerOre("listAllberry", "<ore:seedSweetBerry>");
-//        registerOre("listAllberry", "sweet_berry_cookie");
         registerOre("listAllmilk", "milk_bottle");
 
         for (Map.Entry<String, Item> entry : ModItems.ITEMS.entrySet()) {
             if (entry.getKey().endsWith("_knife")) {
                 OreDictionary.registerOre("toolKnife", new ItemStack(entry.getValue(), 1, OreDictionary.WILDCARD_VALUE));
+            }
+            if (entry.getKey().endsWith("_axe")) {
+                OreDictionary.registerOre("toolAxe", new ItemStack(entry.getValue(), 1, OreDictionary.WILDCARD_VALUE));
             }
         }
 
@@ -113,32 +113,32 @@ public final class ModOreDictionary {
     }
 
     private static void registerVanillaFallbacks() {
-        // 1.12.2 需要手动补齐常用工具矿辞，供 cutting_board 的 tool 匹配使用。
-        registerOreStack("toolAxe", new ItemStack(Items.WOODEN_AXE));
-        registerOreStack("toolAxe", new ItemStack(Items.STONE_AXE));
-        registerOreStack("toolAxe", new ItemStack(Items.IRON_AXE));
-        registerOreStack("toolAxe", new ItemStack(Items.GOLDEN_AXE));
-        registerOreStack("toolAxe", new ItemStack(Items.DIAMOND_AXE));
+        // 1.12.2 needs manual fallback ore registrations for cutting board tool matching.
+        registerToolOre("toolAxe", Items.WOODEN_AXE);
+        registerToolOre("toolAxe", Items.STONE_AXE);
+        registerToolOre("toolAxe", Items.IRON_AXE);
+        registerToolOre("toolAxe", Items.GOLDEN_AXE);
+        registerToolOre("toolAxe", Items.DIAMOND_AXE);
 
-        registerOreStack("toolPickaxe", new ItemStack(Items.WOODEN_PICKAXE));
-        registerOreStack("toolPickaxe", new ItemStack(Items.STONE_PICKAXE));
-        registerOreStack("toolPickaxe", new ItemStack(Items.IRON_PICKAXE));
-        registerOreStack("toolPickaxe", new ItemStack(Items.GOLDEN_PICKAXE));
-        registerOreStack("toolPickaxe", new ItemStack(Items.DIAMOND_PICKAXE));
+        registerToolOre("toolPickaxe", Items.WOODEN_PICKAXE);
+        registerToolOre("toolPickaxe", Items.STONE_PICKAXE);
+        registerToolOre("toolPickaxe", Items.IRON_PICKAXE);
+        registerToolOre("toolPickaxe", Items.GOLDEN_PICKAXE);
+        registerToolOre("toolPickaxe", Items.DIAMOND_PICKAXE);
 
-        registerOreStack("toolShovel", new ItemStack(Items.WOODEN_SHOVEL));
-        registerOreStack("toolShovel", new ItemStack(Items.STONE_SHOVEL));
-        registerOreStack("toolShovel", new ItemStack(Items.IRON_SHOVEL));
-        registerOreStack("toolShovel", new ItemStack(Items.GOLDEN_SHOVEL));
-        registerOreStack("toolShovel", new ItemStack(Items.DIAMOND_SHOVEL));
+        registerToolOre("toolShovel", Items.WOODEN_SHOVEL);
+        registerToolOre("toolShovel", Items.STONE_SHOVEL);
+        registerToolOre("toolShovel", Items.IRON_SHOVEL);
+        registerToolOre("toolShovel", Items.GOLDEN_SHOVEL);
+        registerToolOre("toolShovel", Items.DIAMOND_SHOVEL);
 
-        registerOreStack("toolShears", new ItemStack(Items.SHEARS));
+        registerToolOre("toolShears", Items.SHEARS);
 
-        if (!Loader.isModLoaded("futuremc")) registerOreStack("cropSweetBerry", new ItemStack(Items.APPLE));
+        if (!Loader.isModLoaded("futuremc")) {
+            registerOreStack("cropSweetBerry", new ItemStack(Items.APPLE));
+        }
 
-
-
-        // 1.12 中骨粉/可可豆/墨囊均归属染料物品，通过矿辞区分元数据。
+        // In 1.12, dye-like items are distinguished by metadata.
         registerOreStack("dyeWhite", new ItemStack(Items.DYE, 1, 15));
         registerOreStack("dyeBrown", new ItemStack(Items.DYE, 1, 3));
         registerOreStack("dyeBlack", new ItemStack(Items.DYE, 1, 0));
@@ -188,17 +188,15 @@ public final class ModOreDictionary {
         OreDictionary.registerOre("mushroomRiceIngredients", new ItemStack(Items.CARROT));
         OreDictionary.registerOre("mushroomRiceIngredients", new ItemStack(Items.POTATO));
 
-
         OreDictionary.registerOre("dogPrey", new ItemStack(Items.CHICKEN));
         OreDictionary.registerOre("dogPrey", new ItemStack(Items.MUTTON));
         OreDictionary.registerOre("dogPrey", new ItemStack(Items.RABBIT));
 
-
-        if (Loader.isModLoaded("oe"))
+        if (Loader.isModLoaded("oe")) {
             OreDictionary.registerOre("mayBeKelp", Item.getByNameOrId("oe:dried_kelp"));
-        else
+        } else {
             OreDictionary.registerOre("mayBeKelp", new ItemStack(Items.REEDS));
-
+        }
 
         OreDictionary.registerOre("listAllmushroom", new ItemStack(Item.getItemFromBlock(Blocks.BROWN_MUSHROOM)));
         OreDictionary.registerOre("listAllmushroom", new ItemStack(Item.getItemFromBlock(Blocks.RED_MUSHROOM)));
@@ -208,6 +206,10 @@ public final class ModOreDictionary {
         OreDictionary.registerOre("listAllmeatraw", new ItemStack(Items.CHICKEN));
         OreDictionary.registerOre("listAllmeatraw", new ItemStack(Items.MUTTON));
         OreDictionary.registerOre("listAllmeatraw", new ItemStack(Items.PORKCHOP));
+    }
+
+    private static void registerToolOre(String oreName, Item item) {
+        OreDictionary.registerOre(oreName, new ItemStack(item, 1, OreDictionary.WILDCARD_VALUE));
     }
 
     private static void registerOre(String oreName, String itemName) {
@@ -260,4 +262,3 @@ public final class ModOreDictionary {
         return Collections.unmodifiableMap(tagMap);
     }
 }
-

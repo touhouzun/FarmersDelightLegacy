@@ -1,5 +1,6 @@
 package com.wdcftgg.farmersdelightlegacy.common.block;
 
+import com.wdcftgg.farmersdelightlegacy.common.item.ItemKnife;
 import com.wdcftgg.farmersdelightlegacy.common.registry.ModBlocks;
 import com.wdcftgg.farmersdelightlegacy.common.registry.ModItems;
 import net.minecraft.block.BlockCrops;
@@ -8,7 +9,6 @@ import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.stats.StatList;
@@ -19,8 +19,6 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.registry.ForgeRegistries;
-import net.minecraftforge.oredict.OreDictionary;
 
 import javax.annotation.Nullable;
 
@@ -136,20 +134,6 @@ public class BlockRicePanicles extends BlockCrops {
             return false;
         }
 
-        if (toolStack.getItem() == Items.SHEARS) {
-            return false;
-        }
-
-        int knifeOreId = OreDictionary.getOreID("toolKnife");
-        if (knifeOreId >= 0) {
-            for (int oreId : OreDictionary.getOreIDs(toolStack)) {
-                if (oreId == knifeOreId) {
-                    return true;
-                }
-            }
-        }
-
-        ResourceLocation itemId = ForgeRegistries.ITEMS.getKey(toolStack.getItem());
-        return itemId != null && itemId.getPath().endsWith("_knife");
+        return ItemKnife.isKnife(toolStack);
     }
 }

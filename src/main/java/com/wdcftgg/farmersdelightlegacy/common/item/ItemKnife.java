@@ -158,12 +158,14 @@ public class ItemKnife extends ItemSword {
             return true;
         }
 
-        int knifeOreId = OreDictionary.getOreID("toolKnife");
-        if (knifeOreId >= 0) {
-            for (int oreId : OreDictionary.getOreIDs(stack)) {
-                if (oreId == knifeOreId) {
-                    return true;
-                }
+        for (ItemStack oreStack : OreDictionary.getOres("toolKnife")) {
+            if (oreStack.isEmpty() || oreStack.getItem() != stack.getItem()) {
+                continue;
+            }
+
+            int oreMetadata = oreStack.getMetadata();
+            if (oreMetadata == OreDictionary.WILDCARD_VALUE || oreMetadata == stack.getMetadata()) {
+                return true;
             }
         }
 

@@ -5,6 +5,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.wdcftgg.farmersdelightlegacy.FarmersDelightLegacy;
 import com.wdcftgg.farmersdelightlegacy.common.Configuration;
+import com.wdcftgg.farmersdelightlegacy.common.item.ItemKnife;
 import com.wdcftgg.farmersdelightlegacy.common.registry.ModOreDictionary;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.init.Enchantments;
@@ -670,16 +671,23 @@ public final class CuttingBoardRecipeManager {
             }
 
             for (String oreName : oreDictNames) {
-                if (Configuration.toolAxeUsesItemAxeCheck && "toolAxe".equals(oreName)) {
-                    if (stack.getItem() instanceof ItemAxe) {
-                        return true;
-                    }
-                    continue;
+                if (matchesToolOreName(oreName, stack)) {
+                    return true;
                 }
-                for (ItemStack oreStack : OreDictionary.getOres(oreName)) {
-                    if (isItemAndMetaMatch(oreStack, stack)) {
-                        return true;
-                    }
+            }
+            return false;
+        }
+
+        private boolean matchesToolOreName(String oreName, ItemStack stack) {
+            if ("toolKnife".equals(oreName)) {
+                return ItemKnife.isKnife(stack);
+            }
+            if (Configuration.toolAxeUsesItemAxeCheck && "toolAxe".equals(oreName)) {
+                return stack.getItem() instanceof ItemAxe;
+            }
+            for (ItemStack oreStack : OreDictionary.getOres(oreName)) {
+                if (isItemAndMetaMatch(oreStack, stack)) {
+                    return true;
                 }
             }
             return false;

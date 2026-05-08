@@ -32,6 +32,7 @@ public final class Configuration {
     public static boolean enableRopeReeling = true;
     public static String[] canvasSignDarkBackgroundList = new String[]{"gray", "purple", "blue", "brown", "green", "red", "black"};
     public static boolean toolAxeUsesItemAxeCheck = false;
+    public static boolean skipFutureMcOceanicExpanseCheck = true;
 
     public static final String CATEGORY_FARMING = "farming";
     public static String defaultTomatoVineRope = "farmersdelight:rope";
@@ -107,8 +108,10 @@ public final class Configuration {
                 "Should players be able to reel back rope, bottom to top, when sneak-using with an empty hand on them?");
         canvasSignDarkBackgroundList = config.getStringList("canvasSignDarkBackgroundList", CATEGORY_SETTINGS, DEFAULT_DARK_CANVAS_BACKGROUNDS,
                 "Dye colors that make Canvas Sign text render white by default. Valid values: white, orange, magenta, light_blue, yellow, lime, pink, gray, light_gray, cyan, purple, blue, brown, green, red, black.");
-        toolAxeUsesItemAxeCheck = config.getBoolean("toolAxeUsesItemAxeCheck", CATEGORY_SETTINGS, false,
+        toolAxeUsesItemAxeCheck = config.getBoolean("toolAxeUsesItemAxeCheck", CATEGORY_SETTINGS, true,
                 "When a Cutting Board recipe tool is ore:toolAxe, match the held tool with instanceof ItemAxe instead of the OreDictionary list.");
+        skipFutureMcOceanicExpanseCheck = config.getBoolean("skipFutureMcOceanicExpanseCheck", CATEGORY_SETTINGS, true,
+                "Should Future MC ignore its Oceanic Expanse stripped-log gating so stripped logs stay registered when Oceanic Expanse is present?");
 
         defaultTomatoVineRope = config.getString("defaultTomatoVineRope", CATEGORY_FARMING, "farmersdelight:rope",
                 "Which rope should Tomato Vines leave behind when mined by hand?");

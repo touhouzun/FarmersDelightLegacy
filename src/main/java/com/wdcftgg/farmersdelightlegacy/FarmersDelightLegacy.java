@@ -3,6 +3,7 @@ package com.wdcftgg.farmersdelightlegacy;
 import com.wdcftgg.farmersdelightlegacy.common.Configuration;
 import com.wdcftgg.farmersdelightlegacy.common.advancement.ModAdvancements;
 import com.wdcftgg.farmersdelightlegacy.common.compat.CampfireHeatSourceCompat;
+import com.wdcftgg.farmersdelightlegacy.common.compat.FutureMcOceanicExpanseCompat;
 import com.wdcftgg.farmersdelightlegacy.common.compat.FutureMcSmithingCompat;
 import com.wdcftgg.farmersdelightlegacy.common.compat.VillageNamesVillageCompat;
 import com.wdcftgg.farmersdelightlegacy.common.compat.WanderingTradersBackportCompat;
@@ -16,6 +17,7 @@ import com.wdcftgg.farmersdelightlegacy.common.registry.ModTileEntities;
 import com.wdcftgg.farmersdelightlegacy.common.world.WildCropWorldGenerator;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.common.event.FMLConstructionEvent;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -43,6 +45,12 @@ public class FarmersDelightLegacy {
 
     @Mod.Instance(FarmersDelightLegacy.MOD_ID)
     public static FarmersDelightLegacy INSTANCE;
+
+    @Mod.EventHandler
+    public void construct(FMLConstructionEvent event) {
+        Configuration.load(new java.io.File(Loader.instance().getConfigDir(), FarmersDelightLegacy.MOD_ID + ".cfg"));
+        FutureMcOceanicExpanseCompat.syncFutureMcConfig();
+    }
 
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
