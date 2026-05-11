@@ -74,6 +74,12 @@ dependencies {
     //crt
     implementation rfg.deobf('CraftTweaker2:CraftTweaker2-MC1120-Main:1.12-4.1.20.698')
 
+    //季节
+    implementation rfg.deobf('curse.maven:Serene Seasons-291874:2799213')
+
+    //EditableEdibles
+    implementation rfg.deobf('curse.maven:EditableEdibles-1052472:6808042')
+
     // Example - Dependency descriptor:
     // 'com.google.code.gson:gson:2.8.6' << group: com.google.code.gson, name:gson, version:2.8.6
     // 'group:name:version:classifier' where classifier is optional

@@ -16,6 +16,7 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.ForgeHooks;
 
 import java.util.Random;
 
@@ -109,11 +110,16 @@ public class BlockRice extends BlockBush implements IGrowable {
 
         if (worldIn.getLightFromNeighbors(pos.up()) >= 6) {
             int age = this.getAge(state);
-            if (age <= this.getMaxAge() && rand.nextInt((int) (25.0F / 10.0F) + 1) == 0) {
+            boolean shouldGrow = age <= this.getMaxAge() && rand.nextInt((int) (25.0F / 10.0F) + 1) == 0;
+            if (ForgeHooks.onCropsGrowPre(worldIn, pos, state, shouldGrow)) {
                 if (age == this.getMaxAge()) {
-                    this.tryGrowPanicles(worldIn, pos, 0);
+                    if (this.tryGrowPanicles(worldIn, pos, 0)) {
+                        ForgeHooks.onCropsGrowPost(worldIn, pos, state, worldIn.getBlockState(pos));
+                    }
                 } else {
-                    worldIn.setBlockState(pos, state.withProperty(AGE, age + 1), 2);
+                    IBlockState grownState = state.withProperty(AGE, age + 1);
+                    worldIn.setBlockState(pos, grownState, 2);
+                    ForgeHooks.onCropsGrowPost(worldIn, pos, state, grownState);
                 }
             }
         }
