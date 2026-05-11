@@ -2,6 +2,11 @@ package com.wdcftgg.farmersdelightlegacy.common.block;
 
 import com.wdcftgg.farmersdelightlegacy.FarmersDelightLegacy;
 import com.wdcftgg.farmersdelightlegacy.common.tile.TileEntityCanvasSign;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.block.BlockWallSign;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -30,6 +35,11 @@ public class BlockCanvasWallSign extends BlockWallSign {
     @Override
     public TileEntity createNewTileEntity(World worldIn, int meta) {
         return new TileEntityCanvasSign();
+    }
+
+    @Override
+    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+        return CanvasSignInteractionHelper.openEditor(worldIn, pos, playerIn);
     }
 
     @Override

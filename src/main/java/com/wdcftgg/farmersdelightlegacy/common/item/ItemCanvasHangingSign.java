@@ -1,11 +1,14 @@
 package com.wdcftgg.farmersdelightlegacy.common.item;
 
 import com.wdcftgg.farmersdelightlegacy.common.block.BlockCanvasWallHangingSign;
+import com.wdcftgg.farmersdelightlegacy.common.network.ModNetworkHandler;
+import com.wdcftgg.farmersdelightlegacy.common.network.PacketOpenCanvasSignEditor;
 import com.wdcftgg.farmersdelightlegacy.common.tile.TileEntityCanvasSign;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -60,8 +63,9 @@ public class ItemCanvasHangingSign extends ItemBlock {
         if (tileEntity instanceof TileEntityCanvasSign) {
             TileEntityCanvasSign canvasSign = (TileEntityCanvasSign) tileEntity;
             configureHangingTextFace(player, placePos, placementSelection.state, canvasSign);
-            if (!setTileEntityNBT(worldIn, player, placePos, stack)) {
-                player.openEditSign((TileEntitySign) tileEntity);
+            if (!setTileEntityNBT(worldIn, player, placePos, stack) && player instanceof EntityPlayerMP) {
+                ((TileEntitySign) tileEntity).setPlayer(player);
+            ModNetworkHandler.INSTANCE.sendTo(new PacketOpenCanvasSignEditor(placePos), (EntityPlayerMP) player);
             }
         }
 

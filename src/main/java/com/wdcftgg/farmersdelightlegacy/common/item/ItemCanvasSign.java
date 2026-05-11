@@ -1,5 +1,7 @@
 package com.wdcftgg.farmersdelightlegacy.common.item;
 
+import com.wdcftgg.farmersdelightlegacy.common.network.ModNetworkHandler;
+import com.wdcftgg.farmersdelightlegacy.common.network.PacketOpenCanvasSignEditor;
 import com.wdcftgg.farmersdelightlegacy.common.tile.TileEntityCanvasSign;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockStandingSign;
@@ -7,6 +9,7 @@ import net.minecraft.block.BlockWallSign;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -62,8 +65,9 @@ public class ItemCanvasSign extends ItemBlock {
 
         worldIn.setBlockState(placePos, placedState, 11);
         TileEntity tileEntity = worldIn.getTileEntity(placePos);
-        if (tileEntity instanceof TileEntityCanvasSign && !setTileEntityNBT(worldIn, player, placePos, stack)) {
-            player.openEditSign((TileEntitySign) tileEntity);
+        if (tileEntity instanceof TileEntityCanvasSign && !setTileEntityNBT(worldIn, player, placePos, stack) && player instanceof EntityPlayerMP) {
+            ((TileEntitySign) tileEntity).setPlayer(player);
+            ModNetworkHandler.INSTANCE.sendTo(new PacketOpenCanvasSignEditor(placePos), (EntityPlayerMP) player);
         }
 
         SoundType soundType = placedState.getBlock().getSoundType(placedState, worldIn, placePos, player);

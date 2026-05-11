@@ -6,6 +6,7 @@ import com.wdcftgg.farmersdelightlegacy.common.compat.*;
 import com.wdcftgg.farmersdelightlegacy.common.event.HeatSourceExample;
 import com.wdcftgg.farmersdelightlegacy.common.event.ModVillagerTradeHandler;
 import com.wdcftgg.farmersdelightlegacy.common.gui.ModGuiHandler;
+import com.wdcftgg.farmersdelightlegacy.common.network.ModNetworkHandler;
 import com.wdcftgg.farmersdelightlegacy.common.recipe.LegacyHeatingRecipe;
 import com.wdcftgg.farmersdelightlegacy.common.registry.ModDispenserBehaviors;
 import com.wdcftgg.farmersdelightlegacy.common.registry.ModEntities;
@@ -57,6 +58,7 @@ public class FarmersDelightLegacy {
         ModEntities.registerAll();
         ModTileEntities.registerAll();
         NetworkRegistry.INSTANCE.registerGuiHandler(this, new ModGuiHandler());
+        ModNetworkHandler.registerAll();
         GameRegistry.registerWorldGenerator(new WildCropWorldGenerator(), 0);
         HeatSourceExample.registerHeatSourceExample();
         LOGGER.info("{} preInit 完成，准备注册内容。", FarmersDelightLegacy.MOD_NAME);
