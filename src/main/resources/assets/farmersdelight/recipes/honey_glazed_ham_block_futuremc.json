@@ -3,31 +3,32 @@
   "category": "misc",
   "conditions": [
     {
-      "type": "forge:not",
-      "value": {
-        "type": "forge:mod_loaded",
-        "modid": "futuremc"
-      }
+      "type": "forge:mod_loaded",
+      "modid": "futuremc"
     }
   ],
   "ingredients": [
     {
-      "item": "minecraft:apple"
+      "type": "forge:ore_dict",
+      "ore": "cropSweetBerry"
     },
     {
-      "item": "minecraft:sugar"
+      "item": "futuremc:honey_bottle"
     },
     {
-      "item": "minecraft:apple"
+      "type": "forge:ore_dict",
+      "ore": "cropSweetBerry"
     },
     {
-      "item": "minecraft:apple"
+      "type": "forge:ore_dict",
+      "ore": "cropSweetBerry"
     },
     {
       "item": "farmersdelight:smoked_ham"
     },
     {
-      "item": "minecraft:apple"
+      "type": "forge:ore_dict",
+      "ore": "cropSweetBerry"
     },
     {
       "item": "farmersdelight:cooked_rice"

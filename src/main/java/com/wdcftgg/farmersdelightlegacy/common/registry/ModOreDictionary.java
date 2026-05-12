@@ -66,6 +66,8 @@ public final class ModOreDictionary {
         registerOre("dogPrey", "salmon_slice");
         registerOre("dogPrey", "bacon");
 
+        registerOre("cooked_eggs", "fried_egg");
+
         registerOre("listAllveggie", "cabbage");
         registerOre("listAllveggie", "tomato");
         registerOre("listAllveggie", "onion");

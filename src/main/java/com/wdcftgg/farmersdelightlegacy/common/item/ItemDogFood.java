@@ -36,7 +36,7 @@ public class ItemDogFood extends ItemBowlFoodTooltip {
     }
 
     @Override
-    protected void onFoodEaten(ItemStack stack, World worldIn, EntityPlayer player) {
+    public void onFoodEaten(ItemStack stack, World worldIn, EntityPlayer player) {
         super.onFoodEaten(stack, worldIn, player);
         if (worldIn.isRemote) {
             return;

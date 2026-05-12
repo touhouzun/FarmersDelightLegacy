@@ -3,7 +3,7 @@
     "ore:listAllfishraw",
     "ore:foodPasta",
     "ore:cropTomato",
-    "ore:dyeBlack"
+    "minecraft:dye"
   ],
   "experience": 1.0,
   "result": {

@@ -12,11 +12,11 @@
     },
     {
       "type": "forge:ore_dict",
-      "ore": "listAllEgg"
+      "ore": "cooked_eggs"
     },
     {
       "type": "forge:ore_dict",
-      "ore": "listAllEgg"
+      "ore": "cooked_eggs"
     }
   ],
   "result": {

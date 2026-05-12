@@ -9,5 +9,9 @@
   "result": {
     "item": "farmersdelight:dumplings",
     "count": 2
+  },
+  "container": {
+    "item": "minecraft:air",
+    "count": 1
   }
 }

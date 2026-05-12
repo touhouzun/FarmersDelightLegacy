@@ -1,7 +1,6 @@
 package com.wdcftgg.farmersdelightlegacy.common.item;
 
 import com.wdcftgg.farmersdelightlegacy.common.Configuration;
-import com.wdcftgg.farmersdelightlegacy.common.compat.EditableEdiblesCompat;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -49,13 +48,11 @@ public class ItemFoodTooltip extends ItemFood {
 
     @Override
     public ItemStack onItemUseFinish(ItemStack stack, World worldIn, EntityLivingBase entityLiving) {
-        EditableEdiblesCompat.warmFoodEffectMap();
         return super.onItemUseFinish(stack, worldIn, entityLiving);
     }
 
     @Override
-    protected void onFoodEaten(ItemStack stack, World worldIn, EntityPlayer player) {
-        super.onFoodEaten(stack, worldIn, player);
+    public void onFoodEaten(ItemStack stack, World worldIn, EntityPlayer player) {
         if (worldIn.isRemote || effectId == null || worldIn.rand.nextFloat() > effectChance) {
             return;
         }

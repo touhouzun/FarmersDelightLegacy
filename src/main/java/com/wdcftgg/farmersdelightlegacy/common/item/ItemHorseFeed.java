@@ -34,7 +34,7 @@ public class ItemHorseFeed extends ItemFoodTooltip {
     }
 
     @Override
-    protected void onFoodEaten(ItemStack stack, World worldIn, EntityPlayer player) {
+    public void onFoodEaten(ItemStack stack, World worldIn, EntityPlayer player) {
         super.onFoodEaten(stack, worldIn, player);
         if (worldIn.isRemote) {
             return;
