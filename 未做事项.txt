@@ -47,3 +47,5 @@ generateVillageFarmFDCrops：当前没有村庄农田作物替换/生成逻辑�
 https://www.mcmod.cn/class/19736.html
 
 将配方使用的矿辞更改至主流的名称,以兼容更多模组的物品。
+
+提供配置选项，允许指定野生作物生成的维度ID
