@@ -147,7 +147,7 @@ public final class FarmersDelightJeiPlugin implements IModPlugin {
     private static List<SpecialCraftingJeiRecipe> buildSpecialCraftingRecipes() {
         List<SpecialCraftingJeiRecipe> recipes = new ArrayList<>();
         addWaterDoughRecipe(recipes);
-        addFoodServingRecipes(recipes);
+//        addFoodServingRecipes(recipes);
         return recipes;
     }
 

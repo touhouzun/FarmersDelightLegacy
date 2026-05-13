@@ -107,7 +107,7 @@ public final class ModItems {
         RICE = register("rice", createRiceItem(ModBlocks.RICE));
         RICE_PANICLE = registerSimple("rice_panicle");
         registerFood("cabbage", 2, 0.4F);
-        registerDrink("apple_cider", 4, 0.4F, true, "minecraft:absorption", SHORT_DURATION, 0, 1.0F,
+        registerDrink("apple_cider", 0, 0F, true, "minecraft:absorption", SHORT_DURATION, 0, 1.0F,
                 ItemDrinkableTooltip.DrinkEffect.NONE);
         registerFood("fried_egg", 4, 0.4F);
         registerFood("wheat_dough", 2, 0.3F, false, "minecraft:hunger", BRIEF_DURATION, 0, 0.3F);
@@ -178,11 +178,11 @@ public final class ModItems {
         registerFood("stuffed_pumpkin", 14, 0.75F, false, "farmersdelight:nourishment", LONG_DURATION, 0, 1.0F);
         registerFood("honey_glazed_ham", 14, 0.75F, false, "farmersdelight:nourishment", LONG_DURATION, 0, 1.0F);
         registerFood("shepherds_pie", 14, 0.75F, false, "farmersdelight:nourishment", LONG_DURATION, 0, 1.0F);
-        registerDrink("milk_bottle", 4, 0.4F, false, null, 0, 0, 0.0F,
+        registerDrink("milk_bottle", 0, 0F, false, null, 0, 0, 0.0F,
                 ItemDrinkableTooltip.DrinkEffect.CLEAR_ONE, "farmersdelight.tooltip.milk_bottle");
-        registerDrink("hot_cocoa", 4, 0.4F, false, null, 0, 0, 0.0F,
+        registerDrink("hot_cocoa", 0, 0F, false, null, 0, 0, 0.0F,
                 ItemDrinkableTooltip.DrinkEffect.CLEAR_ONE_HARMFUL, "farmersdelight.tooltip.hot_cocoa");
-        registerDrink("melon_juice", 4, 0.4F, false, null, 0, 0, 0.0F,
+        registerDrink("melon_juice", 0, 0F, false, null, 0, 0, 0.0F,
                 ItemDrinkableTooltip.DrinkEffect.HEAL_MINOR, "farmersdelight.tooltip.melon_juice");
         registerFood("tomato_sauce", 4, 0.4F);
         register("rotten_tomato", new ItemRottenTomato());

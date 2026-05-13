@@ -135,8 +135,24 @@ public class BlockTatamiMat extends BlockHorizontal {
         boolean pairValid = pairState.getBlock() == this && pairState.getValue(PART) != state.getValue(PART);
         boolean hasSupport = worldIn.getBlockState(pos.down()).isSideSolid(worldIn, pos.down(), net.minecraft.util.EnumFacing.UP);
 
-        if (!pairValid || !hasSupport) {
+        if (!pairValid) {
             worldIn.setBlockToAir(pos);
+            return;
+        }
+
+        if (!hasSupport) {
+            if (!worldIn.isRemote) {
+                BlockPos footPos = state.getValue(PART) == EnumMatPart.FOOT ? pos : pairPos;
+                BlockPos headPos = state.getValue(PART) == EnumMatPart.FOOT ? pairPos : pos;
+                IBlockState footState = worldIn.getBlockState(footPos);
+                IBlockState headState = worldIn.getBlockState(headPos);
+                if (footState.getBlock() == this) {
+                    worldIn.destroyBlock(footPos, true);
+                }
+                if (headState.getBlock() == this) {
+                    worldIn.setBlockToAir(headPos);
+                }
+            }
             return;
         }
 

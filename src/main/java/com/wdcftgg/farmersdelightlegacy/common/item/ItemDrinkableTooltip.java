@@ -1,11 +1,15 @@
 package com.wdcftgg.farmersdelightlegacy.common.item;
 
+import net.minecraft.advancements.CriteriaTriggers;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Items;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.stats.StatList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
@@ -22,9 +26,7 @@ public class ItemDrinkableTooltip extends ItemFoodTooltip {
                                 String... extraTooltipKeys) {
         super(amount, saturation, false, effectId, effectDuration, effectAmplifier, effectChance, extraTooltipKeys);
         this.drinkEffect = drinkEffect;
-        if (alwaysEdible) {
-            this.setAlwaysEdible();
-        }
+        this.setAlwaysEdible();
     }
 
     @Override
@@ -41,26 +43,47 @@ public class ItemDrinkableTooltip extends ItemFoodTooltip {
     }
 
     @Override
-    public ItemStack onItemUseFinish(ItemStack stack, World worldIn, net.minecraft.entity.EntityLivingBase entityLiving) {
-        ItemStack result = super.onItemUseFinish(stack, worldIn, entityLiving);
+    public boolean hasContainerItem(ItemStack stack) {
+        return true;
+    }
+
+    @Override
+    public ItemStack getContainerItem(ItemStack itemStack) {
+        return new ItemStack(Items.GLASS_BOTTLE);
+    }
+
+    @Override
+    public ItemStack onItemUseFinish(ItemStack stack, World worldIn, EntityLivingBase entityLiving) {
+        if (entityLiving instanceof EntityPlayer) {
+            EntityPlayer player = (EntityPlayer) entityLiving;
+            player.getFoodStats().addStats(this, stack);
+            this.onFoodEaten(stack, worldIn, player);
+            player.addStat(StatList.getObjectUseStats(this));
+
+            if (player instanceof EntityPlayerMP) {
+                CriteriaTriggers.CONSUME_ITEM.trigger((EntityPlayerMP) player, stack);
+            }
+        }
+
+        stack.shrink(1);
         if (!(entityLiving instanceof EntityPlayer)) {
-            return result;
+            return stack;
         }
 
         EntityPlayer player = (EntityPlayer) entityLiving;
         if (player.capabilities.isCreativeMode) {
-            return result;
+            return stack;
         }
 
-        ItemStack bottle = new ItemStack(Items.GLASS_BOTTLE);
-        if (result.isEmpty()) {
+        ItemStack bottle = this.getContainerItem(stack);
+        if (stack.isEmpty()) {
             return bottle;
         }
 
         if (!player.inventory.addItemStackToInventory(bottle)) {
             player.dropItem(bottle, false);
         }
-        return result;
+        return stack;
     }
 
     public enum DrinkEffect {
