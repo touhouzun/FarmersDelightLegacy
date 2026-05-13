@@ -17,17 +17,15 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class ItemFoodTooltip extends ItemFood {
 
     protected final int foodAmount;
     protected final float saturationAmount;
-    @Nullable
-    protected final ResourceLocation effectId;
-    protected final int effectDuration;
-    protected final int effectAmplifier;
-    protected final float effectChance;
+    protected final List<FoodEffectEntry> foodEffects;
     protected final String[] extraTooltipKeys;
 
     public ItemFoodTooltip(int amount, float saturation, boolean isWolfFood) {
@@ -36,13 +34,16 @@ public class ItemFoodTooltip extends ItemFood {
 
     public ItemFoodTooltip(int amount, float saturation, boolean isWolfFood, @Nullable ResourceLocation effectId, int effectDuration,
                            int effectAmplifier, float effectChance, String... extraTooltipKeys) {
+        this(amount, saturation, isWolfFood, createSingleEffectList(effectId, effectDuration, effectAmplifier, effectChance),
+                extraTooltipKeys);
+    }
+
+    public ItemFoodTooltip(int amount, float saturation, boolean isWolfFood, List<FoodEffectEntry> foodEffects,
+                           String... extraTooltipKeys) {
         super(amount, saturation, isWolfFood);
         this.foodAmount = amount;
         this.saturationAmount = saturation;
-        this.effectId = effectId;
-        this.effectDuration = effectDuration;
-        this.effectAmplifier = effectAmplifier;
-        this.effectChance = effectChance;
+        this.foodEffects = foodEffects == null ? Collections.emptyList() : Collections.unmodifiableList(new ArrayList<>(foodEffects));
         this.extraTooltipKeys = extraTooltipKeys == null ? new String[0] : extraTooltipKeys;
     }
 
@@ -53,13 +54,12 @@ public class ItemFoodTooltip extends ItemFood {
 
     @Override
     public void onFoodEaten(ItemStack stack, World worldIn, EntityPlayer player) {
-        if (worldIn.isRemote || effectId == null || worldIn.rand.nextFloat() > effectChance) {
+        if (worldIn.isRemote) {
             return;
         }
 
-        Potion potion = ForgeRegistries.POTIONS.getValue(effectId);
-        if (potion != null) {
-            player.addPotionEffect(new PotionEffect(potion, effectDuration, effectAmplifier));
+        for (FoodEffectEntry effectEntry : this.foodEffects) {
+            effectEntry.apply(worldIn, player);
         }
     }
 
@@ -77,27 +77,89 @@ public class ItemFoodTooltip extends ItemFood {
 //        tooltip.add(TextFormatting.GRAY + new TextComponentTranslation("farmersdelight.tooltip.food.saturation",
 //                String.format(Locale.ROOT, "%.1f", restoredSaturation)).getFormattedText());
 
-        if (effectId != null) {
-            Potion potion = ForgeRegistries.POTIONS.getValue(effectId);
-            if (potion != null) {
-                PotionEffect effect = new PotionEffect(potion, effectDuration, effectAmplifier);
-                String duration = Potion.getPotionDurationString(effect, 1.0F);
-                String effectName = new TextComponentTranslation(effect.getEffectName()).getFormattedText();
-                TextComponentTranslation effectTooltip = new TextComponentTranslation("farmersdelight.tooltip.food.effect",
-                        effectName, duration);
-                effectTooltip.getStyle().setColor(TextFormatting.BLUE);
-                tooltip.add(effectTooltip.getFormattedText());
-                if (effectChance < 0.999F) {
-                    TextComponentTranslation translation = new TextComponentTranslation("farmersdelight.tooltip.food.effect_chance",
-                            Math.round(effectChance * 100.0F));
-                    translation.getStyle().setColor(TextFormatting.BLUE);
-                    tooltip.add(translation.getFormattedText());
-                }
-            }
+        for (FoodEffectEntry effectEntry : this.foodEffects) {
+            effectEntry.addTooltip(tooltip);
         }
 
         for (String key : extraTooltipKeys) {
             tooltip.add(TextFormatting.DARK_PURPLE + new TextComponentTranslation(key).getFormattedText());
         }
     }
+    private static List<FoodEffectEntry> createSingleEffectList(@Nullable ResourceLocation effectId, int effectDuration,
+                                                                int effectAmplifier, float effectChance) {
+        if (effectId == null) {
+            return Collections.emptyList();
+        }
+        List<FoodEffectEntry> effects = new ArrayList<>();
+        effects.add(new FoodEffectEntry(effectId, effectDuration, effectAmplifier, effectChance));
+        return effects;
+    }
+
+    public static final class FoodEffectEntry {
+        private final ResourceLocation effectId;
+        private final int duration;
+        private final int amplifier;
+        private final float chance;
+
+        public FoodEffectEntry(ResourceLocation effectId, int duration, int amplifier, float chance) {
+            this.effectId = effectId;
+            this.duration = Math.max(0, duration);
+            this.amplifier = Math.max(0, amplifier);
+            this.chance = Math.max(0.0F, Math.min(1.0F, chance));
+        }
+
+        public ResourceLocation getEffectId() {
+            return this.effectId;
+        }
+
+        public int getDuration() {
+            return this.duration;
+        }
+
+        public int getAmplifier() {
+            return this.amplifier;
+        }
+
+        public float getChance() {
+            return this.chance;
+        }
+
+        private void apply(World worldIn, EntityPlayer player) {
+            if (this.effectId == null || worldIn.rand.nextFloat() > this.chance) {
+                return;
+            }
+
+            Potion potion = ForgeRegistries.POTIONS.getValue(this.effectId);
+            if (potion != null) {
+                player.addPotionEffect(new PotionEffect(potion, this.duration, this.amplifier));
+            }
+        }
+
+        @SideOnly(Side.CLIENT)
+        private void addTooltip(List<String> tooltip) {
+            if (this.effectId == null) {
+                return;
+            }
+
+            Potion potion = ForgeRegistries.POTIONS.getValue(this.effectId);
+            if (potion == null) {
+                return;
+            }
+
+            PotionEffect effect = new PotionEffect(potion, this.duration, this.amplifier);
+            String durationText = Potion.getPotionDurationString(effect, 1.0F);
+            String effectName = new TextComponentTranslation(effect.getEffectName()).getFormattedText();
+            TextComponentTranslation effectTooltip = new TextComponentTranslation("farmersdelight.tooltip.food.effect",
+                    effectName, durationText);
+            effectTooltip.getStyle().setColor(TextFormatting.BLUE);
+            tooltip.add(effectTooltip.getFormattedText());
+            if (this.chance < 0.999F) {
+                TextComponentTranslation translation = new TextComponentTranslation("farmersdelight.tooltip.food.effect_chance",
+                        Math.round(this.chance * 100.0F));
+                translation.getStyle().setColor(TextFormatting.BLUE);
+                tooltip.add(translation.getFormattedText());
+            }
+        }
+    }
+
 }

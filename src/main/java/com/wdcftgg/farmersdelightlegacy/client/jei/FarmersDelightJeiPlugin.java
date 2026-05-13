@@ -1,6 +1,7 @@
 package com.wdcftgg.farmersdelightlegacy.client.jei;
 
 import com.wdcftgg.farmersdelightlegacy.client.gui.GuiCookingPot;
+import com.wdcftgg.farmersdelightlegacy.common.inventory.ContainerCookingPot;
 import com.wdcftgg.farmersdelightlegacy.common.item.ItemCookingPot;
 import com.wdcftgg.farmersdelightlegacy.common.recipe.*;
 import com.wdcftgg.farmersdelightlegacy.common.registry.ModBlocks;
@@ -32,11 +33,13 @@ public final class FarmersDelightJeiPlugin implements IModPlugin {
         IDrawable cookingPotIcon = guiHelper.createDrawableIngredient(new ItemStack(ModBlocks.COOKING_POT));
         IDrawable cuttingBoardIcon = guiHelper.createDrawableIngredient(new ItemStack(ModBlocks.CUTTING_BOARD));
         IDrawable campfireIcon = guiHelper.createDrawableIngredient(new ItemStack(ModBlocks.STOVE));
+        DecompositionRecipeCategory decompositionCategory = new DecompositionRecipeCategory(guiHelper);
 
         registry.addRecipeCategories(
                 new CookingPotRecipeCategory(guiHelper, cookingPotIcon),
                 new CuttingBoardRecipeCategory(guiHelper, cuttingBoardIcon),
-                new CampfireRecipeCategory(guiHelper, campfireIcon)
+                new CampfireRecipeCategory(guiHelper, campfireIcon),
+                decompositionCategory
         );
     }
 
@@ -45,6 +48,7 @@ public final class FarmersDelightJeiPlugin implements IModPlugin {
         registry.addRecipes(buildCookingPotRecipes(), JeiUids.COOKING_POT);
         registry.addRecipes(buildCuttingBoardRecipes(), JeiUids.CUTTING_BOARD);
         registry.addRecipes(buildCampfireRecipes(), JeiUids.CAMPFIRE);
+        registry.addRecipes(buildDecompositionRecipes(), JeiUids.DECOMPOSITION);
         registry.handleRecipes(SpecialCraftingJeiRecipe.class, recipe -> recipe, VanillaRecipeCategoryUid.CRAFTING);
         registry.addRecipes(buildSpecialCraftingRecipes(), VanillaRecipeCategoryUid.CRAFTING);
 
@@ -52,8 +56,11 @@ public final class FarmersDelightJeiPlugin implements IModPlugin {
         registry.addRecipeCatalyst(new ItemStack(ModBlocks.CUTTING_BOARD), JeiUids.CUTTING_BOARD);
         registry.addRecipeCatalyst(new ItemStack(ModBlocks.STOVE), JeiUids.CAMPFIRE);
         registry.addRecipeCatalyst(new ItemStack(ModBlocks.SKILLET), JeiUids.CAMPFIRE);
+        registry.addRecipeCatalyst(new ItemStack(ModBlocks.ORGANIC_COMPOST), JeiUids.DECOMPOSITION);
+        registry.addRecipeCatalyst(new ItemStack(ModBlocks.RICH_SOIL), JeiUids.DECOMPOSITION);
 
         registry.addRecipeClickArea(GuiCookingPot.class, 89, 25, 24, 17, JeiUids.COOKING_POT);
+        registry.getRecipeTransferRegistry().addRecipeTransferHandler(ContainerCookingPot.class, JeiUids.COOKING_POT, 0, 6, 9, 36);
 
         addIngredientInfoItem(registry, "wheat_dough", "farmersdelight.jei.info.dough");
         addIngredientInfoItem(registry, "straw", "farmersdelight.jei.info.straw");
@@ -63,6 +70,7 @@ public final class FarmersDelightJeiPlugin implements IModPlugin {
         addIngredientInfoItem(registry, "iron_knife", "farmersdelight.jei.info.knife");
         addIngredientInfoItem(registry, "golden_knife", "farmersdelight.jei.info.knife");
         addIngredientInfoItem(registry, "diamond_knife", "farmersdelight.jei.info.knife");
+        addIngredientInfoItem(registry, "netherite_knife", "farmersdelight.jei.info.knife");
         registerCropIngredientInfos(registry);
     }
 
@@ -144,10 +152,16 @@ public final class FarmersDelightJeiPlugin implements IModPlugin {
         return result;
     }
 
+
+    private static List<DecompositionJeiRecipe> buildDecompositionRecipes() {
+        List<ItemStack> accelerators = DecompositionRecipeManager.getAcceleratorDisplayStacks();
+        List<DecompositionJeiRecipe> recipes = new ArrayList<>();
+        recipes.add(new DecompositionJeiRecipe(new ItemStack(ModBlocks.ORGANIC_COMPOST), new ItemStack(ModBlocks.RICH_SOIL), accelerators));
+        return recipes;
+    }
     private static List<SpecialCraftingJeiRecipe> buildSpecialCraftingRecipes() {
         List<SpecialCraftingJeiRecipe> recipes = new ArrayList<>();
         addWaterDoughRecipe(recipes);
-//        addFoodServingRecipes(recipes);
         return recipes;
     }
 

@@ -3,6 +3,9 @@ package com.wdcftgg.farmersdelightlegacy;
 import com.wdcftgg.farmersdelightlegacy.common.Configuration;
 import com.wdcftgg.farmersdelightlegacy.common.advancement.ModAdvancements;
 import com.wdcftgg.farmersdelightlegacy.common.compat.*;
+import com.wdcftgg.farmersdelightlegacy.common.compat.futuremc.FutureMcComposterCompat;
+import com.wdcftgg.farmersdelightlegacy.common.compat.futuremc.FutureMcOceanicExpanseCompat;
+import com.wdcftgg.farmersdelightlegacy.common.compat.futuremc.FutureMcSmithingCompat;
 import com.wdcftgg.farmersdelightlegacy.common.event.HeatSourceExample;
 import com.wdcftgg.farmersdelightlegacy.common.event.ModVillagerTradeHandler;
 import com.wdcftgg.farmersdelightlegacy.common.gui.ModGuiHandler;
@@ -68,6 +71,7 @@ public class FarmersDelightLegacy {
     public void init(FMLInitializationEvent event) {
         CampfireHeatSourceCompat.registerAll();
         FutureMcSmithingCompat.registerAll();
+        FutureMcComposterCompat.registerAll();
         ModVillagerTradeHandler.registerAll();
         if (Loader.isModLoaded("villagenames")) {
             VillageNamesVillageCompat.registerAll();

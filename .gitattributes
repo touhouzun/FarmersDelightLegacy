@@ -1,2 +1,7 @@
 # Auto detect text files and perform LF normalization
 * text=auto
+
+# Keep repository attributes and source diffs stable across Windows checkouts
+.gitattributes text eol=lf
+*.java text eol=lf
+*.md text eol=lf

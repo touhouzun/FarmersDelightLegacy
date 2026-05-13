@@ -8,6 +8,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
+import java.util.List;
 
 public class ItemBowlFoodTooltip extends ItemFoodTooltip {
 
@@ -18,6 +19,11 @@ public class ItemBowlFoodTooltip extends ItemFoodTooltip {
     public ItemBowlFoodTooltip(int amount, float saturation, boolean isWolfFood, @Nullable ResourceLocation effectId,
                                int effectDuration, int effectAmplifier, float effectChance, String... extraTooltipKeys) {
         super(amount, saturation, isWolfFood, effectId, effectDuration, effectAmplifier, effectChance, extraTooltipKeys);
+    }
+
+    public ItemBowlFoodTooltip(int amount, float saturation, boolean isWolfFood, List<FoodEffectEntry> foodEffects,
+                               String... extraTooltipKeys) {
+        super(amount, saturation, isWolfFood, foodEffects, extraTooltipKeys);
     }
 
     @Override

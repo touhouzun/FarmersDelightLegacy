@@ -5,6 +5,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
@@ -20,12 +21,29 @@ import java.util.List;
 public class ItemDrinkableTooltip extends ItemFoodTooltip {
 
     private final DrinkEffect drinkEffect;
+    private final ItemStack containerItem;
 
     public ItemDrinkableTooltip(int amount, float saturation, boolean alwaysEdible, @Nullable ResourceLocation effectId,
                                 int effectDuration, int effectAmplifier, float effectChance, DrinkEffect drinkEffect,
                                 String... extraTooltipKeys) {
+        this(amount, saturation, alwaysEdible, effectId, effectDuration, effectAmplifier, effectChance, drinkEffect,
+                new ItemStack(Items.GLASS_BOTTLE), extraTooltipKeys);
+    }
+
+    public ItemDrinkableTooltip(int amount, float saturation, boolean alwaysEdible, @Nullable ResourceLocation effectId,
+                                int effectDuration, int effectAmplifier, float effectChance, DrinkEffect drinkEffect,
+                                ItemStack containerItem, String... extraTooltipKeys) {
         super(amount, saturation, false, effectId, effectDuration, effectAmplifier, effectChance, extraTooltipKeys);
         this.drinkEffect = drinkEffect;
+        this.containerItem = containerItem == null || containerItem.isEmpty() ? new ItemStack(Items.GLASS_BOTTLE) : containerItem.copy();
+        this.setAlwaysEdible();
+    }
+
+    public ItemDrinkableTooltip(int amount, float saturation, boolean alwaysEdible, List<FoodEffectEntry> foodEffects,
+                                DrinkEffect drinkEffect, ItemStack containerItem, String... extraTooltipKeys) {
+        super(amount, saturation, false, foodEffects, extraTooltipKeys);
+        this.drinkEffect = drinkEffect;
+        this.containerItem = containerItem == null || containerItem.isEmpty() ? new ItemStack(Items.GLASS_BOTTLE) : containerItem.copy();
         this.setAlwaysEdible();
     }
 
@@ -44,12 +62,12 @@ public class ItemDrinkableTooltip extends ItemFoodTooltip {
 
     @Override
     public boolean hasContainerItem(ItemStack stack) {
-        return true;
+        return !this.containerItem.isEmpty();
     }
 
     @Override
     public ItemStack getContainerItem(ItemStack itemStack) {
-        return new ItemStack(Items.GLASS_BOTTLE);
+        return this.containerItem.copy();
     }
 
     @Override

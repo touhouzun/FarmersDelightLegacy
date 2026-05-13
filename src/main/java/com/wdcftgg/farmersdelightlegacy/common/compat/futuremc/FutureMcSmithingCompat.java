@@ -1,4 +1,4 @@
-package com.wdcftgg.farmersdelightlegacy.common.compat;
+package com.wdcftgg.farmersdelightlegacy.common.compat.futuremc;
 
 import com.wdcftgg.farmersdelightlegacy.FarmersDelightLegacy;
 import com.wdcftgg.farmersdelightlegacy.common.registry.ModItems;
