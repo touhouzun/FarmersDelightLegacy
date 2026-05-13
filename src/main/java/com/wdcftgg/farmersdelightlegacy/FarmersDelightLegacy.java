@@ -82,6 +82,7 @@ public class FarmersDelightLegacy {
     @Mod.EventHandler
     public void postInit(FMLPostInitializationEvent event) {
         LegacyHeatingRecipe.registerSmeltingRecipes();
+        CampfireCookingCompat.registerAll();
         ModDispenserBehaviors.registerAll();
     }
 
