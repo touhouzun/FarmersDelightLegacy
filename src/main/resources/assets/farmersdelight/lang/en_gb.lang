@@ -6,4 +6,5 @@ tile.farmersdelight.light_gray_hanging_canvas_sign.name=Light Grey Hanging Canva
 item.farmersdelight.pumpkin_pie_slice.name=Slice of Pumpkin Pie
 
 farmersdelight.jei.campfire=Campfire Cooking
-
+farmersdelight.jei.hunting_drops=Hunting Drops
+farmersdelight.jei.hunting_drops.burning=When target is on fire

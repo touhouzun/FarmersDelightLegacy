@@ -6,26 +6,20 @@ import com.google.common.collect.Sets;
 import com.wdcftgg.farmersdelightlegacy.FarmersDelightLegacy;
 import com.wdcftgg.farmersdelightlegacy.common.block.BlockRicePanicles;
 import com.wdcftgg.farmersdelightlegacy.common.registry.ModBlocks;
+import com.wdcftgg.farmersdelightlegacy.common.recipe.HuntingDropRecipeManager;
 import com.wdcftgg.farmersdelightlegacy.common.registry.ModItems;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.monster.EntityCaveSpider;
-import net.minecraft.entity.monster.EntityShulker;
-import net.minecraft.entity.monster.EntitySpider;
-import net.minecraft.entity.passive.*;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Enchantments;
-import net.minecraft.init.Items;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -51,8 +45,6 @@ public class ItemKnife extends ItemSword {
     private static final float WEB_SPEED = 15.0F;
     private static final float KNIFE_SPEED = 8.0F;
     private static final float KNOCKBACK_REDUCTION = 0.1F;
-    private static final float HAM_DROP_CHANCE = 0.5F;
-    private static final float LOOTING_BONUS = 0.1F;
     private static final float SHORT_GRASS_STRAW_CHANCE = 0.2F;
     private static final float TALL_GRASS_STRAW_CHANCE = 0.2F;
     private static final Set<Enchantment> ALLOWED_ENCHANTMENTS = Sets.newHashSet(
@@ -242,35 +234,7 @@ public class ItemKnife extends ItemSword {
                 return;
             }
 
-            EntityLivingBase target = event.getEntityLiving();
-            if ((isPigLike(target) || isHoglinLike(target)) && !isJuvenile(target)) {
-                int lootingLevel = EnchantmentHelper.getLootingModifier(attacker);
-                float chance = HAM_DROP_CHANCE + (lootingLevel * LOOTING_BONUS);
-                if (target.world.rand.nextFloat() < chance) {
-                    Item hamItem = target.isBurning() ? ModItems.get("smoked_ham") : ModItems.get("ham");
-                    addExtraDrop(event, hamItem);
-                }
-            }
-
-            if (target instanceof EntityChicken) {
-                addExtraDrop(event, Items.FEATHER);
-            }
-
-            if (isLeatherSource(target)) {
-                addExtraDrop(event, Items.LEATHER);
-            }
-
-            if (target instanceof EntityRabbit) {
-                addExtraDrop(event, Items.RABBIT_HIDE);
-            }
-
-            if (target instanceof EntityShulker) {
-                addExtraDrop(event, Items.SHULKER_SHELL);
-            }
-
-            if (target instanceof EntitySpider || target instanceof EntityCaveSpider) {
-                addExtraDrop(event, Items.STRING);
-            }
+            HuntingDropRecipeManager.addDrops(event, attacker, toolStack);
         }
 
         @SubscribeEvent
@@ -322,52 +286,5 @@ public class ItemKnife extends ItemSword {
             }
         }
 
-        private static void addExtraDrop(LivingDropsEvent event, Item item) {
-            if (item == null) {
-                return;
-            }
-
-            for (EntityItem entityItem : event.getDrops()) {
-                ItemStack dropStack = entityItem.getItem();
-                if (!dropStack.isEmpty() && dropStack.getItem() == item) {
-                    dropStack.grow(1);
-                    return;
-                }
-            }
-
-            EntityLivingBase target = event.getEntityLiving();
-            event.getDrops().add(new EntityItem(target.world, target.posX, target.posY, target.posZ, new ItemStack(item)));
-        }
-
-        private static boolean isPigLike(EntityLivingBase target) {
-            return target instanceof EntityPig;
-        }
-
-        private static boolean isHoglinLike(EntityLivingBase target) {
-            ResourceLocation entityId = EntityList.getKey(target);
-            return entityId != null && "hoglin".equals(entityId.getPath());
-        }
-
-        private static boolean isJuvenile(EntityLivingBase target) {
-            try {
-                Object result = target.getClass().getMethod("isChild").invoke(target);
-                return result instanceof Boolean && (Boolean) result;
-            } catch (ReflectiveOperationException ignored) {
-                return false;
-            }
-        }
-
-        private static boolean isLeatherSource(EntityLivingBase target) {
-            if (target instanceof EntityCow || target instanceof EntityMooshroom) {
-                return true;
-            }
-
-            if (target instanceof AbstractHorse) {
-                return true;
-            }
-
-            ResourceLocation entityId = EntityList.getKey(target);
-            return entityId != null && "trader_llama".equals(entityId.getPath());
-        }
     }
 }

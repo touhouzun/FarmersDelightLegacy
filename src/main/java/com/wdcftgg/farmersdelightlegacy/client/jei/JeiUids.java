@@ -8,6 +8,7 @@ public final class JeiUids {
     public static final String CUTTING_BOARD = FarmersDelightLegacy.MOD_ID + ".cutting_board";
     public static final String CAMPFIRE = FarmersDelightLegacy.MOD_ID + ".campfire";
     public static final String DECOMPOSITION = FarmersDelightLegacy.MOD_ID + ".decomposition";
+    public static final String HUNTING_DROPS = FarmersDelightLegacy.MOD_ID + ".hunting_drops";
 
     private JeiUids() {
     }

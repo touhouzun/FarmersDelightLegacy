@@ -7,6 +7,7 @@ import com.wdcftgg.farmersdelightlegacy.common.compat.futuremc.FutureMcComposter
 import com.wdcftgg.farmersdelightlegacy.common.compat.futuremc.FutureMcOceanicExpanseCompat;
 import com.wdcftgg.farmersdelightlegacy.common.compat.futuremc.FutureMcSmithingCompat;
 import com.wdcftgg.farmersdelightlegacy.common.event.HeatSourceExample;
+import com.wdcftgg.farmersdelightlegacy.common.event.HuntingDropExample;
 import com.wdcftgg.farmersdelightlegacy.common.event.ModVillagerTradeHandler;
 import com.wdcftgg.farmersdelightlegacy.common.gui.ModGuiHandler;
 import com.wdcftgg.farmersdelightlegacy.common.network.ModNetworkHandler;
@@ -64,6 +65,7 @@ public class FarmersDelightLegacy {
         ModNetworkHandler.registerAll();
         GameRegistry.registerWorldGenerator(new WildCropWorldGenerator(), 0);
         HeatSourceExample.registerHeatSourceExample();
+        HuntingDropExample.registerHuntingDropExample();
         LOGGER.info("{} preInit 完成，准备注册内容。", FarmersDelightLegacy.MOD_NAME);
     }
 
