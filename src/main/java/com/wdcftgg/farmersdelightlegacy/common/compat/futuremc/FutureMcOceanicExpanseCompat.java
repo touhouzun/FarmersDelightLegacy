@@ -31,7 +31,7 @@ public final class FutureMcOceanicExpanseCompat {
         File futureMcConfigFile = new File(configDirectory, FUTURE_MC_CONFIG_PATH);
         File parentDirectory = futureMcConfigFile.getParentFile();
         if (parentDirectory != null && !parentDirectory.exists() && !parentDirectory.mkdirs()) {
-            FarmersDelightLegacy.LOGGER.warn("无法创建 Future MC 配置目录，已跳过去皮原木兼容配置调整：{}", parentDirectory);
+                FarmersDelightLegacy.LOGGER.warn("Unable to create the Future MC config directory; skipping stripped log compatibility config adjustment: {}", parentDirectory);
             return;
         }
 
@@ -46,6 +46,6 @@ public final class FutureMcOceanicExpanseCompat {
 
         oceanicExpanseProperty.set(false);
         futureMcConfig.save();
-        FarmersDelightLegacy.LOGGER.info("已关闭 Future MC 的 Oceanic Expanse 兼容开关，以保留 stripped log 注册。");
+        FarmersDelightLegacy.LOGGER.info("Disabled Future MC Oceanic Expanse compatibility to keep stripped log registration.");
     }
 }

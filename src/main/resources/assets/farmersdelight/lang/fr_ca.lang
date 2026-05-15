@@ -283,3 +283,7 @@ farmersdelight.advancement.use_cutting_board.desc=Avec un outil en main, utilise
 farmersdelight.advancement.use_cutting_board=Du pain sur la planche
 farmersdelight.advancement.use_skillet.desc=Les poêles à frire vous permettent de cuisiner sur le pouce. Tenez-vous près de la source de chaleur et tenez les aliments dans l'autre main.
 farmersdelight.advancement.use_skillet=Jouer avec le feu
+farmersdelight.jei.clock.pause=Left click: pause
+farmersdelight.jei.clock.resume=Right click: resume
+farmersdelight.jei.clock.previous_page=Ctrl + Left click: previous page
+farmersdelight.jei.clock.next_page=Ctrl + Right click: next page

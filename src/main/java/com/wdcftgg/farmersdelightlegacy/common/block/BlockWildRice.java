@@ -92,6 +92,13 @@ public class BlockWildRice extends BlockBush implements IGrowable {
     }
 
     @Override
+    public void onBlockHarvested(World worldIn, BlockPos pos, IBlockState state, EntityPlayer player) {
+        if (!worldIn.isRemote && !player.capabilities.isCreativeMode && this.hasCounterpart(worldIn, pos, state)) {
+            this.spawnUpstreamDrop(worldIn, pos, state, player.getHeldItemMainhand());
+        }
+        super.onBlockHarvested(worldIn, pos, state, player);
+    }
+    @Override
     public Item getItemDropped(IBlockState state, Random rand, int fortune) {
         Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(FarmersDelightLegacy.MOD_ID, "rice"));
         return item != null ? item : Item.getItemFromBlock(Blocks.AIR);
@@ -107,15 +114,6 @@ public class BlockWildRice extends BlockBush implements IGrowable {
                              @Nullable TileEntity te, ItemStack stack) {
         player.addStat(StatList.getBlockStats(this));
         player.addExhaustion(0.005F);
-        if (worldIn.isRemote || player.capabilities.isCreativeMode) {
-            return;
-        }
-
-        if (!hasCounterpart(worldIn, pos, state)) {
-            return;
-        }
-
-        this.spawnUpstreamDrop(worldIn, pos, state, stack);
     }
 
     @Override

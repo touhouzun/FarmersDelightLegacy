@@ -292,3 +292,7 @@ farmersdelight.advancement.use_cutting_board.desc=具至而切於板上。
 farmersdelight.advancement.use_cutting_board=當心手足……
 farmersdelight.advancement.use_skillet.desc=煎鍋者，從容烹者也。持之非利而近熱也！
 farmersdelight.advancement.use_skillet=食於道途
+farmersdelight.jei.clock.pause=左擊：暫停
+farmersdelight.jei.clock.resume=右擊：繼續
+farmersdelight.jei.clock.previous_page=Ctrl + 左擊：前頁
+farmersdelight.jei.clock.next_page=Ctrl + 右擊：後頁

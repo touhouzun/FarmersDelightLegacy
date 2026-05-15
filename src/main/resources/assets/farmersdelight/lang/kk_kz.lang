@@ -327,3 +327,7 @@ farmersdelight.advancement.use_cutting_board.desc=Қолыңа құрал ұст
 farmersdelight.advancement.use_cutting_board=Саусақтарыңа абай бол!
 farmersdelight.advancement.use_skillet.desc=Табамен кез келген жерде пісіруге мүмкіндік береді. Ол үшін ошаққа жақын тұр да, екінші қолыңа тамақ ұста!
 farmersdelight.advancement.use_skillet=Таза ауадағы тамақ
+farmersdelight.jei.clock.pause=Left click: pause
+farmersdelight.jei.clock.resume=Right click: resume
+farmersdelight.jei.clock.previous_page=Ctrl + Left click: previous page
+farmersdelight.jei.clock.next_page=Ctrl + Right click: next page

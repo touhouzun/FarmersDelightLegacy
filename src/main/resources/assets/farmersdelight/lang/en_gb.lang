@@ -8,3 +8,7 @@ item.farmersdelight.pumpkin_pie_slice.name=Slice of Pumpkin Pie
 farmersdelight.jei.campfire=Campfire Cooking
 farmersdelight.jei.hunting_drops=Hunting Drops
 farmersdelight.jei.hunting_drops.burning=When target is on fire
+farmersdelight.jei.clock.pause=Left click: pause
+farmersdelight.jei.clock.resume=Right click: resume
+farmersdelight.jei.clock.previous_page=Ctrl + Left click: previous page
+farmersdelight.jei.clock.next_page=Ctrl + Right click: next page

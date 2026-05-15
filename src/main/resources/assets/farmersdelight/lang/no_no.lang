@@ -240,3 +240,7 @@ farmersdelight.advancement.use_cutting_board.desc=Med et verktøy i hånden, bru
 farmersdelight.advancement.use_cutting_board=Pass Fingrene Dine
 farmersdelight.advancement.use_skillet.desc=Stekepanner lar deg lage mat mens du er på farten. Stå nær varme, og hold deretter maten i den andre hånden!
 farmersdelight.advancement.use_skillet=Bærbar Matlaging
+farmersdelight.jei.clock.pause=Left click: pause
+farmersdelight.jei.clock.resume=Right click: resume
+farmersdelight.jei.clock.previous_page=Ctrl + Left click: previous page
+farmersdelight.jei.clock.next_page=Ctrl + Right click: next page

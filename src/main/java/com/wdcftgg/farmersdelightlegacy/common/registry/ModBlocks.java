@@ -169,7 +169,7 @@ public final class ModBlocks {
         try {
             return (Block) Class.forName(className).getDeclaredConstructor().newInstance();
         } catch (ReflectiveOperationException | LinkageError exception) {
-            FarmersDelightLegacy.LOGGER.warn("加载可选兼容方块失败：{}，已回退到默认实现。", className, exception);
+            FarmersDelightLegacy.LOGGER.warn("Failed to load optional compatibility block: {}; falling back to the default implementation.", className, exception);
             return null;
         }
     }

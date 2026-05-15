@@ -1,4 +1,4 @@
-package com.wdcftgg.farmersdelightlegacy.common.event;
+package com.wdcftgg.farmersdelightlegacy.common.example;
 
 public class HeatSourceExample {
 

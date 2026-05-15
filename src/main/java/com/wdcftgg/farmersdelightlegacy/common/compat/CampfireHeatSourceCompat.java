@@ -27,7 +27,7 @@ public final class CampfireHeatSourceCompat {
         Block campfireBlock = ForgeRegistries.BLOCKS.getValue(CAMPFIRE_BLOCK_ID);
         Block brazierBlock = ForgeRegistries.BLOCKS.getValue(BRAZIER_BLOCK_ID);
         if (campfireBlock == null && brazierBlock == null) {
-            FarmersDelightLegacy.LOGGER.warn("Campfire 模组热源兼容注册失败：未找到 campfire 或 brazier 方块。");
+            FarmersDelightLegacy.LOGGER.warn("Failed to register Campfire mod heat source compatibility: no campfire or brazier block was found.");
             return;
         }
 
@@ -40,7 +40,7 @@ public final class CampfireHeatSourceCompat {
                     (world, pos, state) -> matchesLitBlock(state, brazierBlock));
         }
 
-        FarmersDelightLegacy.LOGGER.info("已注册 Campfire 模组的营火与火盆热源兼容。");
+            FarmersDelightLegacy.LOGGER.info("Registered Campfire mod campfire and brazier heat source compatibility.");
     }
 
     private static boolean matchesLitBlock(IBlockState state, Block expectedBlock) {

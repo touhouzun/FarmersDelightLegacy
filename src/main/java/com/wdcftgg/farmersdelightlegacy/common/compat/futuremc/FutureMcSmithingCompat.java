@@ -26,7 +26,7 @@ public final class FutureMcSmithingCompat {
         Item netheriteKnife = ModItems.ITEMS.get("netherite_knife");
         Item netheriteIngot = Item.getByNameOrId("futuremc:netherite_ingot");
         if (diamondKnife == null || netheriteKnife == null || netheriteIngot == null) {
-            FarmersDelightLegacy.LOGGER.warn("Future MC 锻造台刀升级配方注册失败：关键物品缺失。");
+            FarmersDelightLegacy.LOGGER.warn("Failed to register the Future MC smithing table knife upgrade recipe: required items are missing.");
             return;
         }
 
@@ -39,16 +39,16 @@ public final class FutureMcSmithingCompat {
                 if (getOutputItem(existingRecipe) == netheriteKnife) {
                     return;
                 }
-                FarmersDelightLegacy.LOGGER.warn("Future MC 锻造台已存在钻石刀升级配方，跳过当前注册。");
+            FarmersDelightLegacy.LOGGER.warn("The Future MC smithing table diamond knife upgrade recipe already exists; skipping registration.");
                 return;
             }
 
             Ingredient baseIngredient = Ingredient.fromStacks(baseProbe);
             Ingredient materialIngredient = Ingredient.fromItem(netheriteIngot);
             getRecipeList(smithingRecipes).add(createSmithingRecipe(baseIngredient, materialIngredient, new ItemStack(netheriteKnife)));
-            FarmersDelightLegacy.LOGGER.info("已为 Future MC 锻造台注册下界合金刀升级配方。");
+        FarmersDelightLegacy.LOGGER.info("Registered the netherite knife upgrade recipe for the Future MC smithing table.");
         } catch (ReflectiveOperationException exception) {
-            FarmersDelightLegacy.LOGGER.error("Future MC 锻造台刀升级配方注册失败。", exception);
+            FarmersDelightLegacy.LOGGER.error("Failed to register the Future MC smithing table knife upgrade recipe.", exception);
         }
     }
 

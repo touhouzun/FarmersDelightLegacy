@@ -41,7 +41,7 @@ public final class CookingPotParticleBridge {
         TextureMap textureMap = minecraft.getTextureMapBlocks();
         if (minecraft.effectRenderer == null) {
             if (!warnedEarlyFactoryRegistration) {
-                FarmersDelightLegacy.LOGGER.debug("粒子工厂延迟注册：effectRenderer 尚未初始化。");
+            FarmersDelightLegacy.LOGGER.debug("Particle factory registration deferred: effectRenderer has not been initialized.");
                 warnedEarlyFactoryRegistration = true;
             }
             return false;

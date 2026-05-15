@@ -290,3 +290,7 @@ farmersdelight.advancement.use_cutting_board.desc=sina jo e ilo pona lon luka la
 farmersdelight.advancement.use_cutting_board=o sona e luka sina
 farmersdelight.advancement.use_skillet.desc=ma ale la sina ken seli moku kepeken ilo luka pi seli moku. o lon poka seli o luka e moku kepeken luka ante sina!
 farmersdelight.advancement.use_skillet=seli moku lon ale
+farmersdelight.jei.clock.pause=Left click: pause
+farmersdelight.jei.clock.resume=Right click: resume
+farmersdelight.jei.clock.previous_page=Ctrl + Left click: previous page
+farmersdelight.jei.clock.next_page=Ctrl + Right click: next page

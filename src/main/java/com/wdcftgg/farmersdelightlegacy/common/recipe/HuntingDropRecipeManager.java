@@ -28,6 +28,7 @@ import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 
 public final class HuntingDropRecipeManager {
 
@@ -40,12 +41,21 @@ public final class HuntingDropRecipeManager {
     }
 
     public static synchronized boolean registerRecipe(String key, HuntingTargetMatcher targetMatcher, ItemStack outputStack) {
-        return registerRecipe(key, targetMatcher, outputStack, false, 1.0F, 0.0F, false, null);
+        return registerRecipe(key, targetMatcher, outputStack, false);
+    }
+
+    public static synchronized boolean registerRecipeJei(String key, HuntingTargetMatcher targetMatcher, ItemStack outputStack) {
+        return registerRecipeJei(key, targetMatcher, outputStack, false);
     }
 
     public static synchronized boolean registerRecipe(String key, HuntingTargetMatcher targetMatcher, ItemStack outputStack,
                                                       boolean preventDuplicateStacking) {
         return registerRecipe(key, targetMatcher, outputStack, preventDuplicateStacking, 1.0F, 0.0F, false, null);
+    }
+
+    public static synchronized boolean registerRecipeJei(String key, HuntingTargetMatcher targetMatcher, ItemStack outputStack,
+                                                         boolean preventDuplicateStacking) {
+        return registerRecipeJei(key, targetMatcher, outputStack, preventDuplicateStacking, 1.0F, 0.0F, false, null);
     }
 
     public static synchronized boolean registerRecipe(String key, HuntingTargetMatcher targetMatcher, ItemStack outputStack,
@@ -56,9 +66,111 @@ public final class HuntingDropRecipeManager {
         return registerRecipe(key, targetMatcher, outputs, burningRequired, preventDuplicateStacking, entityId);
     }
 
+    public static synchronized boolean registerRecipeJei(String key, HuntingTargetMatcher targetMatcher, ItemStack outputStack,
+                                                         boolean preventDuplicateStacking, float chance, float lootingBonus,
+                                                         boolean burningRequired, ResourceLocation entityId) {
+        List<HuntingDropOutput> outputs = new ArrayList<>(1);
+        outputs.add(new HuntingDropOutput(outputStack, chance, lootingBonus));
+        return registerRecipeJei(key, targetMatcher, outputs, burningRequired, preventDuplicateStacking, entityId);
+    }
+
+    public static synchronized boolean registerRecipe(String key, HuntingTargetMatcher targetMatcher, ItemStack outputStack,
+                                                      boolean preventDuplicateStacking, float chance, float lootingBonus,
+                                                      ResourceLocation entityId,
+                                                      Consumer<EntityLivingBase> jeiEntityConfigurator,
+                                                      List<String> jeiDisplayTexts) {
+        return registerRecipe(key, targetMatcher, outputStack, preventDuplicateStacking, chance, lootingBonus,
+                entityId, jeiEntityConfigurator, false, jeiDisplayTexts);
+    }
+
+    public static synchronized boolean registerRecipeJei(String key, HuntingTargetMatcher targetMatcher, ItemStack outputStack,
+                                                         boolean preventDuplicateStacking, float chance, float lootingBonus,
+                                                         ResourceLocation entityId,
+                                                         Consumer<EntityLivingBase> jeiEntityConfigurator,
+                                                         List<String> jeiDisplayTexts) {
+        return registerRecipeJei(key, targetMatcher, outputStack, preventDuplicateStacking, chance, lootingBonus,
+                entityId, jeiEntityConfigurator, false, jeiDisplayTexts);
+    }
+
+    public static synchronized boolean registerRecipe(String key, HuntingTargetMatcher targetMatcher, ItemStack outputStack,
+                                                      boolean preventDuplicateStacking, float chance, float lootingBonus,
+                                                      ResourceLocation entityId,
+                                                      Consumer<EntityLivingBase> jeiEntityConfigurator,
+                                                      boolean runJeiEntityConfiguratorEveryTick,
+                                                      List<String> jeiDisplayTexts) {
+        List<HuntingDropOutput> outputs = new ArrayList<>(1);
+        outputs.add(new HuntingDropOutput(outputStack, chance, lootingBonus));
+        return registerRecipe(key, targetMatcher, outputs, preventDuplicateStacking, entityId,
+                jeiEntityConfigurator, runJeiEntityConfiguratorEveryTick, jeiDisplayTexts);
+    }
+
+    public static synchronized boolean registerRecipeJei(String key, HuntingTargetMatcher targetMatcher, ItemStack outputStack,
+                                                         boolean preventDuplicateStacking, float chance, float lootingBonus,
+                                                         ResourceLocation entityId,
+                                                         Consumer<EntityLivingBase> jeiEntityConfigurator,
+                                                         boolean runJeiEntityConfiguratorEveryTick,
+                                                         List<String> jeiDisplayTexts) {
+        List<HuntingDropOutput> outputs = new ArrayList<>(1);
+        outputs.add(new HuntingDropOutput(outputStack, chance, lootingBonus));
+        return registerRecipeJei(key, targetMatcher, outputs, preventDuplicateStacking, entityId,
+                jeiEntityConfigurator, runJeiEntityConfiguratorEveryTick, jeiDisplayTexts);
+    }
+
     public static synchronized boolean registerRecipe(String key, HuntingTargetMatcher targetMatcher, List<HuntingDropOutput> outputs,
                                                       boolean burningRequired, boolean preventDuplicateStacking,
                                                       ResourceLocation entityId) {
+        return registerRecipe(key, targetMatcher, outputs, burningRequired, preventDuplicateStacking, entityId,
+                null, false, false, getDefaultDisplayTexts(burningRequired));
+    }
+
+    public static synchronized boolean registerRecipeJei(String key, HuntingTargetMatcher targetMatcher, List<HuntingDropOutput> outputs,
+                                                         boolean burningRequired, boolean preventDuplicateStacking,
+                                                         ResourceLocation entityId) {
+        return registerRecipe(key, targetMatcher, outputs, burningRequired, preventDuplicateStacking, entityId,
+                null, false, true, getDefaultDisplayTexts(burningRequired));
+    }
+
+    public static synchronized boolean registerRecipe(String key, HuntingTargetMatcher targetMatcher, List<HuntingDropOutput> outputs,
+                                                      boolean preventDuplicateStacking, ResourceLocation entityId,
+                                                      Consumer<EntityLivingBase> jeiEntityConfigurator,
+                                                      List<String> jeiDisplayTexts) {
+        return registerRecipe(key, targetMatcher, outputs, preventDuplicateStacking, entityId,
+                jeiEntityConfigurator, false, jeiDisplayTexts);
+    }
+
+    public static synchronized boolean registerRecipeJei(String key, HuntingTargetMatcher targetMatcher, List<HuntingDropOutput> outputs,
+                                                         boolean preventDuplicateStacking, ResourceLocation entityId,
+                                                         Consumer<EntityLivingBase> jeiEntityConfigurator,
+                                                         List<String> jeiDisplayTexts) {
+        return registerRecipeJei(key, targetMatcher, outputs, preventDuplicateStacking, entityId,
+                jeiEntityConfigurator, false, jeiDisplayTexts);
+    }
+
+    public static synchronized boolean registerRecipe(String key, HuntingTargetMatcher targetMatcher, List<HuntingDropOutput> outputs,
+                                                      boolean preventDuplicateStacking, ResourceLocation entityId,
+                                                      Consumer<EntityLivingBase> jeiEntityConfigurator,
+                                                      boolean runJeiEntityConfiguratorEveryTick,
+                                                      List<String> jeiDisplayTexts) {
+        return registerRecipe(key, targetMatcher, outputs, null, preventDuplicateStacking, entityId,
+                jeiEntityConfigurator, runJeiEntityConfiguratorEveryTick, false, jeiDisplayTexts);
+    }
+
+    public static synchronized boolean registerRecipeJei(String key, HuntingTargetMatcher targetMatcher, List<HuntingDropOutput> outputs,
+                                                         boolean preventDuplicateStacking, ResourceLocation entityId,
+                                                         Consumer<EntityLivingBase> jeiEntityConfigurator,
+                                                         boolean runJeiEntityConfiguratorEveryTick,
+                                                         List<String> jeiDisplayTexts) {
+        return registerRecipe(key, targetMatcher, outputs, null, preventDuplicateStacking, entityId,
+                jeiEntityConfigurator, runJeiEntityConfiguratorEveryTick, true, jeiDisplayTexts);
+    }
+
+    private static synchronized boolean registerRecipe(String key, HuntingTargetMatcher targetMatcher, List<HuntingDropOutput> outputs,
+                                                       Boolean burningRequired, boolean preventDuplicateStacking,
+                                                       ResourceLocation entityId,
+                                                       Consumer<EntityLivingBase> jeiEntityConfigurator,
+                                                       boolean runJeiEntityConfiguratorEveryTick,
+                                                       boolean jeiOnly,
+                                                       List<String> jeiDisplayTexts) {
         if (key == null || key.trim().isEmpty() || targetMatcher == null) {
             return false;
         }
@@ -69,7 +181,8 @@ public final class HuntingDropRecipeManager {
         }
 
         RECIPES.put(key, new HuntingDropRecipe(key, targetMatcher, resultOutputs, burningRequired,
-                preventDuplicateStacking, entityId));
+                preventDuplicateStacking, entityId, jeiEntityConfigurator, runJeiEntityConfiguratorEveryTick,
+                jeiOnly, copyDisplayTexts(jeiDisplayTexts)));
         return true;
     }
 
@@ -92,6 +205,9 @@ public final class HuntingDropRecipeManager {
         }
 
         for (HuntingDropRecipe recipe : recipes) {
+            if (recipe.jeiOnly) {
+                continue;
+            }
             if (!recipe.matches(target)) {
                 continue;
             }
@@ -164,6 +280,26 @@ public final class HuntingDropRecipeManager {
         return item == null ? ItemStack.EMPTY : new ItemStack(item);
     }
 
+    private static List<String> getDefaultDisplayTexts(boolean burningRequired) {
+        if (!burningRequired) {
+            return Collections.emptyList();
+        }
+        return Collections.singletonList("farmersdelight.jei.hunting_drops.burning");
+    }
+
+    private static List<String> copyDisplayTexts(List<String> displayTexts) {
+        if (displayTexts == null || displayTexts.isEmpty()) {
+            return Collections.emptyList();
+        }
+        List<String> copiedTexts = new ArrayList<>();
+        for (String displayText : displayTexts) {
+            if (displayText != null && !displayText.trim().isEmpty()) {
+                copiedTexts.add(displayText);
+            }
+        }
+        return copiedTexts.isEmpty() ? Collections.emptyList() : ImmutableList.copyOf(copiedTexts);
+    }
+
     private static void addExtraDrop(LivingDropsEvent event, ItemStack stack, boolean preventDuplicateStacking) {
         if (stack.isEmpty()) {
             return;
@@ -231,22 +367,35 @@ public final class HuntingDropRecipeManager {
         private final String key;
         private final HuntingTargetMatcher targetMatcher;
         private final List<HuntingDropOutput> outputs;
-        private final boolean burningRequired;
+        private final Boolean burningRequired;
         private final boolean preventDuplicateStacking;
         private final ResourceLocation entityId;
+        private final Consumer<EntityLivingBase> jeiEntityConfigurator;
+        private final boolean runJeiEntityConfiguratorEveryTick;
+        private final boolean jeiOnly;
+        private final List<String> jeiDisplayTexts;
 
         private HuntingDropRecipe(String key, HuntingTargetMatcher targetMatcher, List<HuntingDropOutput> outputs,
-                                  boolean burningRequired, boolean preventDuplicateStacking, ResourceLocation entityId) {
+                                  Boolean burningRequired, boolean preventDuplicateStacking, ResourceLocation entityId,
+                                  Consumer<EntityLivingBase> jeiEntityConfigurator,
+                                  boolean runJeiEntityConfiguratorEveryTick,
+                                  boolean jeiOnly,
+                                  List<String> jeiDisplayTexts) {
             this.key = key;
             this.targetMatcher = targetMatcher;
             this.outputs = outputs;
             this.burningRequired = burningRequired;
             this.preventDuplicateStacking = preventDuplicateStacking;
             this.entityId = entityId;
+            this.jeiEntityConfigurator = jeiEntityConfigurator;
+            this.runJeiEntityConfiguratorEveryTick = runJeiEntityConfiguratorEveryTick;
+            this.jeiOnly = jeiOnly;
+            this.jeiDisplayTexts = copyDisplayTexts(jeiDisplayTexts);
         }
 
         private boolean matches(EntityLivingBase target) {
-            return this.targetMatcher.matches(target) && target.isBurning() == this.burningRequired;
+            return this.targetMatcher.matches(target)
+                    && (this.burningRequired == null || target.isBurning() == this.burningRequired);
         }
 
         private List<HuntingDropOutput> getOutputs() {
@@ -254,7 +403,9 @@ public final class HuntingDropRecipeManager {
         }
 
         private HuntingDropRecipeView toView() {
-            return new HuntingDropRecipeView(this.key, this.entityId, getKnifeToolOptions(), this.outputs, this.burningRequired);
+            return new HuntingDropRecipeView(this.key, this.entityId, getKnifeToolOptions(), this.outputs,
+                    this.burningRequired != null && this.burningRequired, this.jeiEntityConfigurator,
+                    this.runJeiEntityConfiguratorEveryTick, this.jeiDisplayTexts);
         }
     }
 
@@ -264,14 +415,23 @@ public final class HuntingDropRecipeManager {
         private final List<ItemStack> toolOptions;
         private final List<HuntingDropOutput> outputs;
         private final boolean burningRequired;
+        private final Consumer<EntityLivingBase> jeiEntityConfigurator;
+        private final boolean runJeiEntityConfiguratorEveryTick;
+        private final List<String> jeiDisplayTexts;
 
         private HuntingDropRecipeView(String key, ResourceLocation entityId, List<ItemStack> toolOptions,
-                                      List<HuntingDropOutput> outputs, boolean burningRequired) {
+                                      List<HuntingDropOutput> outputs, boolean burningRequired,
+                                      Consumer<EntityLivingBase> jeiEntityConfigurator,
+                                      boolean runJeiEntityConfiguratorEveryTick,
+                                      List<String> jeiDisplayTexts) {
             this.key = key;
             this.entityId = entityId;
             this.toolOptions = toolOptions;
             this.outputs = copyOutputs(outputs);
             this.burningRequired = burningRequired;
+            this.jeiEntityConfigurator = jeiEntityConfigurator;
+            this.runJeiEntityConfiguratorEveryTick = runJeiEntityConfiguratorEveryTick;
+            this.jeiDisplayTexts = copyDisplayTexts(jeiDisplayTexts);
         }
 
         public String getKey() {
@@ -318,6 +478,18 @@ public final class HuntingDropRecipeManager {
 
         public boolean isBurningVariant() {
             return this.burningRequired;
+        }
+
+        public Consumer<EntityLivingBase> getJeiEntityConfigurator() {
+            return this.jeiEntityConfigurator;
+        }
+
+        public boolean shouldRunJeiEntityConfiguratorEveryTick() {
+            return this.runJeiEntityConfiguratorEveryTick;
+        }
+
+        public List<String> getJeiDisplayTexts() {
+            return this.jeiDisplayTexts;
         }
     }
 

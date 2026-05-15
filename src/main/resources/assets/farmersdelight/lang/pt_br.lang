@@ -327,3 +327,7 @@ farmersdelight.advancement.use_cutting_board.desc=Com uma ferramenta em mãos, u
 farmersdelight.advancement.use_cutting_board=Cuidado com os dedos
 farmersdelight.advancement.use_skillet.desc=Frigideiras podem cozinhar em qualquer lugar. Se aproxime de calor e segure comida na outra mão!
 farmersdelight.advancement.use_skillet=Cozinha portátil
+farmersdelight.jei.clock.pause=Left click: pause
+farmersdelight.jei.clock.resume=Right click: resume
+farmersdelight.jei.clock.previous_page=Ctrl + Left click: previous page
+farmersdelight.jei.clock.next_page=Ctrl + Right click: next page

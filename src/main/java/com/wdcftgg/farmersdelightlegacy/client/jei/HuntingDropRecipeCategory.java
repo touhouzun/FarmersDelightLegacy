@@ -17,13 +17,13 @@ import java.util.List;
 
 public final class HuntingDropRecipeCategory implements IRecipeCategory<HuntingDropJeiRecipe> {
 
-    private static final ResourceLocation CUTTING_BOARD_TEXTURE = new ResourceLocation(FarmersDelightLegacy.MOD_ID, "textures/gui/jei/cutting_board.png");
+    private static final ResourceLocation cuttingBoardTexture = new ResourceLocation(FarmersDelightLegacy.MOD_ID, "textures/gui/jei/cutting_board.png");
 
-    private static final int BACKGROUND_WIDTH = 156;
-    private static final int BACKGROUND_HEIGHT = 80;
-    private static final int OUTPUT_SLOT_STEP = 19;
-    private static final int ARROW_X = 73;
-    private static final int ARROW_Y = 30;
+    private static final int backgroundWidth = 156;
+    private static final int backgroundHeight = 80;
+    private static final int outputSlotStep = 19;
+    private static final int arrowX = 73;
+    private static final int arrowY = 30;
 
     private final IDrawable background;
     private final IDrawable slot;
@@ -32,10 +32,10 @@ public final class HuntingDropRecipeCategory implements IRecipeCategory<HuntingD
     private final IDrawable icon;
 
     public HuntingDropRecipeCategory(IGuiHelper guiHelper) {
-        this.background = guiHelper.createBlankDrawable(BACKGROUND_WIDTH, BACKGROUND_HEIGHT);
-        this.slot = guiHelper.createDrawable(CUTTING_BOARD_TEXTURE, 0, 58, 18, 18);
-        this.slotChance = guiHelper.createDrawable(CUTTING_BOARD_TEXTURE, 18, 58, 18, 18);
-        this.arrow = guiHelper.createDrawable(CUTTING_BOARD_TEXTURE, 48, 21, 22, 16);
+        this.background = guiHelper.createBlankDrawable(backgroundWidth, backgroundHeight);
+        this.slot = guiHelper.createDrawable(cuttingBoardTexture, 0, 58, 18, 18);
+        this.slotChance = guiHelper.createDrawable(cuttingBoardTexture, 18, 58, 18, 18);
+        this.arrow = guiHelper.createDrawable(cuttingBoardTexture, 48, 21, 22, 16);
         this.icon = guiHelper.createDrawableIngredient(new ItemStack(ModItems.get("iron_knife")));
     }
 
@@ -70,11 +70,6 @@ public final class HuntingDropRecipeCategory implements IRecipeCategory<HuntingD
         for (int outputIndex = 0; outputIndex < outputCount; outputIndex++) {
             recipeLayout.getItemStacks().init(outputIndex, false,
                     recipeWrapper.getOutputSlotX(outputIndex), recipeWrapper.getOutputSlotY(outputIndex));
-            if (recipeWrapper.getOutputChance(outputIndex) < 1.0F) {
-                recipeLayout.getItemStacks().setBackground(outputIndex, this.slotChance);
-            } else {
-                recipeLayout.getItemStacks().setBackground(outputIndex, this.slot);
-            }
         }
 
         recipeLayout.getItemStacks().addTooltipCallback((slotIndex, input, ingredient, tooltip) -> {
@@ -88,12 +83,12 @@ public final class HuntingDropRecipeCategory implements IRecipeCategory<HuntingD
             }
             JeiTooltipUtil.addRecipeIdTooltip(tooltip, recipeWrapper.getRecipeId());
         });
-        recipeLayout.getItemStacks().set(ingredients);
+        recipeWrapper.bindOutputSlots(recipeLayout.getItemStacks(), this.slot, this.slotChance);
     }
 
     @Override
     public void drawExtras(Minecraft minecraft) {
-        this.arrow.draw(minecraft, ARROW_X, ARROW_Y);
+        this.arrow.draw(minecraft, arrowX, arrowY);
     }
 
     @Override

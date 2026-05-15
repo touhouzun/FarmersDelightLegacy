@@ -6,8 +6,8 @@ import com.wdcftgg.farmersdelightlegacy.common.compat.*;
 import com.wdcftgg.farmersdelightlegacy.common.compat.futuremc.FutureMcComposterCompat;
 import com.wdcftgg.farmersdelightlegacy.common.compat.futuremc.FutureMcOceanicExpanseCompat;
 import com.wdcftgg.farmersdelightlegacy.common.compat.futuremc.FutureMcSmithingCompat;
-import com.wdcftgg.farmersdelightlegacy.common.event.HeatSourceExample;
-import com.wdcftgg.farmersdelightlegacy.common.event.HuntingDropExample;
+import com.wdcftgg.farmersdelightlegacy.common.example.HeatSourceExample;
+import com.wdcftgg.farmersdelightlegacy.common.example.HuntingDropExample;
 import com.wdcftgg.farmersdelightlegacy.common.event.ModVillagerTradeHandler;
 import com.wdcftgg.farmersdelightlegacy.common.gui.ModGuiHandler;
 import com.wdcftgg.farmersdelightlegacy.common.network.ModNetworkHandler;
@@ -66,7 +66,7 @@ public class FarmersDelightLegacy {
         GameRegistry.registerWorldGenerator(new WildCropWorldGenerator(), 0);
         HeatSourceExample.registerHeatSourceExample();
         HuntingDropExample.registerHuntingDropExample();
-        LOGGER.info("{} preInit 完成，准备注册内容。", FarmersDelightLegacy.MOD_NAME);
+        LOGGER.info("{} preInit completed; preparing content registration.", FarmersDelightLegacy.MOD_NAME);
     }
 
     @Mod.EventHandler
@@ -78,7 +78,7 @@ public class FarmersDelightLegacy {
         if (Loader.isModLoaded("villagenames")) {
             VillageNamesVillageCompat.registerAll();
         }
-        LOGGER.info("{} init 完成。", FarmersDelightLegacy.MOD_NAME);
+        LOGGER.info("{} init completed.", FarmersDelightLegacy.MOD_NAME);
     }
 
     @Mod.EventHandler

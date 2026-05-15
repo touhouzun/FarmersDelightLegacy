@@ -290,3 +290,7 @@ farmersdelight.advancement.use_cutting_board.desc=在砧板上拿刀切碎一些
 farmersdelight.advancement.use_cutting_board=當心手指
 farmersdelight.advancement.use_skillet.desc=有了平底鍋，你隨時隨地都能夠大展廚藝。用副手拿著食材，並將身體靠近熱源！
 farmersdelight.advancement.use_skillet=行動廚房
+farmersdelight.jei.clock.pause=左鍵點擊：暫停
+farmersdelight.jei.clock.resume=右鍵點擊：恢復
+farmersdelight.jei.clock.previous_page=Ctrl + 左鍵點擊：上一頁
+farmersdelight.jei.clock.next_page=Ctrl + 右鍵點擊：下一頁

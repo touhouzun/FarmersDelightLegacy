@@ -66,7 +66,7 @@ public final class RecipeResourceScanner {
         try (BufferedReader reader = Files.newBufferedReader(file, StandardCharsets.UTF_8)) {
             return GSON.fromJson(reader, JsonObject.class);
         } catch (IOException exception) {
-            FarmersDelightLegacy.LOGGER.error("读取自定义配方失败：{}", file, exception);
+            FarmersDelightLegacy.LOGGER.error("Failed to read custom recipe: {}", file, exception);
             return null;
         }
     }

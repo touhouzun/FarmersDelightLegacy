@@ -292,3 +292,7 @@ farmersdelight.advancement.use_cutting_board.desc=Dengan alat di tangan, gunakan
 farmersdelight.advancement.use_cutting_board=Perhatikan Jarimu
 farmersdelight.advancement.use_skillet.desc=Wajan memungkinkanmu memasak saat bepergian. Berdirilah di dekat api, lalu pegang makanan dengan tanganmu yang lain!
 farmersdelight.advancement.use_skillet=Memasak Portabel
+farmersdelight.jei.clock.pause=Left click: pause
+farmersdelight.jei.clock.resume=Right click: resume
+farmersdelight.jei.clock.previous_page=Ctrl + Left click: previous page
+farmersdelight.jei.clock.next_page=Ctrl + Right click: next page

@@ -110,7 +110,7 @@ public final class VillageNamesVillageCompat {
         registerVillageHandlers();
         registerVillageTypeMappings();
         registered = true;
-        FarmersDelightLegacy.LOGGER.info("已注册 Village Names 村庄堆肥场兼容结构。");
+        FarmersDelightLegacy.LOGGER.info("Registered the Village Names village compost pile compatibility structure.");
     }
 
     private static void registerStructureComponents() {
@@ -458,7 +458,7 @@ public final class VillageNamesVillageCompat {
                 this.setDefinition(resolveDefinition((StructureVillageVN.StartVN) this.startPiece));
             }
             if (this.definition == null) {
-                FarmersDelightLegacy.LOGGER.error("Village Names 村庄堆肥场缺少结构定义：{}", this.getClass().getName());
+            FarmersDelightLegacy.LOGGER.error("Village Names village compost pile is missing its structure definition: {}", this.getClass().getName());
                 return false;
             }
 
@@ -1109,7 +1109,7 @@ public final class VillageNamesVillageCompat {
 
     private static void reportMissingBlock(String registryName) {
         if (REPORTED_MISSING_BLOCKS.add(registryName)) {
-            FarmersDelightLegacy.LOGGER.warn("Village Names 结构方块无法映射，已跳过：{}", registryName);
+            FarmersDelightLegacy.LOGGER.warn("Unable to map the Village Names structure block; skipping it: {}", registryName);
         }
     }
 

@@ -283,3 +283,7 @@ farmersdelight.advancement.use_cutting_board.desc=Użyj deski do krojenia aby ro
 farmersdelight.advancement.use_cutting_board=Uważaj na palce
 farmersdelight.advancement.use_skillet.desc=Na patelni możesz gotować w drodze. Stań przy źródle ciepła z patelnią, a w drugiej ręce trzymaj jedzenie!
 farmersdelight.advancement.use_skillet=Przenośne gotowanie
+farmersdelight.jei.clock.pause=Left click: pause
+farmersdelight.jei.clock.resume=Right click: resume
+farmersdelight.jei.clock.previous_page=Ctrl + Left click: previous page
+farmersdelight.jei.clock.next_page=Ctrl + Right click: next page

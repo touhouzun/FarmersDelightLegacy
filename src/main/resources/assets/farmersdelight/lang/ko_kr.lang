@@ -292,3 +292,7 @@ farmersdelight.advancement.use_cutting_board.desc=도구를 손에 들고, 도�
 farmersdelight.advancement.use_cutting_board=손을 조심하세요
 farmersdelight.advancement.use_skillet.desc=프라이팬은 간편한 조리기구입니다. 열원 근처에 서고, 다른 손에 음식을 드세요!
 farmersdelight.advancement.use_skillet=휴대용 조리기구
+farmersdelight.jei.clock.pause=왼쪽 클릭: 일시정지
+farmersdelight.jei.clock.resume=오른쪽 클릭: 다시 시작
+farmersdelight.jei.clock.previous_page=Ctrl + 왼쪽 클릭: 이전 페이지
+farmersdelight.jei.clock.next_page=Ctrl + 오른쪽 클릭: 다음 페이지

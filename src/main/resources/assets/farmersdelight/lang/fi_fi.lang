@@ -240,3 +240,7 @@ farmersdelight.advancement.use_cutting_board.desc=Leikkaa jotain leikkuulaudalla
 farmersdelight.advancement.use_cutting_board=Varo sormiasi
 farmersdelight.advancement.use_skillet.desc=Paista ruokaa paistinpannulla seisomalla lämmönlähteen lähellä ja pitämällä ruokaa toisessa kädessä!
 farmersdelight.advancement.use_skillet=Matkaruokaa
+farmersdelight.jei.clock.pause=Left click: pause
+farmersdelight.jei.clock.resume=Right click: resume
+farmersdelight.jei.clock.previous_page=Ctrl + Left click: previous page
+farmersdelight.jei.clock.next_page=Ctrl + Right click: next page

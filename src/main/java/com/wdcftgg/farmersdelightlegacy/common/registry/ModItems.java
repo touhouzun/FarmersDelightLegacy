@@ -273,7 +273,7 @@ public final class ModItems {
         try {
             return (Item) Class.forName(className).getDeclaredConstructor(Block.class).newInstance(cropBlock);
         } catch (ReflectiveOperationException | LinkageError exception) {
-            FarmersDelightLegacy.LOGGER.warn("加载可选兼容物品失败：{}，已回退到默认实现。", className, exception);
+            FarmersDelightLegacy.LOGGER.warn("Failed to load optional compatibility item: {}; falling back to the default implementation.", className, exception);
             return null;
         }
     }

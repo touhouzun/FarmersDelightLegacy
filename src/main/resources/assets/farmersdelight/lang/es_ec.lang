@@ -202,3 +202,7 @@ farmersdelight.advancement.root.desc=Un mundo de sabor le espera!
 farmersdelight.advancement.root=Farmer's Delight
 farmersdelight.advancement.use_cutting_board.desc=Con una herramienta en la mano, utilízala en una tabla de picar para dividir algunos elementos
 farmersdelight.advancement.use_cutting_board=Cuida tus dedos
+farmersdelight.jei.clock.pause=Left click: pause
+farmersdelight.jei.clock.resume=Right click: resume
+farmersdelight.jei.clock.previous_page=Ctrl + Left click: previous page
+farmersdelight.jei.clock.next_page=Ctrl + Right click: next page

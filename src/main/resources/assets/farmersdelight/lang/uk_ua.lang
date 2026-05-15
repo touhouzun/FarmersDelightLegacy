@@ -290,3 +290,7 @@ farmersdelight.advancement.use_cutting_board.desc=З інструментом у
 farmersdelight.advancement.use_cutting_board=Слідкуй за пальцями
 farmersdelight.advancement.use_skillet.desc=Сковорідки дозволяють готувати на ходу. Встаньте біля тепла, а потім візьміть їжу в іншу руку!
 farmersdelight.advancement.use_skillet=Портативна кулінарія
+farmersdelight.jei.clock.pause=Left click: pause
+farmersdelight.jei.clock.resume=Right click: resume
+farmersdelight.jei.clock.previous_page=Ctrl + Left click: previous page
+farmersdelight.jei.clock.next_page=Ctrl + Right click: next page

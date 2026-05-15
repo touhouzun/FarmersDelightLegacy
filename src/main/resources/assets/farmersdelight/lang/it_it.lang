@@ -293,3 +293,7 @@ farmersdelight.advancement.use_cutting_board.desc=Con un attrezzo in mano, usalo
 farmersdelight.advancement.use_cutting_board=Fai attenzione alle dita
 farmersdelight.advancement.use_skillet.desc=Le Padelle ti permettono di cucinare in movimento. Stai vicino al calore, quindi tieni il cibo nell'altra mano!
 farmersdelight.advancement.use_skillet=Cucina Portatile
+farmersdelight.jei.clock.pause=Left click: pause
+farmersdelight.jei.clock.resume=Right click: resume
+farmersdelight.jei.clock.previous_page=Ctrl + Left click: previous page
+farmersdelight.jei.clock.next_page=Ctrl + Right click: next page

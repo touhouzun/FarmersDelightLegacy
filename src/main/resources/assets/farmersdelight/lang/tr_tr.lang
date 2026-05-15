@@ -263,3 +263,7 @@ farmersdelight.advancement.use_cutting_board.desc=Elinizde bir alet varken, bir 
 farmersdelight.advancement.use_cutting_board=Parmaklara Dikkat
 farmersdelight.advancement.use_skillet.desc=Tavalar hareket halindeyken yemek pişirmenizi sağlar. Isının yakınında durun ve diğer elinizde yemekleri tutun!
 farmersdelight.advancement.use_skillet=Portatif Pişirme
+farmersdelight.jei.clock.pause=Left click: pause
+farmersdelight.jei.clock.resume=Right click: resume
+farmersdelight.jei.clock.previous_page=Ctrl + Left click: previous page
+farmersdelight.jei.clock.next_page=Ctrl + Right click: next page

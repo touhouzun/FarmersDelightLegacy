@@ -290,3 +290,7 @@ farmersdelight.advancement.use_cutting_board.desc=Với một công cụ trong t
 farmersdelight.advancement.use_cutting_board=Coi chừng mất ngón tay
 farmersdelight.advancement.use_skillet.desc=Chảo cho phép bạn nấu ăn khi di chuyển. Đứng gần nhiệt, sau đó cầm thức ăn bằng tay khác!
 farmersdelight.advancement.use_skillet=Nấu nướng di động
+farmersdelight.jei.clock.pause=Left click: pause
+farmersdelight.jei.clock.resume=Right click: resume
+farmersdelight.jei.clock.previous_page=Ctrl + Left click: previous page
+farmersdelight.jei.clock.next_page=Ctrl + Right click: next page

@@ -264,3 +264,7 @@ farmersdelight.advancement.use_cutting_board.desc=Med ett verktyg i handen, anv�
 farmersdelight.advancement.use_cutting_board=Akta dina fingrar
 farmersdelight.advancement.use_skillet.desc=Stekpannor låter dig laga mat när du är på språng. Stå nära värmen och håll sedan maten i din andra hand!
 farmersdelight.advancement.use_skillet=Bärbar matlagning
+farmersdelight.jei.clock.pause=Left click: pause
+farmersdelight.jei.clock.resume=Right click: resume
+farmersdelight.jei.clock.previous_page=Ctrl + Left click: previous page
+farmersdelight.jei.clock.next_page=Ctrl + Right click: next page

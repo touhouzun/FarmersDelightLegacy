@@ -290,3 +290,7 @@ farmersdelight.advancement.use_cutting_board.desc=Benutze ein Schneidebrett um m
 farmersdelight.advancement.use_cutting_board=Pass auf deine Finger auf
 farmersdelight.advancement.use_skillet.desc=Bratpfannen erlauben es dir unterwegs zu Kochen. Stelle dich in die nähe von Hitze, und halte das Essen in deiner anderen Hand.
 farmersdelight.advancement.use_skillet=Mobiles Kochen
+farmersdelight.jei.clock.pause=Left click: pause
+farmersdelight.jei.clock.resume=Right click: resume
+farmersdelight.jei.clock.previous_page=Ctrl + Left click: previous page
+farmersdelight.jei.clock.next_page=Ctrl + Right click: next page

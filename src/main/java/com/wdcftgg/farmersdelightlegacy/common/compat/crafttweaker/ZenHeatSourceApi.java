@@ -136,7 +136,7 @@ public final class ZenHeatSourceApi {
         try {
             return invokeCallback(predicate, world, pos, state);
         } catch (Throwable throwable) {
-            FarmersDelightLegacy.LOGGER.error("CraftTweaker 直接热源回调执行失败：{}", key, throwable);
+            FarmersDelightLegacy.LOGGER.error("CraftTweaker direct heat source callback failed: {}", key, throwable);
             return false;
         }
     }
@@ -145,7 +145,7 @@ public final class ZenHeatSourceApi {
         try {
             return invokeCallback(predicate, world, pos, state);
         } catch (Throwable throwable) {
-            FarmersDelightLegacy.LOGGER.error("CraftTweaker 热源偏移回调执行失败：{}", key, throwable);
+            FarmersDelightLegacy.LOGGER.error("CraftTweaker offset heat source callback failed: {}", key, throwable);
             return false;
         }
     }
