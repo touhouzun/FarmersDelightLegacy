@@ -150,6 +150,7 @@ farmersdelight.tooltip.horse_feed.when_feeding=Cuando se le da de comer a un cab
 farmersdelight.tooltip.hot_cocoa=Elimina 1 efecto dañino
 farmersdelight.tooltip.melon_juice=Salud instantánea menor
 farmersdelight.tooltip.milk_bottle=Elimina 1 effecto
+farmersdelight.tooltip.pumpkin_pie.placeable=Se puede colocar
 item.farmersdelight.apple_cider.name=Sidra de manzana
 item.farmersdelight.apple_pie_slice.name=Rebanada de torta de manzana
 item.farmersdelight.bacon.name=Panceta cruda

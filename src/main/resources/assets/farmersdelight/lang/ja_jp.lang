@@ -187,6 +187,7 @@ farmersdelight.tooltip.horse_feed.when_feeding=手懐けたウマに与えたと
 farmersdelight.tooltip.hot_cocoa=1種類の負の効果を除去
 farmersdelight.tooltip.melon_juice=軽い即時回復
 farmersdelight.tooltip.milk_bottle=1種類の効果を除去
+farmersdelight.tooltip.pumpkin_pie.placeable=設置可能
 item.farmersdelight.apple_cider.name=リンゴサイダー
 item.farmersdelight.apple_pie_slice.name=切り分けたアップルパイ
 item.farmersdelight.bacon.name=生のベーコン

@@ -85,6 +85,7 @@ farmersdelight.tooltip.dog_food.when_feeding=Ao alimentar um lobo:
 farmersdelight.tooltip.horse_feed.when_feeding=Ao alimentar uma montada:
 farmersdelight.tooltip.hot_cocoa=Anula 1 efeito negativo
 farmersdelight.tooltip.milk_bottle=Anula 1 efeito
+farmersdelight.tooltip.pumpkin_pie.placeable=Pode ser colocado
 item.farmersdelight.apple_pie_slice.name=Fatia de tarte de maçã
 item.farmersdelight.bacon.name=Bacon cru
 item.farmersdelight.bacon_sandwich.name=Sandes de bacon

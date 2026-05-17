@@ -193,6 +193,7 @@ farmersdelight.tooltip.horse_feed.when_feeding=喂给已驯服的马时：
 farmersdelight.tooltip.hot_cocoa=清除1个有害效果
 farmersdelight.tooltip.melon_juice=瞬间恢复少量生命值
 farmersdelight.tooltip.milk_bottle=清除1个效果
+farmersdelight.tooltip.pumpkin_pie.placeable=可放置
 farmersdelight.tooltip.food.hunger=饱食度 +%s
 farmersdelight.tooltip.food.saturation=饱和度 +%s
 farmersdelight.tooltip.food.effect=%s（%s）

@@ -150,6 +150,7 @@ farmersdelight.tooltip.horse_feed.when_feeding=Verleiht, wenn es an ein gezähmt
 farmersdelight.tooltip.hot_cocoa=Löscht einen negativen Statuseffekt
 farmersdelight.tooltip.melon_juice=Geringe Direktheilung
 farmersdelight.tooltip.milk_bottle=Löscht einen Statuseffekt
+farmersdelight.tooltip.pumpkin_pie.placeable=Kann platziert werden
 item.farmersdelight.apple_cider.name=Apfelwein
 item.farmersdelight.apple_pie_slice.name=Apfelkuchenstück
 item.farmersdelight.bacon.name=Roher Speck

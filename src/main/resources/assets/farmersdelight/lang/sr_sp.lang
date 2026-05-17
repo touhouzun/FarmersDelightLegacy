@@ -117,6 +117,7 @@ farmersdelight.tooltip.horse_feed.when_feeding=Када је нахрањено 
 farmersdelight.tooltip.hot_cocoa=Одстрањује 1 штетни ефекат
 farmersdelight.tooltip.melon_juice=Мање инстант здравље
 farmersdelight.tooltip.milk_bottle=Одстрањује 1 ефекат
+farmersdelight.tooltip.pumpkin_pie.placeable=Може се поставити
 item.farmersdelight.apple_cider.name=Сајдер од јабуке
 item.farmersdelight.apple_pie_slice.name=Парче пите од јабука
 item.farmersdelight.bacon.name=Сирова сланина

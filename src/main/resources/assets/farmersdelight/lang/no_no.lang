@@ -112,6 +112,7 @@ farmersdelight.tooltip.horse_feed.when_feeding=Når matet til et temmet ridbart 
 farmersdelight.tooltip.hot_cocoa=Fjerner 1 Skadelig Effekt
 farmersdelight.tooltip.melon_juice=Mindre Øyeblikkelig Helse
 farmersdelight.tooltip.milk_bottle=Fjerner 1 Effekt
+farmersdelight.tooltip.pumpkin_pie.placeable=Kan plasseres
 item.farmersdelight.apple_cider.name=Eplesider
 item.farmersdelight.apple_pie_slice.name=Eplepaistykke
 item.farmersdelight.bacon.name=Rå Bacon

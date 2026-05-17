@@ -198,6 +198,7 @@ farmersdelight.tooltip.horse_feed.when_feeding=When fed to a tamed mount:
 farmersdelight.tooltip.hot_cocoa=Clears 1 Harmful Effect
 farmersdelight.tooltip.melon_juice=Minor Instant Health
 farmersdelight.tooltip.milk_bottle=Clears 1 Effect
+farmersdelight.tooltip.pumpkin_pie.placeable=Can be placed
 farmersdelight.tooltip.food.hunger=Hunger +%s
 farmersdelight.tooltip.food.saturation=Saturation +%s
 farmersdelight.tooltip.food.effect=%s (%s)

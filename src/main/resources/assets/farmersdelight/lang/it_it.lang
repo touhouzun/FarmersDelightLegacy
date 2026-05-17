@@ -153,6 +153,7 @@ farmersdelight.tooltip.horse_feed.when_feeding=Quando si nutre un animale cavalc
 farmersdelight.tooltip.hot_cocoa=Cancella 1 effetto di stato dannoso
 farmersdelight.tooltip.melon_juice=Recupera istantaneamente un po' di salute
 farmersdelight.tooltip.milk_bottle=Cancella 1 effetto di stato
+farmersdelight.tooltip.pumpkin_pie.placeable=Può essere piazzata
 item.farmersdelight.apple_cider.name=Sidro di Mele
 item.farmersdelight.apple_pie_slice.name=Fetta di torta di mele
 item.farmersdelight.bacon.name=Bacon crudo

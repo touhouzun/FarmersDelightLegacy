@@ -143,6 +143,7 @@ farmersdelight.tooltip.horse_feed.when_feeding=Lorsque donné à une monture app
 farmersdelight.tooltip.hot_cocoa=Supprime 1 effet nocif
 farmersdelight.tooltip.melon_juice=Soins mineurs instantanés
 farmersdelight.tooltip.milk_bottle=Supprime 1 effet
+farmersdelight.tooltip.pumpkin_pie.placeable=Peut être placé
 item.farmersdelight.apple_cider.name=Cidre de pommes
 item.farmersdelight.apple_pie_slice.name=Part de tarte aux pommes
 item.farmersdelight.bacon.name=Bacon cru

@@ -152,6 +152,7 @@ farmersdelight.tooltip.horse_feed.when_feeding=Al dar de comer a un caballo dome
 farmersdelight.tooltip.hot_cocoa=Quita 1 efecto negativo
 farmersdelight.tooltip.melon_juice=Brinda una pequeña curación al instante
 farmersdelight.tooltip.milk_bottle=Quita 1 efecto
+farmersdelight.tooltip.pumpkin_pie.placeable=Se puede colocar
 item.farmersdelight.apple_cider.name=Chicha de manzana
 item.farmersdelight.apple_pie_slice.name=Porción de kuchen de manzana
 item.farmersdelight.bacon.name=Tocino crudo

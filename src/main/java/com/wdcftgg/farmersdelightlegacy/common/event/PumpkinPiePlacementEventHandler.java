@@ -15,15 +15,34 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 @Mod.EventBusSubscriber(modid = FarmersDelightLegacy.MOD_ID)
 public final class PumpkinPiePlacementEventHandler {
 
+    private static final String PUMPKIN_PIE_PLACEABLE_TOOLTIP = "farmersdelight.tooltip.pumpkin_pie.placeable";
+
     private PumpkinPiePlacementEventHandler() {
+    }
+
+    @SideOnly(Side.CLIENT)
+    @SubscribeEvent
+    public static void onPumpkinPieTooltip(ItemTooltipEvent event) {
+        ItemStack itemStack = event.getItemStack();
+        if (itemStack.isEmpty() || itemStack.getItem() != Items.PUMPKIN_PIE) {
+            return;
+        }
+
+        event.getToolTip().add(TextFormatting.GRAY
+                + new TextComponentTranslation(PUMPKIN_PIE_PLACEABLE_TOOLTIP).getFormattedText());
     }
 
     @SubscribeEvent

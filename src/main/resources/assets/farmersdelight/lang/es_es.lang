@@ -152,6 +152,7 @@ farmersdelight.tooltip.horse_feed.when_feeding=Cuando se alimenta a un caballo d
 farmersdelight.tooltip.hot_cocoa=Quita un efecto nocivo
 farmersdelight.tooltip.melon_juice=Salud instantánea menor
 farmersdelight.tooltip.milk_bottle=Quita un efecto
+farmersdelight.tooltip.pumpkin_pie.placeable=Se puede colocar
 item.farmersdelight.apple_cider.name=Sidra de manzana
 item.farmersdelight.apple_pie_slice.name=Porción de tarta de manzana
 item.farmersdelight.bacon.name=Tocino crudo
