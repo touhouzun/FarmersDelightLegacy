@@ -45,6 +45,7 @@ public final class Configuration {
     public static boolean vanillaSoupExtraEffects = true;
     public static boolean rabbitStewJumpBoost = true;
     public static boolean dispenserUsesToolsOnCuttingBoard = true;
+    public static boolean enablePumpkinPieSneakToPlace = false;
 
     public static final String CATEGORY_OVERRIDES_STACK_SIZE = CATEGORY_OVERRIDES + ".stack_size";
     public static boolean enableStackableSoupItems = true;
@@ -127,6 +128,8 @@ public final class Configuration {
                 "Should Rabbit Stew grant users the jumping prowess of a rabbit when eaten?");
         dispenserUsesToolsOnCuttingBoard = config.getBoolean("dispenserUsesToolsOnCuttingBoard", CATEGORY_OVERRIDES, true,
                 "Should the Dispenser be able to operate a Cutting Board in front of it? (Kept for upstream parity; dispenser cutting is not present in this 1.12.2 port.)");
+        enablePumpkinPieSneakToPlace = config.getBoolean("enablePumpkinPieSneakToPlace", CATEGORY_OVERRIDES, false,
+                "If enabled, Pumpkin Pie will require the user to sneak to place it down as a block.");
 
         enableStackableSoupItems = config.getBoolean("enableStackableSoupItems", CATEGORY_OVERRIDES_STACK_SIZE, true,
                 "Should BowlFoodItems in the following list become stackable to 16, much like Farmer's Delight's meals?");

@@ -4,14 +4,21 @@ import com.wdcftgg.farmersdelightlegacy.common.Configuration;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.passive.AbstractHorse;
+import net.minecraft.entity.passive.EntityDonkey;
+import net.minecraft.entity.passive.EntityHorse;
+import net.minecraft.entity.passive.EntityLlama;
+import net.minecraft.entity.passive.EntityMule;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.EntityList;
 import net.minecraft.init.MobEffects;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
@@ -21,37 +28,24 @@ import javax.annotation.Nullable;
 import java.util.Arrays;
 import java.util.List;
 
-public class ItemHorseFeed extends ItemFoodTooltip {
+public class ItemHorseFeed extends Item {
 
     private static final List<PotionEffect> FEEDING_EFFECTS = Arrays.asList(
             new PotionEffect(MobEffects.SPEED, 6000, 1),
             new PotionEffect(MobEffects.JUMP_BOOST, 6000, 0)
     );
 
-    public ItemHorseFeed(int amount, float saturation) {
-        super(amount, saturation, false);
-        this.setAlwaysEdible();
-    }
-
-    @Override
-    public void onFoodEaten(ItemStack stack, World worldIn, EntityPlayer player) {
-        super.onFoodEaten(stack, worldIn, player);
-        if (worldIn.isRemote) {
-            return;
-        }
-//        for (PotionEffect effect : FEEDING_EFFECTS) {
-//            player.addPotionEffect(new PotionEffect(effect));
-//        }
+    public ItemHorseFeed() {
     }
 
     @Override
     public boolean itemInteractionForEntity(ItemStack stack, EntityPlayer playerIn, EntityLivingBase target, EnumHand hand) {
-        if (!(target instanceof AbstractHorse)) {
+        if (!canFeedHorseFeedToTarget(target)) {
             return false;
         }
 
         AbstractHorse horse = (AbstractHorse) target;
-        if (!horse.isEntityAlive() || !horse.isTame()) {
+        if (!horse.isEntityAlive()) {
             return false;
         }
 
@@ -77,6 +71,15 @@ public class ItemHorseFeed extends ItemFoodTooltip {
         }
 
         return true;
+    }
+
+    private static boolean canFeedHorseFeedToTarget(EntityLivingBase target) {
+        if (target instanceof EntityHorse || target instanceof EntityDonkey
+                || target instanceof EntityMule || target instanceof EntityLlama) {
+            return true;
+        }
+        ResourceLocation entityId = EntityList.getKey(target);
+        return entityId != null && "trader_llama".equals(entityId.getPath()) && target instanceof AbstractHorse;
     }
 
     @Override

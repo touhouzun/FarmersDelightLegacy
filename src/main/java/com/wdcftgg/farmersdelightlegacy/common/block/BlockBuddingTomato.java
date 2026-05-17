@@ -5,7 +5,10 @@ import com.wdcftgg.farmersdelightlegacy.common.registry.ModItems;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockCrops;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.EnumPlantType;
@@ -42,9 +45,23 @@ public class BlockBuddingTomato extends BlockCrops {
             return;
         }
         super.updateTick(worldIn, pos, state, rand);
-        if (!worldIn.isRemote && this.getAge(state) >= this.getMaxAge()) {
+        IBlockState currentState = worldIn.getBlockState(pos);
+        if (!worldIn.isRemote && currentState.getBlock() == this && this.getAge(currentState) >= this.getMaxAge()) {
             worldIn.setBlockState(pos, ModBlocks.TOMATOES.getDefaultState(), 3);
         }
+    }
+
+    @Override
+    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand,
+                                    EnumFacing facing, float hitX, float hitY, float hitZ) {
+        if (this.getAge(state) < this.getMaxAge()) {
+            return false;
+        }
+
+        BlockTomatoVine tomatoBlock = (BlockTomatoVine) ModBlocks.TOMATOES;
+        IBlockState tomatoState = tomatoBlock.withAge(tomatoBlock.getMaxAge()).withProperty(BlockTomatoVine.ROPELOGGED, false);
+        BlockTomatoVine.harvestMatureTomatoes(worldIn, pos, tomatoState, playerIn);
+        return true;
     }
 
     @Override

@@ -8,9 +8,9 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * 热源检测偏移扩展 API。
+ * Extension API for heat source offset checks.
  * <p>
- * 用于声明“锅具下方这一格不是热源本体，而是需要继续向下透传检测”的支撑方块。
+ * Use this when a support block below cookware is not a heat source itself and lookup should continue one block lower.
  */
 public final class HeatSourceOffsetApi {
     private static final Map<String, IHeatSourceOffsetPredicate> OFFSET_PREDICATES = new LinkedHashMap<>();
@@ -18,6 +18,12 @@ public final class HeatSourceOffsetApi {
     private HeatSourceOffsetApi() {
     }
 
+    /**
+     * Registers a heat-source offset predicate.
+     *
+     * @param key The unique recipe or predicate id used by the backing manager.
+     * @param predicate The predicate callback to register or evaluate.
+     */
     public static void registerOffsetPredicate(String key, IHeatSourceOffsetPredicate predicate) {
         if (key != null && predicate != null) {
             synchronized (OFFSET_PREDICATES) {
@@ -26,6 +32,11 @@ public final class HeatSourceOffsetApi {
         }
     }
 
+    /**
+     * Unregisters a heat-source offset predicate.
+     *
+     * @param key The unique recipe or predicate id used by the backing manager.
+     */
     public static void unregisterOffsetPredicate(String key) {
         if (key != null) {
             synchronized (OFFSET_PREDICATES) {
@@ -34,6 +45,14 @@ public final class HeatSourceOffsetApi {
         }
     }
 
+    /**
+     * Checks whether heat-source lookup should continue one block lower.
+     *
+     * @param world The world where the predicate or query is evaluated.
+     * @param pos The block position being evaluated.
+     * @param state The block state being evaluated.
+     * @return The result produced by this API method.
+     */
     public static boolean shouldOffsetDown(World world, BlockPos pos, IBlockState state) {
         IHeatSourceOffsetPredicate[] predicates;
         synchronized (OFFSET_PREDICATES) {

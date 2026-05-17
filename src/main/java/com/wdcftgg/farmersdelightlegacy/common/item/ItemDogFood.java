@@ -41,9 +41,9 @@ public class ItemDogFood extends ItemBowlFoodTooltip {
         if (worldIn.isRemote) {
             return;
         }
-//        for (PotionEffect effect : FEEDING_EFFECTS) {
-//            player.addPotionEffect(new PotionEffect(effect));
-//        }
+        for (PotionEffect effect : FEEDING_EFFECTS) {
+            player.addPotionEffect(new PotionEffect(effect));
+        }
     }
 
     @Override

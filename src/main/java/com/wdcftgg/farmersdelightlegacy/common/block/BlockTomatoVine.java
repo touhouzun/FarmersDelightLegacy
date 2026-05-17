@@ -4,6 +4,7 @@ import com.wdcftgg.farmersdelightlegacy.common.Configuration;
 import com.wdcftgg.farmersdelightlegacy.common.advancement.ModAdvancements;
 import com.wdcftgg.farmersdelightlegacy.common.registry.ModBlocks;
 import com.wdcftgg.farmersdelightlegacy.common.registry.ModItems;
+import com.wdcftgg.farmersdelightlegacy.common.registry.ModSounds;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockCrops;
 import net.minecraft.block.SoundType;
@@ -13,7 +14,6 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
@@ -87,7 +87,16 @@ public class BlockTomatoVine extends BlockCrops {
             return false;
         }
 
-        if (!worldIn.isRemote) {
+        harvestMatureTomatoes(worldIn, pos, state, playerIn);
+
+        return true;
+    }
+
+    public static void harvestMatureTomatoes(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn) {
+        float soundPitch = 0.8F + worldIn.rand.nextFloat() * 0.4F;
+        if (worldIn.isRemote) {
+            worldIn.playSound(playerIn, pos, ModSounds.tomatoesPickTomatoes, SoundCategory.BLOCKS, 1.0F, soundPitch);
+        } else {
             int quantity = 1 + worldIn.rand.nextInt(2);
             Item tomatoItem = ModItems.ITEMS.get("tomato");
             if (tomatoItem != null) {
@@ -101,14 +110,12 @@ public class BlockTomatoVine extends BlockCrops {
                 }
             }
 
-            worldIn.playSound(null, pos, SoundEvents.BLOCK_GRASS_BREAK, SoundCategory.BLOCKS, 1.0F, 0.9F + worldIn.rand.nextFloat() * 0.2F);
+            worldIn.playSound(playerIn, pos, ModSounds.tomatoesPickTomatoes, SoundCategory.BLOCKS, 1.0F, soundPitch);
             if (state.getValue(ROPELOGGED) && playerIn instanceof net.minecraft.entity.player.EntityPlayerMP) {
                 ModAdvancements.HARVEST_ROPELOGGED_TOMATO.trigger((net.minecraft.entity.player.EntityPlayerMP) playerIn);
             }
-            worldIn.setBlockState(pos, state.withProperty(this.getAgeProperty(), 0), 2);
+            worldIn.setBlockState(pos, state.withProperty(AGE, 0), 2);
         }
-
-        return true;
     }
 
     @Override

@@ -21,6 +21,35 @@
       "farmersdelight:block/cutting_board/knife2"
     ]
   },
+  "block.cutting_board.place_item": {
+    "subtitle": "farmersdelight.subtitles.cutting_board.place_item",
+    "sounds": [
+      "farmersdelight:block/wood/place1",
+      "farmersdelight:block/wood/place2",
+      "farmersdelight:block/wood/place3",
+      "farmersdelight:block/wood/place4"
+    ]
+  },
+  "block.cutting_board.remove_item": {
+    "subtitle": "farmersdelight.subtitles.cutting_board.remove_item",
+    "sounds": [
+      "farmersdelight:block/wood/hit1",
+      "farmersdelight:block/wood/hit2",
+      "farmersdelight:block/wood/hit3",
+      "farmersdelight:block/wood/hit4",
+      "farmersdelight:block/wood/hit5",
+      "farmersdelight:block/wood/hit6"
+    ]
+  },
+  "block.cutting_board.carve_tool": {
+    "subtitle": "farmersdelight.subtitles.cutting_board.carve_tool",
+    "sounds": [
+      "farmersdelight:block/wood/place1",
+      "farmersdelight:block/wood/place2",
+      "farmersdelight:block/wood/place3",
+      "farmersdelight:block/wood/place4"
+    ]
+  },
   "block.skillet.sizzle": {
     "subtitle": "farmersdelight.subtitles.skillet.sizzle",
     "sounds": [
@@ -49,52 +78,65 @@
   "block.stove.crackle": {
     "subtitle": "farmersdelight.subtitles.stove.crackle",
     "sounds": [
-      {
-        "name": "block.campfire.crackle",
-        "type": "event"
-      }
+      "farmersdelight:block/stove/crackle1",
+      "farmersdelight:block/stove/crackle2",
+      "farmersdelight:block/stove/crackle3",
+      "farmersdelight:block/stove/crackle4",
+      "farmersdelight:block/stove/crackle5",
+      "farmersdelight:block/stove/crackle6"
     ]
   },
-  "block.cabinet.open1": {
+  "block.cabinet.open": {
+    "subtitle": "farmersdelight.subtitles.cabinet.open",
     "sounds": [
-      "farmersdelight:block/cabinet/cabinet_open1"
-    ]
-  },
-  "block.cabinet.open2": {
-    "sounds": [
+      "farmersdelight:block/cabinet/cabinet_open1",
       "farmersdelight:block/cabinet/cabinet_open2"
     ]
   },
   "block.cabinet.close": {
+    "subtitle": "farmersdelight.subtitles.cabinet.close",
     "sounds": [
       "farmersdelight:block/cabinet/cabinet_close"
+    ]
+  },
+  "block.food.take_portion": {
+    "subtitle": "farmersdelight.subtitles.food.take_portion",
+    "sounds": [
+      "farmersdelight:item/armor/equip_generic1",
+      "farmersdelight:item/armor/equip_generic2",
+      "farmersdelight:item/armor/equip_generic3",
+      "farmersdelight:item/armor/equip_generic4",
+      "farmersdelight:item/armor/equip_generic5",
+      "farmersdelight:item/armor/equip_generic6"
+    ]
+  },
+  "block.food.slice": {
+    "subtitle": "farmersdelight.subtitles.food.slice",
+    "sounds": [
+      "farmersdelight:block/cloth/break1",
+      "farmersdelight:block/cloth/break2",
+      "farmersdelight:block/cloth/break3",
+      "farmersdelight:block/cloth/break4"
     ]
   },
   "block.tomato_bush.pick_tomatoes": {
     "subtitle": "farmersdelight.subtitles.tomato.pick",
     "sounds": [
-      {
-        "name": "block.sweet_berry_bush.pick_berries",
-        "type": "event"
-      }
+      "farmersdelight:item/sweet_berries/pick_from_bush1",
+      "farmersdelight:item/sweet_berries/pick_from_bush2"
     ]
   },
   "entity.rotten_tomato.throw": {
     "subtitle": "farmersdelight.subtitles.rotten_tomato.throw",
     "sounds": [
-      {
-        "name": "entity.snowball.throw",
-        "type": "event"
-      }
+      "farmersdelight:entity/snowball/throw"
     ]
   },
   "entity.rotten_tomato.hit": {
     "subtitle": "farmersdelight.subtitles.rotten_tomato.hit",
     "sounds": [
-      {
-        "name": "entity.slime.attack",
-        "type": "event"
-      }
+      "farmersdelight:entity/slime/attack1",
+      "farmersdelight:entity/slime/attack2"
     ]
   }
 }

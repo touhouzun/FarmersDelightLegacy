@@ -63,7 +63,7 @@ public class BlockCookingPot extends BlockContainer {
                     playerIn.dropItem(servingStack, false);
                 }
                 cookingPot.awardExperience(playerIn, 1);
-                worldIn.playSound(null, pos, net.minecraft.init.SoundEvents.ITEM_ARMOR_EQUIP_GENERIC, SoundCategory.BLOCKS, 1.0F, 1.0F);
+                worldIn.playSound(null, pos, ModSounds.foodTakePortion, SoundCategory.BLOCKS, 1.0F, 1.0F);
                 return true;
             }
         }

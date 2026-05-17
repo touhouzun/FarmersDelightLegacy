@@ -15,7 +15,6 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.*;
 import net.minecraft.tileentity.TileEntity;
@@ -99,7 +98,7 @@ public class BlockCuttingBoard extends BlockHorizontal implements ITileEntityPro
                 if (cuttingBoard.setStoredItem(storedStack) && !playerIn.capabilities.isCreativeMode) {
                     heldStack.shrink(1);
                 }
-                worldIn.playSound(null, pos, net.minecraft.init.SoundEvents.BLOCK_WOOD_PLACE, SoundCategory.BLOCKS, 0.8F, 0.95F);
+                worldIn.playSound(null, pos, ModSounds.cuttingBoardPlace, SoundCategory.BLOCKS, 1.0F, 0.8F);
             }
             return true;
         }
@@ -117,7 +116,7 @@ public class BlockCuttingBoard extends BlockHorizontal implements ITileEntityPro
                 if (!removedStack.isEmpty() && !playerIn.inventory.addItemStackToInventory(removedStack)) {
                     playerIn.dropItem(removedStack, false);
                 }
-                worldIn.playSound(null, pos, net.minecraft.init.SoundEvents.BLOCK_WOOD_HIT, SoundCategory.BLOCKS, 0.25F, 0.5F);
+                worldIn.playSound(null, pos, ModSounds.cuttingBoardRemove, SoundCategory.BLOCKS, 0.25F, 0.5F);
             }
             return true;
         }
@@ -330,7 +329,7 @@ public class BlockCuttingBoard extends BlockHorizontal implements ITileEntityPro
                     if (!player.capabilities.isCreativeMode) {
                         heldStack.shrink(1);
                     }
-                    world.playSound(null, pos, SoundEvents.BLOCK_WOOD_PLACE, SoundCategory.BLOCKS, 1.0F, 0.8F);
+                    world.playSound(null, pos, ModSounds.cuttingBoardCarve, SoundCategory.BLOCKS, 1.0F, 0.8F);
                 }
             }
 
@@ -339,4 +338,3 @@ public class BlockCuttingBoard extends BlockHorizontal implements ITileEntityPro
         }
     }
 }
-

@@ -56,7 +56,7 @@ public final class ModItems {
             "hamburger", "honey_cookie", "honey_glazed_ham", "hot_cocoa", "kelp_roll", "kelp_roll_slice",
             "melon_juice", "melon_popsicle", "milk_bottle", "minced_beef", "mixed_salad", "mushroom_rice", "mutton_chops",
             "mutton_wrap", "nether_salad", "noodle_soup", "onion", "pasta_with_meatballs", "pasta_with_mutton_chop", "pie_crust",
-            "pumpkin_pie_slice", "pumpkin_slice", "pumpkin_soup", "ratatouille", "raw_pasta", "rice", "rice_panicle",
+            "pumpkin_pie_slice", "pumpkin_slice", "pumpkin_soup", "ratatouille", "raw_pasta",
             "roast_chicken", "roasted_mutton_chops", "salmon_roll", "salmon_slice", "shepherds_pie", "smoked_ham",
             "squid_ink_pasta", "steak_and_potatoes", "stuffed_potato", "stuffed_pumpkin", "sweet_berry_cheesecake",
             "sweet_berry_cheesecake_slice", "sweet_berry_cookie", "tomato", "tomato_sauce", "vegetable_noodles", "vegetable_soup",
@@ -136,7 +136,7 @@ public final class ModItems {
         registerFood("apple_pie_slice", 3, 0.3F, false, "minecraft:speed", BRIEF_DURATION, 0, 1.0F);
         registerFood("sweet_berry_cheesecake_slice", 3, 0.3F, false, "minecraft:speed", BRIEF_DURATION, 0, 1.0F);
         registerFood("chocolate_pie_slice", 3, 0.3F, false, "minecraft:speed", BRIEF_DURATION, 0, 1.0F);
-        registerFood("pumpkin_pie_slice", 3, 0.3F);
+        registerFood("pumpkin_pie_slice", 3, 0.3F, false, "minecraft:speed", BRIEF_DURATION, 0, 1.0F);
         registerFood("fruit_salad", 6, 0.6F, false, "minecraft:regeneration", 100, 0, 1.0F);
         registerFood("glow_berry_custard", 7, 0.6F, true, "minecraft:glowing", 100, 0, 1.0F);
         registerFood("mixed_salad", 6, 0.6F, false, "minecraft:regeneration", 100, 0, 1.0F);
@@ -186,8 +186,8 @@ public final class ModItems {
                 ItemDrinkableTooltip.DrinkEffect.HEAL_MINOR, "farmersdelight.tooltip.melon_juice");
         registerFood("tomato_sauce", 4, 0.4F);
         register("rotten_tomato", new ItemRottenTomato());
-        register("dog_food", new ItemDogFood(6, 0.6F));
-        register("horse_feed", new ItemHorseFeed(8, 0.8F));
+        register("dog_food", new ItemDogFood(4, 0.2F));
+        register("horse_feed", new ItemHorseFeed());
 
         registerKnife("flint_knife", Item.ToolMaterial.WOOD, 1.5D);
         registerKnife("iron_knife", Item.ToolMaterial.IRON, 2.5D);

@@ -98,7 +98,7 @@ public class BlockMushroomColony extends BlockBush implements IGrowable {
             held.damageItem(1, playerIn);
         }
 
-        worldIn.playSound(playerIn, pos, SoundEvents.ENTITY_MOOSHROOM_SHEAR, SoundCategory.BLOCKS, 1.0F, 1.0F);
+        worldIn.playSound(playerIn, pos, SoundEvents.ENTITY_SHEEP_SHEAR, SoundCategory.BLOCKS, 1.0F, 1.0F);
         return true;
     }
 

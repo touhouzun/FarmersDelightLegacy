@@ -35,13 +35,15 @@ public final class FarmersDelightJeiPlugin implements IModPlugin {
         IDrawable campfireIcon = guiHelper.createDrawableIngredient(new ItemStack(ModBlocks.STOVE));
         DecompositionRecipeCategory decompositionCategory = new DecompositionRecipeCategory(guiHelper);
         HuntingDropRecipeCategory huntingDropCategory = new HuntingDropRecipeCategory(guiHelper);
+        HarvestDropRecipeCategory harvestDropCategory = new HarvestDropRecipeCategory(guiHelper);
 
         registry.addRecipeCategories(
                 new CookingPotRecipeCategory(guiHelper, cookingPotIcon),
                 new CuttingBoardRecipeCategory(guiHelper, cuttingBoardIcon),
                 new CampfireRecipeCategory(guiHelper, campfireIcon),
                 decompositionCategory,
-                huntingDropCategory
+                huntingDropCategory,
+                harvestDropCategory
         );
     }
 
@@ -52,6 +54,7 @@ public final class FarmersDelightJeiPlugin implements IModPlugin {
         registry.addRecipes(buildCampfireRecipes(), JeiUids.CAMPFIRE);
         registry.addRecipes(buildDecompositionRecipes(), JeiUids.DECOMPOSITION);
         registry.addRecipes(buildHuntingDropRecipes(), JeiUids.HUNTING_DROPS);
+        registry.addRecipes(buildHarvestDropRecipes(), JeiUids.harvestDrops);
         registry.handleRecipes(SpecialCraftingJeiRecipe.class, recipe -> recipe, VanillaRecipeCategoryUid.CRAFTING);
         registry.addRecipes(buildSpecialCraftingRecipes(), VanillaRecipeCategoryUid.CRAFTING);
 
@@ -165,6 +168,14 @@ public final class FarmersDelightJeiPlugin implements IModPlugin {
         return result;
     }
 
+    private static List<HarvestDropJeiRecipe> buildHarvestDropRecipes() {
+        List<HarvestDropJeiRecipe> result = new ArrayList<>();
+        for (HarvestDropRecipeManager.HarvestDropRecipeView recipe : HarvestDropRecipeManager.getRecipes()) {
+            result.add(HarvestDropJeiRecipe.of(recipe));
+        }
+        return result;
+    }
+
     private static void addKnifeRecipeCatalysts(IModRegistry registry) {
         addKnifeRecipeCatalyst(registry, "flint_knife");
         addKnifeRecipeCatalyst(registry, "iron_knife");
@@ -177,6 +188,7 @@ public final class FarmersDelightJeiPlugin implements IModPlugin {
         ItemStack stack = stackFromItemName(itemName);
         if (!stack.isEmpty()) {
             registry.addRecipeCatalyst(stack, JeiUids.HUNTING_DROPS);
+            registry.addRecipeCatalyst(stack, JeiUids.harvestDrops);
         }
     }
 
@@ -244,4 +256,3 @@ public final class FarmersDelightJeiPlugin implements IModPlugin {
         return result;
     }
 }
-

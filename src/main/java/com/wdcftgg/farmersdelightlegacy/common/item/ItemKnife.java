@@ -4,8 +4,7 @@ import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Sets;
 import com.wdcftgg.farmersdelightlegacy.FarmersDelightLegacy;
-import com.wdcftgg.farmersdelightlegacy.common.block.BlockRicePanicles;
-import com.wdcftgg.farmersdelightlegacy.common.registry.ModBlocks;
+import com.wdcftgg.farmersdelightlegacy.common.recipe.HarvestDropRecipeManager;
 import com.wdcftgg.farmersdelightlegacy.common.recipe.HuntingDropRecipeManager;
 import com.wdcftgg.farmersdelightlegacy.common.registry.ModItems;
 import net.minecraft.block.*;
@@ -45,8 +44,6 @@ public class ItemKnife extends ItemSword {
     private static final float WEB_SPEED = 15.0F;
     private static final float KNIFE_SPEED = 8.0F;
     private static final float KNOCKBACK_REDUCTION = 0.1F;
-    private static final float SHORT_GRASS_STRAW_CHANCE = 0.2F;
-    private static final float TALL_GRASS_STRAW_CHANCE = 0.2F;
     private static final Set<Enchantment> ALLOWED_ENCHANTMENTS = Sets.newHashSet(
             Enchantments.SHARPNESS,
             Enchantments.SMITE,
@@ -249,41 +246,7 @@ public class ItemKnife extends ItemSword {
                 return;
             }
 
-            IBlockState state = event.getState();
-            Block block = state.getBlock();
-            World world = (World) event.getWorld();
-
-            if (block == Blocks.TALLGRASS) {
-                BlockTallGrass.EnumType type = state.getValue(BlockTallGrass.TYPE);
-                if (type == BlockTallGrass.EnumType.GRASS && world.rand.nextFloat() < SHORT_GRASS_STRAW_CHANCE) {
-                    addDrop(event, "straw");
-                }
-                return;
-            }
-
-            if (block == Blocks.DOUBLE_PLANT) {
-                BlockDoublePlant.EnumPlantType variant = state.getValue(BlockDoublePlant.VARIANT);
-                if (variant == BlockDoublePlant.EnumPlantType.GRASS && world.rand.nextFloat() < TALL_GRASS_STRAW_CHANCE) {
-                    addDrop(event, "straw");
-                }
-                return;
-            }
-
-            if (block == Blocks.WHEAT && state.getValue(BlockCrops.AGE) >= 7) {
-                addDrop(event, "straw");
-                return;
-            }
-
-            if (block == ModBlocks.RICE_PANICLES && state.getValue(BlockRicePanicles.AGE) >= 3) {
-                addDrop(event, "straw");
-            }
-        }
-
-        private static void addDrop(BlockEvent.HarvestDropsEvent event, String itemPath) {
-            Item dropItem = ModItems.get(itemPath);
-            if (dropItem != null) {
-                event.getDrops().add(new ItemStack(dropItem));
-            }
+            HarvestDropRecipeManager.addDrops(event, toolStack);
         }
 
     }

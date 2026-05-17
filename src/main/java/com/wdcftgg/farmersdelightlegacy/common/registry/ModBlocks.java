@@ -74,6 +74,7 @@ public final class ModBlocks {
     public static final Block APPLE_PIE = register("apple_pie", new BlockPie("apple_pie_slice"));
     public static final Block SWEET_BERRY_CHEESECAKE = register("sweet_berry_cheesecake", new BlockPie("sweet_berry_cheesecake_slice"));
     public static final Block CHOCOLATE_PIE = register("chocolate_pie", new BlockPie("chocolate_pie_slice"));
+    public static final Block pumpkinPie = registerBlockOnly("pumpkin_pie", new BlockPie("pumpkin_pie_slice"));
     public static final Block SANDY_SHRUB = register("sandy_shrub", new BlockSandyShrub());
     public static final Block WILD_CABBAGES = register("wild_cabbages",
             new BlockWildCrop("farmersdelight:cabbage_seeds", 2, "farmersdelight:cabbage", 0.2F, null, 0, 0));
@@ -142,6 +143,7 @@ public final class ModBlocks {
         BLOCKS.put(path, block);
         return block;
     }
+
 
     private static Block basicBlock(Material material, SoundType soundType, float hardness) {
         return new BasicBlock(material, soundType, hardness);

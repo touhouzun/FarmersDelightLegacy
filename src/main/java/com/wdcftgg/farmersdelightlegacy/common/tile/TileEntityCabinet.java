@@ -122,7 +122,7 @@ public class TileEntityCabinet extends TileEntity implements IInventory {
         this.openerCount++;
         if (this.openerCount == 1) {
             updateOpenState(true);
-            playCabinetSound(world.rand.nextBoolean() ? ModSounds.CABINET_OPEN1 : ModSounds.CABINET_OPEN2);
+            playCabinetSound(ModSounds.cabinetOpen);
         }
     }
 

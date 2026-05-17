@@ -1,0 +1,16 @@
+﻿{
+  "type": "minecraft:crafting_shaped",
+  "group": "fd_pumpkin_pie",
+  "pattern": [
+    "##",
+    "##"
+  ],
+  "key": {
+    "#": {
+      "item": "farmersdelight:pumpkin_pie_slice"
+    }
+  },
+  "result": {
+    "item": "minecraft:pumpkin_pie"
+  }
+}

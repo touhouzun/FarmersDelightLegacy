@@ -1,5 +1,6 @@
 package com.wdcftgg.farmersdelightlegacy.common.block;
 
+import com.wdcftgg.farmersdelightlegacy.common.registry.ModSounds;
 import com.wdcftgg.farmersdelightlegacy.common.tile.TileEntityFeast;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
@@ -140,7 +141,7 @@ public class BlockFeast extends Block implements ITileEntityProvider {
             if (newServings == 0 && !this.hasLeftovers) {
                 worldIn.setBlockToAir(pos);
             }
-            worldIn.playSound(null, pos, SoundEvents.ITEM_ARMOR_EQUIP_GENERIC, SoundCategory.BLOCKS, 1.0F, 1.0F);
+            worldIn.playSound(null, pos, ModSounds.foodTakePortion, SoundCategory.BLOCKS, 1.0F, 1.0F);
         }
 
         return true;
@@ -332,4 +333,3 @@ public class BlockFeast extends Block implements ITileEntityProvider {
         return this.maxServings;
     }
 }
-

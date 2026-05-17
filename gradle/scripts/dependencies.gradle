@@ -83,7 +83,7 @@ dependencies {
     implementation rfg.deobf('CraftTweaker2:CraftTweaker2-MC1120-Main:1.12-4.1.20.698')
 
     //季节
-    implementation rfg.deobf('curse.maven:Serene Seasons-291874:2799213')
+    compileOnly rfg.deobf('curse.maven:Serene Seasons-291874:2799213')
 
     //苍白花园
     implementation rfg.deobf('curse.maven:Pale Bloom-1375465:7169494')
