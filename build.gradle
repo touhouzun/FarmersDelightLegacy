@@ -216,7 +216,11 @@ processResources {
     }
     
     if (propertyBool('use_access_transformer')) {
-        rename '(.+_at.cfg)', 'META-INF/$1'
+        eachFile { fileCopyDetails ->
+            if (fileCopyDetails.name.endsWith('_at.cfg')) {
+                fileCopyDetails.path = "META-INF/${fileCopyDetails.name}"
+            }
+        }
     }
 
 }

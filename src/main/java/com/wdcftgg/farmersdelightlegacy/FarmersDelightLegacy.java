@@ -78,12 +78,12 @@ public class FarmersDelightLegacy {
         if (Loader.isModLoaded("villagenames")) {
             VillageNamesVillageCompat.registerAll();
         }
+        LegacyHeatingRecipe.registerSmeltingRecipes();
         LOGGER.info("{} init completed.", FarmersDelightLegacy.MOD_NAME);
     }
 
     @Mod.EventHandler
     public void postInit(FMLPostInitializationEvent event) {
-        LegacyHeatingRecipe.registerSmeltingRecipes();
         CampfireCookingCompat.registerAll();
         ModDispenserBehaviors.registerAll();
     }
