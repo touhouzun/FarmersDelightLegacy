@@ -85,6 +85,10 @@ dependencies {
     //季节
     compileOnly rfg.deobf('curse.maven:Serene Seasons-291874:2799213')
 
+    //Quark
+    implementation rfg.deobf('curse.maven:Quark-243121:2924091')
+    implementation rfg.deobf('curse.maven:AutoRegLib-250363:2746011')
+
     //苍白花园
     implementation rfg.deobf('curse.maven:Pale Bloom-1375465:7169494')
     implementation rfg.deobf('software.bernie.geckolib:forge-1.12.2-geckolib:3.0.21')

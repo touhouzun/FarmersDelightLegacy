@@ -5,6 +5,13 @@
     {
       "type": "forge:mod_loaded",
       "modid": "sakura"
+    },
+    {
+      "type": "forge:not",
+      "value": {
+        "type": "forge:mod_loaded",
+        "modid": "suikecherry"
+      }
     }
   ],
   "group": "fd_cabinet",
@@ -13,7 +20,8 @@
       "item": "minecraft:trapdoor"
     },
     "_": {
-      "item": "sakura:plank_sakura"
+      "type": "forge:ore_dict",
+      "ore": "cherryPlank"
     }
   },
   "pattern": [

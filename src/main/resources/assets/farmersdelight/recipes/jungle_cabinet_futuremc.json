@@ -10,7 +10,8 @@
   "group": "fd_cabinet",
   "key": {
     "D": {
-      "item": "futuremc:jungle_trapdoor"
+      "type": "forge:ore_dict",
+      "ore": "jungleTrapdoor"
     },
     "_": {
       "item": "minecraft:wooden_slab",

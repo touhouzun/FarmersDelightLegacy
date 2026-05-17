@@ -10,7 +10,8 @@
   "group": "fd_cabinet",
   "key": {
     "D": {
-      "item": "futuremc:birch_trapdoor"
+      "type": "forge:ore_dict",
+      "ore": "birchTrapdoor"
     },
     "_": {
       "item": "minecraft:wooden_slab",

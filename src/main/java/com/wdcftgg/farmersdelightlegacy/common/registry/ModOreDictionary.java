@@ -4,7 +4,9 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.Collections;
@@ -15,6 +17,7 @@ public final class ModOreDictionary {
 
     private static final Map<String, String> TAG_TO_OREDICT = buildTagToOreDictMap();
     private static boolean registered;
+    private static boolean compatRegistered;
 
     private ModOreDictionary() {
     }
@@ -32,6 +35,17 @@ public final class ModOreDictionary {
 
     public static Map<String, String> getTagToOreDictMap() {
         return TAG_TO_OREDICT;
+    }
+
+    public static void registerCompatOres() {
+        if (compatRegistered) {
+            return;
+        }
+
+        registerTrapdoorOreGroups();
+        registerCherryPlankOreGroup();
+
+        compatRegistered = true;
     }
 
     private static void registerFromModItems() {
@@ -88,6 +102,34 @@ public final class ModOreDictionary {
         registerOreStack("blockRope", new ItemStack(ModBlocks.ROPE));
 
         registerCanvasSignOreGroups();
+    }
+
+    private static void registerCherryPlankOreGroup() {
+        registerOptionalOre("cherryPlank", "sakura", "plank_sakura");
+        registerOptionalOre("cherryPlank", "suikecherry", "cherry_planks");
+    }
+
+    private static void registerTrapdoorOreGroups() {
+        String[][] trapdoorOreEntries = new String[][]{
+                {"oakTrapdoor", "oak"},
+                {"spruceTrapdoor", "spruce"},
+                {"birchTrapdoor", "birch"},
+                {"jungleTrapdoor", "jungle"},
+                {"acaciaTrapdoor", "acacia"},
+                {"darkOakTrapdoor", "dark_oak"},
+                {"crimsonTrapdoor", "crimson"},
+                {"warpedTrapdoor", "warped"}
+        };
+        for (String[] trapdoorOreEntry : trapdoorOreEntries) {
+            String oreName = trapdoorOreEntry[0];
+            String woodName = trapdoorOreEntry[1];
+            boolean registeredVariant = registerOptionalOre(oreName, "futuremc", woodName + "_trapdoor");
+            registeredVariant = registerOptionalOre(oreName, "quark", woodName + "_trapdoor") || registeredVariant;
+            registeredVariant = registerOptionalOre(oreName, "nb", woodName + "_trapdoor") || registeredVariant;
+            if ("oak".equals(woodName) || !registeredVariant) {
+                OreDictionary.registerOre(oreName, new ItemStack(Item.getItemFromBlock(Blocks.TRAPDOOR)));
+            }
+        }
     }
 
     private static void registerCanvasSignOreGroups() {
@@ -207,6 +249,15 @@ public final class ModOreDictionary {
         OreDictionary.registerOre("listAllmeatraw", new ItemStack(Items.CHICKEN));
         OreDictionary.registerOre("listAllmeatraw", new ItemStack(Items.MUTTON));
         OreDictionary.registerOre("listAllmeatraw", new ItemStack(Items.PORKCHOP));
+    }
+
+    private static boolean registerOptionalOre(String oreName, String modId, String path) {
+        Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(modId, path));
+        if (item == null) {
+            return false;
+        }
+        OreDictionary.registerOre(oreName, new ItemStack(item));
+        return true;
     }
 
     private static void registerToolOre(String oreName, Item item) {

@@ -10,7 +10,8 @@
   "group": "fd_cabinet",
   "key": {
     "D": {
-      "item": "nb:warped_trapdoor"
+      "type": "forge:ore_dict",
+      "ore": "warpedTrapdoor"
     },
     "_": {
       "item": "nb:warped_planks"

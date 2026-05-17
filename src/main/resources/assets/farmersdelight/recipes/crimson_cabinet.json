@@ -10,7 +10,8 @@
   "group": "fd_cabinet",
   "key": {
     "D": {
-      "item": "nb:crimson_trapdoor"
+      "type": "forge:ore_dict",
+      "ore": "crimsonTrapdoor"
     },
     "_": {
       "item": "nb:crimson_planks"
