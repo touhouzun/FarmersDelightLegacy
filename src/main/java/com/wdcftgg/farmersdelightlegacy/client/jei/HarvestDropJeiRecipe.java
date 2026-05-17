@@ -18,7 +18,6 @@ import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.BlockRendererDispatcher;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
-import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
@@ -421,13 +420,59 @@ public final class HarvestDropJeiRecipe implements IRecipeWrapper {
         if (toolStack.isEmpty()) {
             return;
         }
+
+        HarvestToolPose toolPose = getHarvestToolPose(minecraft);
         GlStateManager.pushMatrix();
-        GlStateManager.enableBlend();
-        GlStateManager.translate(66.0F, 34.0F, 220.0F);
-        GlStateManager.rotate(-45.0F, 0.0F, 0.0F, 1.0F);
-        minecraft.getRenderItem().renderItem(toolStack, ItemCameraTransforms.TransformType.GUI);
-        GlStateManager.disableBlend();
+        GlStateManager.translate(toolPose.getPositionX(), toolPose.getPositionY(), 0.0F);
+        GlStateManager.rotate(toolPose.getRotationDegrees(), 0.0F, 0.0F, 1.0F);
+        GlStateManager.disableDepth();
+        RenderHelper.enableGUIStandardItemLighting();
+        minecraft.getRenderItem().renderItemAndEffectIntoGUI(toolStack, 0, -16);
+        RenderHelper.disableStandardItemLighting();
+        GlStateManager.enableDepth();
         GlStateManager.popMatrix();
+    }
+
+    private HarvestToolPose getHarvestToolPose(Minecraft minecraft) {
+        float partialTicks = minecraft.world == null ? 0.0F : minecraft.getRenderPartialTicks();
+        float cycleProgress = getAnimationCycleProgress(getAnimationTicks(minecraft) + partialTicks, 35.0F);
+        float harvestToolSliceProgressThreshold = 1.0F / (1.0F + 1.2F);
+        if (cycleProgress < harvestToolSliceProgressThreshold) {
+            float sliceProgress = easeInOutSine(cycleProgress / harvestToolSliceProgressThreshold);
+            float positionX = cubicBezier(56.0F, 53.0F, 42.0F, 36.0F, sliceProgress);
+            float positionY = cubicBezier(39.0F, 36.0F, 43.0F, 45.0F, sliceProgress);
+            float rotationDegrees = cubicBezier(-18.0F, -42.0F, -86.0F, -100.0F, sliceProgress);
+            return new HarvestToolPose(positionX, positionY, rotationDegrees);
+        }
+
+        float returnProgress = easeInOutSine((cycleProgress - harvestToolSliceProgressThreshold)
+                / (1.0F - harvestToolSliceProgressThreshold));
+        float positionX = cubicBezier(36.0F, 39.0F, 52.0F, 56.0F, returnProgress);
+        float positionY = cubicBezier(45.0F, 47.0F, 42.0F, 39.0F, returnProgress);
+        float rotationDegrees = cubicBezier(-100.0F, -92.0F, -34.0F, -18.0F, returnProgress);
+        return new HarvestToolPose(positionX, positionY, rotationDegrees);
+    }
+
+    private static float getAnimationCycleProgress(float animationTicks, float cycleTicks) {
+        float progress = animationTicks % cycleTicks;
+        if (progress < 0.0F) {
+            progress += cycleTicks;
+        }
+        return progress / cycleTicks;
+    }
+
+    private static float easeInOutSine(float progress) {
+        float clampedProgress = Math.max(0.0F, Math.min(1.0F, progress));
+        return (float) (0.5D - Math.cos(clampedProgress * Math.PI) * 0.5D);
+    }
+
+    private static float cubicBezier(float startValue, float firstControlValue, float secondControlValue,
+                                     float endValue, float progress) {
+        float reverseProgress = 1.0F - progress;
+        return reverseProgress * reverseProgress * reverseProgress * startValue
+                + 3.0F * reverseProgress * reverseProgress * progress * firstControlValue
+                + 3.0F * reverseProgress * progress * progress * secondControlValue
+                + progress * progress * progress * endValue;
     }
 
     private void drawClockOutput(Minecraft minecraft) {
@@ -572,6 +617,30 @@ public final class HarvestDropJeiRecipe implements IRecipeWrapper {
 
     private static boolean isCursorInsideBounds(int boundsX, int boundsY, int width, int height, int mouseX, int mouseY) {
         return mouseX >= boundsX && mouseX < boundsX + width && mouseY >= boundsY && mouseY < boundsY + height;
+    }
+
+    private static final class HarvestToolPose {
+        private final float positionX;
+        private final float positionY;
+        private final float rotationDegrees;
+
+        private HarvestToolPose(float positionX, float positionY, float rotationDegrees) {
+            this.positionX = positionX;
+            this.positionY = positionY;
+            this.rotationDegrees = rotationDegrees;
+        }
+
+        private float getPositionX() {
+            return this.positionX;
+        }
+
+        private float getPositionY() {
+            return this.positionY;
+        }
+
+        private float getRotationDegrees() {
+            return this.rotationDegrees;
+        }
     }
 
     private static final class BlockPreviewBounds {
