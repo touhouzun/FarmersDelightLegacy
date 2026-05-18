@@ -1,6 +1,6 @@
 package com.wdcftgg.farmersdelightlegacy.common.item;
 
-import com.wdcftgg.farmersdelightlegacy.common.block.BlockCanvasWallHangingSign;
+import com.wdcftgg.farmersdelightlegacy.common.block.sign.BlockCanvasWallHangingSign;
 import com.wdcftgg.farmersdelightlegacy.common.network.ModNetworkHandler;
 import com.wdcftgg.farmersdelightlegacy.common.network.PacketOpenCanvasSignEditor;
 import com.wdcftgg.farmersdelightlegacy.common.tile.TileEntityCanvasSign;

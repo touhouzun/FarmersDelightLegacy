@@ -1,9 +1,8 @@
-package com.wdcftgg.farmersdelightlegacy.common.block;
+package com.wdcftgg.farmersdelightlegacy.common.block.sign;
 
 import com.wdcftgg.farmersdelightlegacy.FarmersDelightLegacy;
 import com.wdcftgg.farmersdelightlegacy.common.tile.TileEntityCanvasSign;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.SoundType;

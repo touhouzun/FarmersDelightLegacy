@@ -1,25 +1,30 @@
-package com.wdcftgg.farmersdelightlegacy.common.block;
+package com.wdcftgg.farmersdelightlegacy.common.block.sign;
 
+import com.wdcftgg.farmersdelightlegacy.FarmersDelightLegacy;
 import com.wdcftgg.farmersdelightlegacy.common.tile.TileEntityCanvasSign;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
-import net.minecraft.block.BlockStandingSign;
+import net.minecraft.block.BlockWallSign;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
-public class BlockCanvasStandingSign extends BlockStandingSign {
+import java.util.Random;
+
+public class BlockCanvasWallSign extends BlockWallSign {
 
     private final ResourceLocation textureLocation;
+    private final String standingSignPath;
 
-    public BlockCanvasStandingSign(ResourceLocation textureLocation) {
+    public BlockCanvasWallSign(ResourceLocation textureLocation, String standingSignPath) {
         this.textureLocation = textureLocation;
+        this.standingSignPath = standingSignPath;
     }
 
     public ResourceLocation getTextureLocation() {
@@ -38,11 +43,13 @@ public class BlockCanvasStandingSign extends BlockStandingSign {
 
     @Override
     public ItemStack getItem(World worldIn, BlockPos pos, net.minecraft.block.state.IBlockState state) {
-        return new ItemStack(Item.getItemFromBlock(this));
+        Item standingSignItem = ForgeRegistries.ITEMS.getValue(new ResourceLocation(FarmersDelightLegacy.MOD_ID, standingSignPath));
+        return standingSignItem == null ? ItemStack.EMPTY : new ItemStack(standingSignItem);
     }
 
     @Override
-    public Item getItemDropped(net.minecraft.block.state.IBlockState state, java.util.Random rand, int fortune) {
-        return Item.getItemFromBlock(this);
+    public Item getItemDropped(net.minecraft.block.state.IBlockState state, Random rand, int fortune) {
+        Item standingSignItem = ForgeRegistries.ITEMS.getValue(new ResourceLocation(FarmersDelightLegacy.MOD_ID, standingSignPath));
+        return standingSignItem == null ? Item.getItemFromBlock(this) : standingSignItem;
     }
 }

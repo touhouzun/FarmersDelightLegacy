@@ -2,10 +2,10 @@ package com.wdcftgg.farmersdelightlegacy.client.render;
 
 import com.wdcftgg.farmersdelightlegacy.FarmersDelightLegacy;
 import com.wdcftgg.farmersdelightlegacy.common.Configuration;
-import com.wdcftgg.farmersdelightlegacy.common.block.BlockCanvasHangingSign;
-import com.wdcftgg.farmersdelightlegacy.common.block.BlockCanvasStandingSign;
-import com.wdcftgg.farmersdelightlegacy.common.block.BlockCanvasWallHangingSign;
-import com.wdcftgg.farmersdelightlegacy.common.block.BlockCanvasWallSign;
+import com.wdcftgg.farmersdelightlegacy.common.block.sign.BlockCanvasHangingSign;
+import com.wdcftgg.farmersdelightlegacy.common.block.sign.BlockCanvasStandingSign;
+import com.wdcftgg.farmersdelightlegacy.common.block.sign.BlockCanvasWallHangingSign;
+import com.wdcftgg.farmersdelightlegacy.common.block.sign.BlockCanvasWallSign;
 import com.wdcftgg.farmersdelightlegacy.common.tile.TileEntityCanvasSign;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockStandingSign;

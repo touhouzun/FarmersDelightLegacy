@@ -7,8 +7,8 @@ import com.wdcftgg.farmersdelightlegacy.client.render.TileEntityCanvasSignRender
 import com.wdcftgg.farmersdelightlegacy.client.render.TileEntityCuttingBoardRenderer;
 import com.wdcftgg.farmersdelightlegacy.client.render.TileEntitySkilletRenderer;
 import com.wdcftgg.farmersdelightlegacy.client.render.TileEntityStoveRenderer;
-import com.wdcftgg.farmersdelightlegacy.common.block.BlockCanvasHangingSign;
-import com.wdcftgg.farmersdelightlegacy.common.block.BlockCanvasWallHangingSign;
+import com.wdcftgg.farmersdelightlegacy.common.block.sign.BlockCanvasHangingSign;
+import com.wdcftgg.farmersdelightlegacy.common.block.sign.BlockCanvasWallHangingSign;
 import com.wdcftgg.farmersdelightlegacy.common.entity.EntityRottenTomato;
 import com.wdcftgg.farmersdelightlegacy.common.registry.ModBlocks;
 import com.wdcftgg.farmersdelightlegacy.common.registry.ModItems;
