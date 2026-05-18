@@ -1,7 +1,9 @@
 package com.wdcftgg.farmersdelightlegacy.api.knife;
 
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 /**
@@ -12,6 +14,25 @@ import net.minecraft.world.World;
  * knife knockback handling, and the Hunting Drops / Harvest Drops JEI knife displays.</p>
  */
 public interface IKnifeItem {
+
+    /**
+     * Checks whether this knife is allowed to process the current cutting board recipe attempt.
+     *
+     * <p>The default implementation allows cutting. Add-on knives can override this to block
+     * cutting when their own state, player, world, or cutting board context does not allow it.</p>
+     *
+     * @param stack the knife stack used by the cutting board
+     * @param world the world containing the cutting board
+     * @param pos the cutting board position
+     * @param state the cutting board block state
+     * @param player the player using the cutting board, or null when activated by automation
+     * @param inputStack the stack currently stored on the cutting board
+     * @return true when the cutting board may process the recipe, otherwise false
+     */
+    default boolean canProcessCuttingBoardRecipe(ItemStack stack, World world, BlockPos pos, IBlockState state,
+                                                 EntityPlayer player, ItemStack inputStack) {
+        return true;
+    }
 
     /**
      * Called after this knife successfully processes a cutting board recipe.

@@ -146,11 +146,17 @@ public class BlockCuttingBoard extends BlockHorizontal implements ITileEntityPro
         if (cuttingBoard == null || cuttingBoard.isEmpty() || !CuttingBoardRecipeManager.hasRecipe(cuttingBoard.getStoredItem(), toolStack)) {
             return false;
         }
+        if (!canToolProcessStoredItem(world, pos, state, null, cuttingBoard, toolStack)) {
+            return false;
+        }
         processStoredItem(world, pos, state, null, cuttingBoard, toolStack, true);
         return true;
     }
 
     private static void processStoredItem(World world, BlockPos pos, IBlockState state, EntityPlayer player, TileEntityCuttingBoard cuttingBoard, ItemStack toolStack, boolean damageTool) {
+        if (!canToolProcessStoredItem(world, pos, state, player, cuttingBoard, toolStack)) {
+            return;
+        }
         ItemStack particleStack = cuttingBoard.getStoredItem();
         List<ItemStack> craftedStacks = cuttingBoard.processStoredItem(toolStack);
         EnumFacing dropFacing = state.getValue(FACING).rotateYCCW();
@@ -183,6 +189,13 @@ public class BlockCuttingBoard extends BlockHorizontal implements ITileEntityPro
         if (toolStack.getItem() instanceof IKnifeItem) {
             ((IKnifeItem) toolStack.getItem()).onCuttingBoardRecipeProcessed(toolStack, world, player);
         }
+    }
+
+    private static boolean canToolProcessStoredItem(World world, BlockPos pos, IBlockState state, EntityPlayer player,
+                                                    TileEntityCuttingBoard cuttingBoard, ItemStack toolStack) {
+        return !(toolStack.getItem() instanceof IKnifeItem)
+                || ((IKnifeItem) toolStack.getItem()).canProcessCuttingBoardRecipe(toolStack, world, pos, state,
+                player, cuttingBoard.getStoredItem());
     }
 
     @Override
