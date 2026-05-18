@@ -1,11 +1,11 @@
 package com.wdcftgg.farmersdelightlegacy.common.item.enchantment;
 
+import com.wdcftgg.farmersdelightlegacy.common.item.ItemKnife;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnumEnchantmentType;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
 
 public class EnchantmentBackstabbing extends Enchantment {
 
@@ -36,8 +36,7 @@ public class EnchantmentBackstabbing extends Enchantment {
 
     @Override
     public boolean canApplyAtEnchantingTable(ItemStack stack) {
-        ResourceLocation id = stack.getItem().getRegistryName();
-        return id != null && "farmersdelight".equals(id.getNamespace()) && id.getPath().endsWith("_knife");
+        return ItemKnife.isKnife(stack);
     }
 
     @Override

@@ -1,28 +1,21 @@
 package com.wdcftgg.farmersdelightlegacy.common.item;
 
-import com.google.common.collect.HashMultimap;
-import com.google.common.collect.Multimap;
-import com.google.common.collect.Sets;
 import com.wdcftgg.farmersdelightlegacy.FarmersDelightLegacy;
+import com.wdcftgg.farmersdelightlegacy.api.knife.IKnifeItem;
+import com.wdcftgg.farmersdelightlegacy.api.knife.ItemKnifeBase;
 import com.wdcftgg.farmersdelightlegacy.common.recipe.HarvestDropRecipeManager;
 import com.wdcftgg.farmersdelightlegacy.common.recipe.HuntingDropRecipeManager;
 import com.wdcftgg.farmersdelightlegacy.common.registry.ModItems;
-import net.minecraft.block.*;
-import net.minecraft.block.material.Material;
+import net.minecraft.block.BlockCake;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.Enchantments;
-import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemSword;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
@@ -37,93 +30,12 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.oredict.OreDictionary;
 
-import java.util.Set;
+public class ItemKnife extends ItemKnifeBase {
 
-public class ItemKnife extends ItemSword {
-
-    private static final float WEB_SPEED = 15.0F;
-    private static final float KNIFE_SPEED = 8.0F;
-    private static final float KNOCKBACK_REDUCTION = 0.1F;
-    private static final Set<Enchantment> ALLOWED_ENCHANTMENTS = Sets.newHashSet(
-            Enchantments.SHARPNESS,
-            Enchantments.SMITE,
-            Enchantments.BANE_OF_ARTHROPODS,
-            Enchantments.KNOCKBACK,
-            Enchantments.FIRE_ASPECT,
-            Enchantments.LOOTING
-    );
-    private static final Set<Enchantment> DENIED_ENCHANTMENTS = Sets.newHashSet(Enchantments.FORTUNE);
-    private final double attackDamage;
-    private final double attackSpeed;
+    private static final float knockbackReduction = 0.1F;
 
     public ItemKnife(Item.ToolMaterial material, double attackDamage) {
-        super(material);
-        this.attackDamage = attackDamage;
-        this.attackSpeed = -2.0D;
-    }
-
-    @Override
-    public boolean canHarvestBlock(IBlockState blockIn) {
-        return blockIn.getBlock() == Blocks.WEB;
-    }
-
-    @Override
-    public float getDestroySpeed(ItemStack stack, IBlockState state) {
-        Block block = state.getBlock();
-        Material material = state.getMaterial();
-        if (block == Blocks.WEB) {
-            return WEB_SPEED;
-        }
-
-        if (block instanceof BlockCrops
-                || block instanceof BlockBush
-                || block == Blocks.MELON_BLOCK
-                || block == Blocks.PUMPKIN
-                || block == Blocks.LIT_PUMPKIN
-                || material == Material.PLANTS
-                || material == Material.VINE
-                || material == Material.LEAVES
-                || material == Material.GOURD
-                || material == Material.CACTUS
-                || material == Material.CLOTH
-                || material == Material.CARPET) {
-            return KNIFE_SPEED;
-        }
-
-        return super.getDestroySpeed(stack, state);
-    }
-
-    @Override
-    public boolean onBlockDestroyed(ItemStack stack, World worldIn, IBlockState state, BlockPos pos, EntityLivingBase entityLiving) {
-        if (state.getBlockHardness(worldIn, pos) != 0.0F) {
-            stack.damageItem(1, entityLiving);
-        }
-        return true;
-    }
-
-    @Override
-    public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
-        if (ALLOWED_ENCHANTMENTS.contains(enchantment)) {
-            return true;
-        }
-        if (DENIED_ENCHANTMENTS.contains(enchantment)) {
-            return false;
-        }
-        return enchantment.type != null && enchantment.type.canEnchantItem(this);
-    }
-
-    @Override
-    public Multimap<String, AttributeModifier> getItemAttributeModifiers(EntityEquipmentSlot equipmentSlot) {
-        Multimap<String, AttributeModifier> attributes = HashMultimap.create(super.getItemAttributeModifiers(equipmentSlot));
-        if (equipmentSlot == EntityEquipmentSlot.MAINHAND) {
-            attributes.removeAll(SharedMonsterAttributes.ATTACK_DAMAGE.getName());
-            attributes.removeAll(SharedMonsterAttributes.ATTACK_SPEED.getName());
-            attributes.put(SharedMonsterAttributes.ATTACK_DAMAGE.getName(),
-                    new AttributeModifier(ATTACK_DAMAGE_MODIFIER, "Weapon modifier", this.attackDamage, 0));
-            attributes.put(SharedMonsterAttributes.ATTACK_SPEED.getName(),
-                    new AttributeModifier(ATTACK_SPEED_MODIFIER, "Weapon modifier", this.attackSpeed, 0));
-        }
-        return attributes;
+        super(material, attackDamage);
     }
 
     public static boolean isKnife(ItemStack stack) {
@@ -131,7 +43,7 @@ public class ItemKnife extends ItemSword {
             return false;
         }
 
-        if (stack.getItem() instanceof ItemKnife) {
+        if (stack.getItem() instanceof IKnifeItem) {
             return true;
         }
 
@@ -171,7 +83,7 @@ public class ItemKnife extends ItemSword {
                 return;
             }
 
-            event.setStrength(Math.max(0.0F, event.getOriginalStrength() - KNOCKBACK_REDUCTION));
+            event.setStrength(Math.max(0.0F, event.getOriginalStrength() - knockbackReduction));
         }
 
         @SubscribeEvent
@@ -200,8 +112,8 @@ public class ItemKnife extends ItemSword {
                 Item sliceItem = ModItems.get("cake_slice");
                 if (sliceItem != null) {
                     double offset = bites * 0.1D;
-                    EntityItem drop = new EntityItem(world, pos.getX() + 0.5D + offset, pos.getY() + 0.2D, pos.getZ() + 0.5D,
-                            new ItemStack(sliceItem));
+                    EntityItem drop = new EntityItem(world, pos.getX() + 0.5D + offset, pos.getY() + 0.2D,
+                            pos.getZ() + 0.5D, new ItemStack(sliceItem));
                     drop.motionX = -0.05D;
                     drop.motionY = 0.0D;
                     drop.motionZ = 0.0D;
@@ -248,6 +160,5 @@ public class ItemKnife extends ItemSword {
 
             HarvestDropRecipeManager.addDrops(event, toolStack);
         }
-
     }
 }

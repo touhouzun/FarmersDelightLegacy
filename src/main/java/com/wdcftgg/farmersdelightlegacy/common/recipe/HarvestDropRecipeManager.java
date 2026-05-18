@@ -16,6 +16,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.event.world.BlockEvent;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -312,7 +313,7 @@ public final class HarvestDropRecipeManager {
 
     private static List<ItemStack> getKnifeToolOptions() {
         List<ItemStack> stacks = new ArrayList<>();
-        for (Item item : ModItems.ITEMS.values()) {
+        for (Item item : ForgeRegistries.ITEMS.getValuesCollection()) {
             if (ItemKnife.isKnife(new ItemStack(item))) {
                 stacks.add(new ItemStack(item));
             }

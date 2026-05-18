@@ -1,6 +1,7 @@
 package com.wdcftgg.farmersdelightlegacy.common.block;
 
 import com.wdcftgg.farmersdelightlegacy.FarmersDelightLegacy;
+import com.wdcftgg.farmersdelightlegacy.api.knife.IKnifeItem;
 import com.wdcftgg.farmersdelightlegacy.common.advancement.ModAdvancements;
 import com.wdcftgg.farmersdelightlegacy.common.recipe.CuttingBoardRecipeManager;
 import com.wdcftgg.farmersdelightlegacy.common.registry.ModSounds;
@@ -15,6 +16,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.*;
 import net.minecraft.tileentity.TileEntity;
@@ -172,19 +174,14 @@ public class BlockCuttingBoard extends BlockHorizontal implements ITileEntityPro
         }
         world.playSound(null, pos, ModSounds.CUTTING_BOARD_KNIFE, SoundCategory.BLOCKS, 0.9F, 1.0F);
         spawnCuttingParticles(world, pos, particleStack, 5);
-        if (player instanceof net.minecraft.entity.player.EntityPlayerMP) {
-            ModAdvancements.USE_CUTTING_BOARD.trigger((net.minecraft.entity.player.EntityPlayerMP) player);
+        if (player instanceof EntityPlayerMP) {
+            ModAdvancements.USE_CUTTING_BOARD.trigger((EntityPlayerMP) player);
         }
     }
 
     private static void damageTool(World world, EntityPlayer player, ItemStack toolStack) {
-        if (player != null) {
-            toolStack.damageItem(1, player);
-            return;
-        }
-        if (toolStack.attemptDamageItem(1, world.rand, null)) {
-            toolStack.shrink(1);
-            toolStack.setItemDamage(0);
+        if (toolStack.getItem() instanceof IKnifeItem) {
+            ((IKnifeItem) toolStack.getItem()).onCuttingBoardRecipeProcessed(toolStack, world, player);
         }
     }
 

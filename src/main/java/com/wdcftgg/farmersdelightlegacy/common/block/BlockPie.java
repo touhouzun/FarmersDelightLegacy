@@ -87,7 +87,7 @@ public class BlockPie extends Block {
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player,
                                     EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
         ItemStack heldStack = player.getHeldItem(hand);
-        if (!heldStack.isEmpty() && heldStack.getItem() instanceof ItemKnife) {
+        if (ItemKnife.isKnife(heldStack)) {
             if (!world.isRemote) {
                 cutSlice(world, pos, state, player, heldStack);
             }

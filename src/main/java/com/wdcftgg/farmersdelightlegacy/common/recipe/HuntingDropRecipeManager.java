@@ -22,6 +22,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -495,9 +496,8 @@ public final class HuntingDropRecipeManager {
 
     private static List<ItemStack> getKnifeToolOptions() {
         List<ItemStack> stacks = new ArrayList<>();
-        for (Item item : ModItems.ITEMS.values()) {
-            ResourceLocation itemId = item.getRegistryName();
-            if (itemId != null && itemId.getPath().endsWith("_knife")) {
+        for (Item item : ForgeRegistries.ITEMS.getValuesCollection()) {
+            if (ItemKnife.isKnife(new ItemStack(item))) {
                 stacks.add(new ItemStack(item));
             }
         }

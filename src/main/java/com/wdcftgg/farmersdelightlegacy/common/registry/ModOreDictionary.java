@@ -1,5 +1,6 @@
 package com.wdcftgg.farmersdelightlegacy.common.registry;
 
+import com.wdcftgg.farmersdelightlegacy.api.knife.IKnifeItem;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -89,7 +90,7 @@ public final class ModOreDictionary {
         registerOre("listAllmilk", "milk_bottle");
 
         for (Map.Entry<String, Item> entry : ModItems.ITEMS.entrySet()) {
-            if (entry.getKey().endsWith("_knife")) {
+            if (entry.getKey().endsWith("_knife") || entry.getValue() instanceof IKnifeItem) {
                 OreDictionary.registerOre("toolKnife", new ItemStack(entry.getValue(), 1, OreDictionary.WILDCARD_VALUE));
             }
             if (entry.getKey().endsWith("_axe")) {
