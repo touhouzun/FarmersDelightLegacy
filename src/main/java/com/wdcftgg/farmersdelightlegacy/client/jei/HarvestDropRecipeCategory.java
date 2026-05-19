@@ -1,7 +1,6 @@
 package com.wdcftgg.farmersdelightlegacy.client.jei;
 
 import com.wdcftgg.farmersdelightlegacy.FarmersDelightLegacy;
-import com.wdcftgg.farmersdelightlegacy.common.registry.ModItems;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.gui.IDrawable;
 import mezz.jei.api.gui.IRecipeLayout;
@@ -9,7 +8,6 @@ import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.IRecipeCategory;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
 
@@ -18,6 +16,8 @@ import java.util.List;
 public final class HarvestDropRecipeCategory implements IRecipeCategory<HarvestDropJeiRecipe> {
 
     private static final ResourceLocation cuttingBoardTexture = new ResourceLocation(FarmersDelightLegacy.MOD_ID, "textures/gui/jei/cutting_board.png");
+    private static final ResourceLocation iconTexture = new ResourceLocation(FarmersDelightLegacy.MOD_ID,
+            "textures/gui/jei/icon/harvest_drops.png");
     private static final int backgroundWidth = 156;
     private static final int backgroundHeight = 80;
     private static final int arrowX = 73;
@@ -34,7 +34,7 @@ public final class HarvestDropRecipeCategory implements IRecipeCategory<HarvestD
         this.slot = guiHelper.createDrawable(cuttingBoardTexture, 0, 58, 18, 18);
         this.slotChance = guiHelper.createDrawable(cuttingBoardTexture, 18, 58, 18, 18);
         this.arrow = guiHelper.createDrawable(cuttingBoardTexture, 48, 21, 22, 16);
-        this.icon = guiHelper.createDrawableIngredient(new ItemStack(ModItems.get("flint_knife")));
+        this.icon = guiHelper.createDrawable(iconTexture, 0, 0, 20, 20, 20, 20);
     }
 
     @Override

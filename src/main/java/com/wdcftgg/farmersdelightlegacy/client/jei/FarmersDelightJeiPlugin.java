@@ -3,6 +3,7 @@ package com.wdcftgg.farmersdelightlegacy.client.jei;
 import com.wdcftgg.farmersdelightlegacy.client.gui.GuiCookingPot;
 import com.wdcftgg.farmersdelightlegacy.common.inventory.ContainerCookingPot;
 import com.wdcftgg.farmersdelightlegacy.common.item.ItemCookingPot;
+import com.wdcftgg.farmersdelightlegacy.common.item.ItemKnife;
 import com.wdcftgg.farmersdelightlegacy.common.recipe.*;
 import com.wdcftgg.farmersdelightlegacy.common.registry.ModBlocks;
 import com.wdcftgg.farmersdelightlegacy.common.registry.ModItems;
@@ -18,6 +19,7 @@ import mezz.jei.api.recipe.VanillaRecipeCategoryUid;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -73,11 +75,7 @@ public final class FarmersDelightJeiPlugin implements IModPlugin {
         addIngredientInfoItem(registry, "straw", "farmersdelight.jei.info.straw");
         addIngredientInfoItem(registry, "ham", "farmersdelight.jei.info.ham");
         addIngredientInfoItem(registry, "smoked_ham", "farmersdelight.jei.info.ham");
-        addIngredientInfoItem(registry, "flint_knife", "farmersdelight.jei.info.knife");
-        addIngredientInfoItem(registry, "iron_knife", "farmersdelight.jei.info.knife");
-        addIngredientInfoItem(registry, "golden_knife", "farmersdelight.jei.info.knife");
-        addIngredientInfoItem(registry, "diamond_knife", "farmersdelight.jei.info.knife");
-        addIngredientInfoItem(registry, "netherite_knife", "farmersdelight.jei.info.knife");
+        addKnifeIngredientInfos(registry);
         registerCropIngredientInfos(registry);
     }
 
@@ -177,18 +175,22 @@ public final class FarmersDelightJeiPlugin implements IModPlugin {
     }
 
     private static void addKnifeRecipeCatalysts(IModRegistry registry) {
-        addKnifeRecipeCatalyst(registry, "flint_knife");
-        addKnifeRecipeCatalyst(registry, "iron_knife");
-        addKnifeRecipeCatalyst(registry, "golden_knife");
-        addKnifeRecipeCatalyst(registry, "diamond_knife");
-        addKnifeRecipeCatalyst(registry, "netherite_knife");
-    }
-
-    private static void addKnifeRecipeCatalyst(IModRegistry registry, String itemName) {
-        ItemStack stack = stackFromItemName(itemName);
-        if (!stack.isEmpty()) {
+        for (Item item : ForgeRegistries.ITEMS.getValuesCollection()) {
+            ItemStack stack = new ItemStack(item);
+            if (!ItemKnife.isKnife(stack)) {
+                continue;
+            }
             registry.addRecipeCatalyst(stack, JeiUids.HUNTING_DROPS);
             registry.addRecipeCatalyst(stack, JeiUids.harvestDrops);
+        }
+    }
+
+    private static void addKnifeIngredientInfos(IModRegistry registry) {
+        for (Item item : ForgeRegistries.ITEMS.getValuesCollection()) {
+            ItemStack stack = new ItemStack(item);
+            if (ItemKnife.isKnife(stack)) {
+                registry.addIngredientInfo(stack, VanillaTypes.ITEM, "farmersdelight.jei.info.knife");
+            }
         }
     }
 
