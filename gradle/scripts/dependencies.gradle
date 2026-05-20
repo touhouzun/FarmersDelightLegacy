@@ -79,6 +79,9 @@ dependencies {
     //流浪商人联动
     implementation rfg.deobf("curse.maven:Wandering Traders Backport-1257940:7743810")
 
+    //燐/Hesperus
+    implementation rfg.deobf("curse.maven:Hesperus-620262:4724647")
+
     //crt
     implementation rfg.deobf('CraftTweaker2:CraftTweaker2-MC1120-Main:1.12-4.1.20.698')
 

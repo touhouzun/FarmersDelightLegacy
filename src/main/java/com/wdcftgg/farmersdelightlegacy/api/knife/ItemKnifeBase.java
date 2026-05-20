@@ -111,6 +111,11 @@ public class ItemKnifeBase extends ItemSword implements IKnifeItem {
     }
 
     @Override
+    public ItemStack getKnifeJeiInfoStack(ItemStack stack) {
+        return stack.copy();
+    }
+
+    @Override
     public void onCuttingBoardRecipeProcessed(ItemStack stack, World world, EntityPlayer player) {
         if (player != null) {
             stack.damageItem(1, player);

@@ -652,12 +652,17 @@ final class JeiPreviewWorld extends World {
         Chunk chunk = this.chunks.get(key);
         if (chunk == null) {
             chunk = new Chunk(this, x, z);
-            chunk.onLoad();
+            chunk.markLoaded(true);
             chunk.setTerrainPopulated(true);
             chunk.setLightPopulated(true);
             this.chunks.put(key, chunk);
         }
         return chunk;
+    }
+
+    private Chunk getLoadedPreviewChunk(int x, int z) {
+        long key = (((long) x) << 32) ^ (z & 0xffffffffL);
+        return this.chunks.get(key);
     }
 
     private static WorldInfo createWorldInfo(Minecraft minecraft) {
@@ -671,7 +676,7 @@ final class JeiPreviewWorld extends World {
     private final class PreviewChunkProvider implements IChunkProvider {
         @Override
         public Chunk getLoadedChunk(int x, int z) {
-            return getPreviewChunk(x, z);
+            return getLoadedPreviewChunk(x, z);
         }
 
         @Override
@@ -691,7 +696,7 @@ final class JeiPreviewWorld extends World {
 
         @Override
         public boolean isChunkGeneratedAt(int x, int z) {
-            return true;
+            return getLoadedPreviewChunk(x, z) != null;
         }
     }
 

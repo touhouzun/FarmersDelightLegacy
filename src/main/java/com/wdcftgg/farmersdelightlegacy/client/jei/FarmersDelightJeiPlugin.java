@@ -1,6 +1,7 @@
 package com.wdcftgg.farmersdelightlegacy.client.jei;
 
 import com.wdcftgg.farmersdelightlegacy.client.gui.GuiCookingPot;
+import com.wdcftgg.farmersdelightlegacy.api.knife.IKnifeItem;
 import com.wdcftgg.farmersdelightlegacy.common.inventory.ContainerCookingPot;
 import com.wdcftgg.farmersdelightlegacy.common.item.ItemCookingPot;
 import com.wdcftgg.farmersdelightlegacy.common.item.ItemKnife;
@@ -188,8 +189,11 @@ public final class FarmersDelightJeiPlugin implements IModPlugin {
     private static void addKnifeIngredientInfos(IModRegistry registry) {
         for (Item item : ForgeRegistries.ITEMS.getValuesCollection()) {
             ItemStack stack = new ItemStack(item);
-            if (ItemKnife.isKnife(stack)) {
-                registry.addIngredientInfo(stack, VanillaTypes.ITEM, "farmersdelight.jei.info.knife");
+            if (item instanceof IKnifeItem) {
+                ItemStack infoStack = ((IKnifeItem) item).getKnifeJeiInfoStack(stack);
+                if (!infoStack.isEmpty()) {
+                    registry.addIngredientInfo(infoStack, VanillaTypes.ITEM, "farmersdelight.jei.info.knife");
+                }
             }
         }
     }

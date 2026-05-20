@@ -16,6 +16,19 @@ import net.minecraft.world.World;
 public interface IKnifeItem {
 
     /**
+     * Gets the stack used when registering this knife's JEI ingredient information entry.
+     *
+     * <p>The default implementation returns {@link ItemStack#EMPTY}, allowing add-on knives to opt
+     * in explicitly. Returning an empty stack skips the JEI info entry for this knife.</p>
+     *
+     * @param stack the registered knife stack being considered for JEI ingredient information
+     * @return the stack that should receive the knife info entry, or {@link ItemStack#EMPTY} to skip it
+     */
+    default ItemStack getKnifeJeiInfoStack(ItemStack stack) {
+        return ItemStack.EMPTY;
+    }
+
+    /**
      * Checks whether this knife is allowed to process the current cutting board recipe attempt.
      *
      * <p>The default implementation allows cutting. Add-on knives can override this to block
