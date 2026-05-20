@@ -8,6 +8,7 @@ import com.wdcftgg.farmersdelightlegacy.common.registry.ModBlocks;
 import net.minecraft.block.*;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -25,20 +26,21 @@ public class WildCropWorldGenerator implements IWorldGenerator {
 
     @Override
     public void generate(Random random, int chunkX, int chunkZ, World world, IChunkGenerator chunkGenerator, IChunkProvider chunkProvider) {
-        if (world.provider.getDimension() != 0) {
-            return;
-        }
-
         BlockPos biomePos = new BlockPos((chunkX << 4) + 8, 0, (chunkZ << 4) + 8);
         Biome biome = world.getBiome(biomePos);
+        int dimension = world.provider.getDimension();
+        ResourceLocation biomeId = biome.getRegistryName();
 
-        generateWildCabbages(world, random, chunkX, chunkZ, biome);
-        generateWildOnions(world, random, chunkX, chunkZ, biome);
-        generateWildTomatoes(world, random, chunkX, chunkZ, biome);
-        generateWildCarrots(world, random, chunkX, chunkZ, biome);
-        generateWildPotatoes(world, random, chunkX, chunkZ, biome);
-        generateWildBeetroots(world, random, chunkX, chunkZ, biome);
-        generateWildRice(world, random, chunkX, chunkZ, biome);
+        generateWildCabbages(world, random, chunkX, chunkZ, biome, biomeId, dimension);
+        generateWildOnions(world, random, chunkX, chunkZ, biome, biomeId, dimension);
+        generateWildTomatoes(world, random, chunkX, chunkZ, biome, biomeId, dimension);
+        generateWildCarrots(world, random, chunkX, chunkZ, biome, biomeId, dimension);
+        generateWildPotatoes(world, random, chunkX, chunkZ, biome, biomeId, dimension);
+        generateWildBeetroots(world, random, chunkX, chunkZ, biome, biomeId, dimension);
+        generateWildRice(world, random, chunkX, chunkZ, biome, biomeId, dimension);
+        if (dimension != 0) {
+            return;
+        }
         generateMushroomColonies(world, random, chunkX, chunkZ, biome, true);
         generateMushroomColonies(world, random, chunkX, chunkZ, biome, false);
         generateVillageFarmCrops(world, random, chunkX, chunkZ, chunkGenerator);
@@ -222,80 +224,108 @@ public class WildCropWorldGenerator implements IWorldGenerator {
         return 0;
     }
 
-    private void generateWildCabbages(World world, Random random, int chunkX, int chunkZ, Biome biome) {
-        if (!BiomeDictionary.hasType(biome, BiomeDictionary.Type.BEACH)) {
+    private void generateWildCabbages(World world, Random random, int chunkX, int chunkZ, Biome biome, ResourceLocation biomeId, int dimension) {
+        if (!canGenerateWildCrop(Configuration.wildCabbagesGeneration, biomeId, dimension)) {
             return;
         }
-        generatePatch(world, random, chunkX, chunkZ, Configuration.chanceWildCabbages, 64, 6, 3,
+        if (!shouldUseConfiguredBiomeSelection(Configuration.wildCabbagesGeneration) && !BiomeDictionary.hasType(biome, BiomeDictionary.Type.BEACH)) {
+            return;
+        }
+        generatePatch(world, random, chunkX, chunkZ, Configuration.wildCabbagesGeneration.getChance(), 64, 6, 3,
                 this::placeSandyShrubFloor,
                 this::placeWildCabbages,
                 this::placeSandyShrub);
     }
 
-    private void generateWildOnions(World world, Random random, int chunkX, int chunkZ, Biome biome) {
-        if (BiomeDictionary.hasType(biome, BiomeDictionary.Type.MUSHROOM)) {
+    private void generateWildOnions(World world, Random random, int chunkX, int chunkZ, Biome biome, ResourceLocation biomeId, int dimension) {
+        if (!canGenerateWildCrop(Configuration.wildOnionsGeneration, biomeId, dimension)) {
             return;
         }
-        float temperature = biome.getDefaultTemperature();
-        if (temperature < 0.4F || temperature > 0.9F) {
+        if (!shouldUseConfiguredBiomeSelection(Configuration.wildOnionsGeneration) && BiomeDictionary.hasType(biome, BiomeDictionary.Type.MUSHROOM)) {
             return;
         }
-        generatePatch(world, random, chunkX, chunkZ, Configuration.chanceWildOnions, 64, 6, 3,
+        if (!shouldUseConfiguredBiomeSelection(Configuration.wildOnionsGeneration)) {
+            float temperature = biome.getDefaultTemperature();
+            if (temperature < 0.4F || temperature > 0.9F) {
+                return;
+            }
+        }
+        generatePatch(world, random, chunkX, chunkZ, Configuration.wildOnionsGeneration.getChance(), 64, 6, 3,
                 null,
                 this::placeWildOnions,
                 this::placeAllium);
     }
 
-    private void generateWildTomatoes(World world, Random random, int chunkX, int chunkZ, Biome biome) {
-        if (!BiomeDictionary.hasType(biome, BiomeDictionary.Type.HOT) || BiomeDictionary.hasType(biome, BiomeDictionary.Type.WET)) {
+    private void generateWildTomatoes(World world, Random random, int chunkX, int chunkZ, Biome biome, ResourceLocation biomeId, int dimension) {
+        if (!canGenerateWildCrop(Configuration.wildTomatoesGeneration, biomeId, dimension)) {
             return;
         }
-        generatePatch(world, random, chunkX, chunkZ, Configuration.chanceWildTomatoes, 64, 6, 3,
+        if (!shouldUseConfiguredBiomeSelection(Configuration.wildTomatoesGeneration) && (!BiomeDictionary.hasType(biome, BiomeDictionary.Type.HOT) || BiomeDictionary.hasType(biome, BiomeDictionary.Type.WET))) {
+            return;
+        }
+        generatePatch(world, random, chunkX, chunkZ, Configuration.wildTomatoesGeneration.getChance(), 64, 6, 3,
                 null,
                 this::placeWildTomatoes,
                 this::placeDeadBush);
     }
 
-    private void generateWildCarrots(World world, Random random, int chunkX, int chunkZ, Biome biome) {
-        if (BiomeDictionary.hasType(biome, BiomeDictionary.Type.MUSHROOM)) {
+    private void generateWildCarrots(World world, Random random, int chunkX, int chunkZ, Biome biome, ResourceLocation biomeId, int dimension) {
+        if (!canGenerateWildCrop(Configuration.wildCarrotsGeneration, biomeId, dimension)) {
             return;
         }
-        float temperature = biome.getDefaultTemperature();
-        if (temperature < 0.4F || temperature > 0.9F) {
+        if (!shouldUseConfiguredBiomeSelection(Configuration.wildCarrotsGeneration) && BiomeDictionary.hasType(biome, BiomeDictionary.Type.MUSHROOM)) {
             return;
         }
-        generatePatch(world, random, chunkX, chunkZ, Configuration.chanceWildCarrots, 64, 6, 3,
+        if (!shouldUseConfiguredBiomeSelection(Configuration.wildCarrotsGeneration)) {
+            float temperature = biome.getDefaultTemperature();
+            if (temperature < 0.4F || temperature > 0.9F) {
+                return;
+            }
+        }
+        generatePatch(world, random, chunkX, chunkZ, Configuration.wildCarrotsGeneration.getChance(), 64, 6, 3,
                 this::placeCoarseDirtFloor,
                 this::placeWildCarrots,
                 this::placeGrass);
     }
 
-    private void generateWildPotatoes(World world, Random random, int chunkX, int chunkZ, Biome biome) {
-        float temperature = biome.getDefaultTemperature();
-        if (temperature < 0.1F || temperature > 0.3F) {
+    private void generateWildPotatoes(World world, Random random, int chunkX, int chunkZ, Biome biome, ResourceLocation biomeId, int dimension) {
+        if (!canGenerateWildCrop(Configuration.wildPotatoesGeneration, biomeId, dimension)) {
             return;
         }
-        generatePatch(world, random, chunkX, chunkZ, Configuration.chanceWildPotatoes, 64, 6, 3,
+        if (!shouldUseConfiguredBiomeSelection(Configuration.wildPotatoesGeneration)) {
+            float temperature = biome.getDefaultTemperature();
+            if (temperature < 0.1F || temperature > 0.3F) {
+                return;
+            }
+        }
+        generatePatch(world, random, chunkX, chunkZ, Configuration.wildPotatoesGeneration.getChance(), 64, 6, 3,
                 null,
                 this::placeWildPotatoes,
                 this::placeFern);
     }
 
-    private void generateWildBeetroots(World world, Random random, int chunkX, int chunkZ, Biome biome) {
-        if (!BiomeDictionary.hasType(biome, BiomeDictionary.Type.BEACH)) {
+    private void generateWildBeetroots(World world, Random random, int chunkX, int chunkZ, Biome biome, ResourceLocation biomeId, int dimension) {
+        if (!canGenerateWildCrop(Configuration.wildBeetrootsGeneration, biomeId, dimension)) {
             return;
         }
-        generatePatch(world, random, chunkX, chunkZ, Configuration.chanceWildBeetroots, 64, 6, 3,
+        if (!shouldUseConfiguredBiomeSelection(Configuration.wildBeetrootsGeneration) && !BiomeDictionary.hasType(biome, BiomeDictionary.Type.BEACH)) {
+            return;
+        }
+        generatePatch(world, random, chunkX, chunkZ, Configuration.wildBeetrootsGeneration.getChance(), 64, 6, 3,
                 this::placeSandyShrubFloor,
                 this::placeWildBeetroots,
                 this::placeSandyShrub);
     }
 
-    private void generateWildRice(World world, Random random, int chunkX, int chunkZ, Biome biome) {
-        if (!BiomeDictionary.hasType(biome, BiomeDictionary.Type.WET)) {
+    private void generateWildRice(World world, Random random, int chunkX, int chunkZ, Biome biome, ResourceLocation biomeId, int dimension) {
+        if (!canGenerateWildCrop(Configuration.wildRiceGeneration, biomeId, dimension)) {
             return;
         }
-        if (Configuration.chanceWildRice <= 0 || random.nextInt(Configuration.chanceWildRice) != 0) {
+        if (!shouldUseConfiguredBiomeSelection(Configuration.wildRiceGeneration) && !BiomeDictionary.hasType(biome, BiomeDictionary.Type.WET)) {
+            return;
+        }
+        int wildRiceChance = Configuration.wildRiceGeneration.getChance();
+        if (wildRiceChance <= 0 || random.nextInt(wildRiceChance) != 0) {
             return;
         }
 
@@ -305,6 +335,14 @@ public class WildCropWorldGenerator implements IWorldGenerator {
         }
 
         generateWildRiceWithoutFluidlogged(world, random, chunkX, chunkZ);
+    }
+
+    private boolean canGenerateWildCrop(Configuration.WildCropGenerationSettings settings, ResourceLocation biomeId, int dimension) {
+        return settings.canGenerateInDimension(dimension) && settings.canGenerateInBiome(biomeId);
+    }
+
+    private boolean shouldUseConfiguredBiomeSelection(Configuration.WildCropGenerationSettings settings) {
+        return settings.usesBiomeWhitelist();
     }
 
     private void generateWildRiceWithFluidlogged(World world, Random random, int chunkX, int chunkZ) {

@@ -9,6 +9,7 @@ import com.wdcftgg.farmersdelightlegacy.common.recipe.*;
 import com.wdcftgg.farmersdelightlegacy.common.registry.ModBlocks;
 import com.wdcftgg.farmersdelightlegacy.common.registry.ModItems;
 import com.wdcftgg.farmersdelightlegacy.common.tile.TileEntityCookingPot;
+import com.wdcftgg.farmersdelightlegacy.common.util.KnifeItemStacks;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.IModRegistry;
@@ -16,16 +17,21 @@ import mezz.jei.api.JEIPlugin;
 import mezz.jei.api.gui.IDrawable;
 import mezz.jei.api.ingredients.VanillaTypes;
 import mezz.jei.api.recipe.IRecipeCategoryRegistration;
+import mezz.jei.api.recipe.IStackHelper;
 import mezz.jei.api.recipe.VanillaRecipeCategoryUid;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
+import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @JEIPlugin
 public final class FarmersDelightJeiPlugin implements IModPlugin {
@@ -176,26 +182,38 @@ public final class FarmersDelightJeiPlugin implements IModPlugin {
     }
 
     private static void addKnifeRecipeCatalysts(IModRegistry registry) {
-        for (Item item : ForgeRegistries.ITEMS.getValuesCollection()) {
-            ItemStack stack = new ItemStack(item);
-            if (!ItemKnife.isKnife(stack)) {
-                continue;
-            }
+        for (ItemStack stack : KnifeItemStacks.getJeiDisplayStacks()) {
             registry.addRecipeCatalyst(stack, JeiUids.HUNTING_DROPS);
             registry.addRecipeCatalyst(stack, JeiUids.harvestDrops);
         }
     }
 
     private static void addKnifeIngredientInfos(IModRegistry registry) {
+        IStackHelper stackHelper = registry.getJeiHelpers().getStackHelper();
+        Set<String> registeredInfoStacks = new LinkedHashSet<>();
         for (Item item : ForgeRegistries.ITEMS.getValuesCollection()) {
-            ItemStack stack = new ItemStack(item);
-            if (item instanceof IKnifeItem) {
+            if (!(item instanceof IKnifeItem)) {
+                continue;
+            }
+            List<ItemStack> stacks = stackHelper.getSubtypes(new ItemStack(item, 1, OreDictionary.WILDCARD_VALUE));
+            if (stacks.isEmpty()) {
+                stacks = Collections.singletonList(new ItemStack(item));
+            }
+            for (ItemStack stack : stacks) {
                 ItemStack infoStack = ((IKnifeItem) item).getKnifeJeiInfoStack(stack);
-                if (!infoStack.isEmpty()) {
+                String infoStackKey = getItemStackInfoKey(infoStack);
+                if (!infoStack.isEmpty() && registeredInfoStacks.add(infoStackKey)) {
                     registry.addIngredientInfo(infoStack, VanillaTypes.ITEM, "farmersdelight.jei.info.knife");
                 }
             }
         }
+    }
+
+    private static String getItemStackInfoKey(ItemStack stack) {
+        if (stack.isEmpty()) {
+            return "empty";
+        }
+        return Item.REGISTRY.getNameForObject(stack.getItem()) + ":" + stack.getMetadata() + ":" + stack.getTagCompound();
     }
 
     private static List<DecompositionJeiRecipe> buildDecompositionRecipes() {

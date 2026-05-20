@@ -7,6 +7,7 @@ import com.wdcftgg.farmersdelightlegacy.common.block.BlockWildRice;
 import com.wdcftgg.farmersdelightlegacy.common.item.ItemKnife;
 import com.wdcftgg.farmersdelightlegacy.common.registry.ModBlocks;
 import com.wdcftgg.farmersdelightlegacy.common.registry.ModItems;
+import com.wdcftgg.farmersdelightlegacy.common.util.KnifeItemStacks;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockCrops;
 import net.minecraft.block.BlockDoublePlant;
@@ -312,13 +313,7 @@ public final class HarvestDropRecipeManager {
     }
 
     private static List<ItemStack> getKnifeToolOptions() {
-        List<ItemStack> stacks = new ArrayList<>();
-        for (Item item : ForgeRegistries.ITEMS.getValuesCollection()) {
-            if (ItemKnife.isKnife(new ItemStack(item))) {
-                stacks.add(new ItemStack(item));
-            }
-        }
-        return stacks.isEmpty() ? Collections.emptyList() : ImmutableList.copyOf(stacks);
+        return KnifeItemStacks.getJeiDisplayStacks();
     }
 
     @FunctionalInterface

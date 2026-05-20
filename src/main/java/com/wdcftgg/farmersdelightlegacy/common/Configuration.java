@@ -18,10 +18,14 @@ import net.minecraftforge.oredict.OreDictionary;
 import java.io.File;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Locale;
 import java.util.Set;
 
 public final class Configuration {
+
+    private static final int[] defaultWildCropDimensions = new int[]{0};
+    private static final String[] defaultWildCropBiomes = new String[0];
 
     public static final String CATEGORY_SETTINGS = "settings";
     public static boolean enableVanillaCropCrates = true;
@@ -62,6 +66,13 @@ public final class Configuration {
     public static int chanceWildOnions = 120;
     public static int chanceWildTomatoes = 100;
     public static int chanceWildRice = 20;
+    public static WildCropGenerationSettings wildCabbagesGeneration = WildCropGenerationSettings.createDefault(30);
+    public static WildCropGenerationSettings wildBeetrootsGeneration = WildCropGenerationSettings.createDefault(30);
+    public static WildCropGenerationSettings wildPotatoesGeneration = WildCropGenerationSettings.createDefault(100);
+    public static WildCropGenerationSettings wildCarrotsGeneration = WildCropGenerationSettings.createDefault(120);
+    public static WildCropGenerationSettings wildOnionsGeneration = WildCropGenerationSettings.createDefault(120);
+    public static WildCropGenerationSettings wildTomatoesGeneration = WildCropGenerationSettings.createDefault(100);
+    public static WildCropGenerationSettings wildRiceGeneration = WildCropGenerationSettings.createDefault(20);
     public static boolean generateBrownMushroomColonies = true;
     public static int chanceBrownMushroomColonies = 15;
     public static boolean generateRedMushroomColonies = true;
@@ -142,13 +153,20 @@ public final class Configuration {
                 "Should FD generate Compost Heaps across village biomes when the Village Names compatibility path is loaded?");
         generateVillageFarmFDCrops = config.getBoolean("genFDCropsOnVillageFarms", CATEGORY_WORLD, true,
                 "Should FD crops show up planted randomly in various village farms? (Kept for upstream parity.)");
-        chanceWildCabbages = getWorldChance("wild_cabbages", 30);
-        chanceWildBeetroots = getWorldChance("wild_beetroots", 30);
-        chanceWildPotatoes = getWorldChance("wild_potatoes", 100);
-        chanceWildCarrots = getWorldChance("wild_carrots", 120);
-        chanceWildOnions = getWorldChance("wild_onions", 120);
-        chanceWildTomatoes = getWorldChance("wild_tomatoes", 100);
-        chanceWildRice = getWorldChance("wild_rice", 20);
+        wildCabbagesGeneration = getWildCropGenerationSettings("wild_cabbages", 30);
+        wildBeetrootsGeneration = getWildCropGenerationSettings("wild_beetroots", 30);
+        wildPotatoesGeneration = getWildCropGenerationSettings("wild_potatoes", 100);
+        wildCarrotsGeneration = getWildCropGenerationSettings("wild_carrots", 120);
+        wildOnionsGeneration = getWildCropGenerationSettings("wild_onions", 120);
+        wildTomatoesGeneration = getWildCropGenerationSettings("wild_tomatoes", 100);
+        wildRiceGeneration = getWildCropGenerationSettings("wild_rice", 20);
+        chanceWildCabbages = wildCabbagesGeneration.getChance();
+        chanceWildBeetroots = wildBeetrootsGeneration.getChance();
+        chanceWildPotatoes = wildPotatoesGeneration.getChance();
+        chanceWildCarrots = wildCarrotsGeneration.getChance();
+        chanceWildOnions = wildOnionsGeneration.getChance();
+        chanceWildTomatoes = wildTomatoesGeneration.getChance();
+        chanceWildRice = wildRiceGeneration.getChance();
         generateBrownMushroomColonies = config.getBoolean("genBrownMushroomColony", CATEGORY_WORLD + ".brown_mushroom_colonies", true,
                 "Generate brown mushroom colonies on mushroom fields.");
         chanceBrownMushroomColonies = getWorldChance("brown_mushroom_colonies", 15);
@@ -171,6 +189,34 @@ public final class Configuration {
     private static int getWorldChance(String categoryPath, int defaultValue) {
         return config.getInt("chance", CATEGORY_WORLD + "." + categoryPath, defaultValue, 0, Integer.MAX_VALUE,
                 "Chance of generating clusters. Smaller value = more frequent. Set to 0 to disable this generator in 1.12.2.");
+    }
+
+    private static WildCropGenerationSettings getWildCropGenerationSettings(String categoryPath, int defaultChance) {
+        String category = CATEGORY_WORLD + "." + categoryPath;
+        int chance = getWorldChance(categoryPath, defaultChance);
+        int[] dimensions = config.get(category, "dimensions", defaultWildCropDimensions,
+                "Dimension ids used by this wild crop generator. When dimensionsAreWhitelist is true, the crop only generates in these dimensions. When false, the crop skips these dimensions.").getIntList();
+        boolean dimensionsAreWhitelist = config.getBoolean("dimensionsAreWhitelist", category, true,
+                "If true, dimensions is a whitelist. If false, dimensions is a blacklist.");
+        String[] biomes = config.getStringList("biomes", category, defaultWildCropBiomes,
+                "Biome registry ids used by this wild crop generator, such as minecraft:beaches. Empty blacklist keeps the built-in biome rules unchanged; a whitelist replaces the built-in biome selection.");
+        boolean biomesAreWhitelist = config.getBoolean("biomesAreWhitelist", category, false,
+                "If true, biomes is a whitelist. If false, biomes is a blacklist.");
+        return new WildCropGenerationSettings(chance, dimensions, dimensionsAreWhitelist, normalizeConfiguredStringList(biomes), biomesAreWhitelist);
+    }
+
+    private static String[] normalizeConfiguredStringList(String[] values) {
+        Set<String> normalizedValues = new LinkedHashSet<>();
+        for (String value : values) {
+            if (value == null) {
+                continue;
+            }
+            String normalizedValue = value.trim().toLowerCase(Locale.ROOT);
+            if (!normalizedValue.isEmpty()) {
+                normalizedValues.add(normalizedValue);
+            }
+        }
+        return normalizedValues.toArray(new String[0]);
     }
 
     public static void applyRuntimeOverrides() {
@@ -273,6 +319,57 @@ public final class Configuration {
             return null;
         }
         return path.contains(":") ? new ResourceLocation(path) : new ResourceLocation(defaultNamespace, path);
+    }
+
+    public static final class WildCropGenerationSettings {
+        private final int chance;
+        private final Set<Integer> dimensions;
+        private final boolean dimensionsAreWhitelist;
+        private final Set<String> biomes;
+        private final boolean biomesAreWhitelist;
+
+        private WildCropGenerationSettings(int chance, int[] dimensions, boolean dimensionsAreWhitelist, String[] biomes, boolean biomesAreWhitelist) {
+            this.chance = chance;
+            this.dimensions = createDimensionSet(dimensions);
+            this.dimensionsAreWhitelist = dimensionsAreWhitelist;
+            this.biomes = createBiomeSet(biomes);
+            this.biomesAreWhitelist = biomesAreWhitelist;
+        }
+
+        private static WildCropGenerationSettings createDefault(int chance) {
+            return new WildCropGenerationSettings(chance, defaultWildCropDimensions, true, defaultWildCropBiomes, false);
+        }
+
+        private static Set<Integer> createDimensionSet(int[] dimensions) {
+            Set<Integer> dimensionSet = new HashSet<>();
+            for (int dimension : dimensions) {
+                dimensionSet.add(dimension);
+            }
+            return dimensionSet;
+        }
+
+        private static Set<String> createBiomeSet(String[] biomes) {
+            return new HashSet<>(Arrays.asList(biomes));
+        }
+
+        public int getChance() {
+            return this.chance;
+        }
+
+        public boolean canGenerateInDimension(int dimension) {
+            boolean containsDimension = this.dimensions.contains(dimension);
+            return this.dimensionsAreWhitelist == containsDimension;
+        }
+
+        public boolean canGenerateInBiome(ResourceLocation biomeId) {
+            String configuredBiomeId = biomeId == null ? "" : biomeId.toString().toLowerCase(Locale.ROOT);
+            boolean containsBiome = this.biomes.contains(configuredBiomeId);
+            return this.biomesAreWhitelist == containsBiome;
+        }
+
+        public boolean usesBiomeWhitelist() {
+            return this.biomesAreWhitelist;
+        }
     }
 
     @Mod.EventBusSubscriber(modid = FarmersDelightLegacy.MOD_ID)

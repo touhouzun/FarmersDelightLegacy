@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableList;
 import com.wdcftgg.farmersdelightlegacy.api.recipe.knife.HuntingDropOutput;
 import com.wdcftgg.farmersdelightlegacy.common.item.ItemKnife;
 import com.wdcftgg.farmersdelightlegacy.common.registry.ModItems;
+import com.wdcftgg.farmersdelightlegacy.common.util.KnifeItemStacks;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
@@ -495,12 +496,6 @@ public final class HuntingDropRecipeManager {
     }
 
     private static List<ItemStack> getKnifeToolOptions() {
-        List<ItemStack> stacks = new ArrayList<>();
-        for (Item item : ForgeRegistries.ITEMS.getValuesCollection()) {
-            if (ItemKnife.isKnife(new ItemStack(item))) {
-                stacks.add(new ItemStack(item));
-            }
-        }
-        return stacks.isEmpty() ? Collections.emptyList() : ImmutableList.copyOf(stacks);
+        return KnifeItemStacks.getJeiDisplayStacks();
     }
 }
