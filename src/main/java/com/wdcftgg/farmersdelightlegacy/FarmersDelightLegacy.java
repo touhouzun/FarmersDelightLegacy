@@ -2,6 +2,7 @@ package com.wdcftgg.farmersdelightlegacy;
 
 import com.wdcftgg.farmersdelightlegacy.common.Configuration;
 import com.wdcftgg.farmersdelightlegacy.common.advancement.ModAdvancements;
+import com.wdcftgg.farmersdelightlegacy.common.command.CommandFarmersDelightLegacy;
 import com.wdcftgg.farmersdelightlegacy.common.compat.*;
 import com.wdcftgg.farmersdelightlegacy.common.compat.futuremc.FutureMcComposterCompat;
 import com.wdcftgg.farmersdelightlegacy.common.compat.futuremc.FutureMcOceanicExpanseCompat;
@@ -22,6 +23,7 @@ import net.minecraftforge.fml.common.event.FMLConstructionEvent;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import org.apache.logging.log4j.LogManager;
@@ -49,7 +51,7 @@ public class FarmersDelightLegacy {
 
     @Mod.EventHandler
     public void construct(FMLConstructionEvent event) {
-        Configuration.load(new java.io.File(Loader.instance().getConfigDir(), FarmersDelightLegacy.MOD_ID + ".cfg"));
+        Configuration.loadSettingsOnly(new java.io.File(Loader.instance().getConfigDir(), FarmersDelightLegacy.MOD_ID + ".cfg"));
         FutureMcOceanicExpanseCompat.syncFutureMcConfig();
     }
 
@@ -84,8 +86,14 @@ public class FarmersDelightLegacy {
 
     @Mod.EventHandler
     public void postInit(FMLPostInitializationEvent event) {
+        Configuration.syncAfterBiomeRegistration();
         CampfireCookingCompat.registerAll();
         ModDispenserBehaviors.registerAll();
+    }
+
+    @Mod.EventHandler
+    public void serverStarting(FMLServerStartingEvent event) {
+        event.registerServerCommand(new CommandFarmersDelightLegacy());
     }
 
 }

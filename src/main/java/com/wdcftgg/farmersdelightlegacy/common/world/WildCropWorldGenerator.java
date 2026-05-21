@@ -228,7 +228,7 @@ public class WildCropWorldGenerator implements IWorldGenerator {
         if (!canGenerateWildCrop(Configuration.wildCabbagesGeneration, biomeId, dimension)) {
             return;
         }
-        if (!shouldUseConfiguredBiomeSelection(Configuration.wildCabbagesGeneration) && !BiomeDictionary.hasType(biome, BiomeDictionary.Type.BEACH)) {
+        if (!Configuration.wildCabbagesGeneration.usesBiomeWhitelist() && !BiomeDictionary.hasType(biome, BiomeDictionary.Type.BEACH)) {
             return;
         }
         generatePatch(world, random, chunkX, chunkZ, Configuration.wildCabbagesGeneration.getChance(), 64, 6, 3,
@@ -241,10 +241,10 @@ public class WildCropWorldGenerator implements IWorldGenerator {
         if (!canGenerateWildCrop(Configuration.wildOnionsGeneration, biomeId, dimension)) {
             return;
         }
-        if (!shouldUseConfiguredBiomeSelection(Configuration.wildOnionsGeneration) && BiomeDictionary.hasType(biome, BiomeDictionary.Type.MUSHROOM)) {
+        if (!Configuration.wildOnionsGeneration.usesBiomeWhitelist() && BiomeDictionary.hasType(biome, BiomeDictionary.Type.MUSHROOM)) {
             return;
         }
-        if (!shouldUseConfiguredBiomeSelection(Configuration.wildOnionsGeneration)) {
+        if (!Configuration.wildOnionsGeneration.usesBiomeWhitelist()) {
             float temperature = biome.getDefaultTemperature();
             if (temperature < 0.4F || temperature > 0.9F) {
                 return;
@@ -260,7 +260,7 @@ public class WildCropWorldGenerator implements IWorldGenerator {
         if (!canGenerateWildCrop(Configuration.wildTomatoesGeneration, biomeId, dimension)) {
             return;
         }
-        if (!shouldUseConfiguredBiomeSelection(Configuration.wildTomatoesGeneration) && (!BiomeDictionary.hasType(biome, BiomeDictionary.Type.HOT) || BiomeDictionary.hasType(biome, BiomeDictionary.Type.WET))) {
+        if (!Configuration.wildTomatoesGeneration.usesBiomeWhitelist() && (!BiomeDictionary.hasType(biome, BiomeDictionary.Type.HOT) || BiomeDictionary.hasType(biome, BiomeDictionary.Type.WET))) {
             return;
         }
         generatePatch(world, random, chunkX, chunkZ, Configuration.wildTomatoesGeneration.getChance(), 64, 6, 3,
@@ -273,10 +273,10 @@ public class WildCropWorldGenerator implements IWorldGenerator {
         if (!canGenerateWildCrop(Configuration.wildCarrotsGeneration, biomeId, dimension)) {
             return;
         }
-        if (!shouldUseConfiguredBiomeSelection(Configuration.wildCarrotsGeneration) && BiomeDictionary.hasType(biome, BiomeDictionary.Type.MUSHROOM)) {
+        if (!Configuration.wildCarrotsGeneration.usesBiomeWhitelist() && BiomeDictionary.hasType(biome, BiomeDictionary.Type.MUSHROOM)) {
             return;
         }
-        if (!shouldUseConfiguredBiomeSelection(Configuration.wildCarrotsGeneration)) {
+        if (!Configuration.wildCarrotsGeneration.usesBiomeWhitelist()) {
             float temperature = biome.getDefaultTemperature();
             if (temperature < 0.4F || temperature > 0.9F) {
                 return;
@@ -292,7 +292,7 @@ public class WildCropWorldGenerator implements IWorldGenerator {
         if (!canGenerateWildCrop(Configuration.wildPotatoesGeneration, biomeId, dimension)) {
             return;
         }
-        if (!shouldUseConfiguredBiomeSelection(Configuration.wildPotatoesGeneration)) {
+        if (!Configuration.wildPotatoesGeneration.usesBiomeWhitelist()) {
             float temperature = biome.getDefaultTemperature();
             if (temperature < 0.1F || temperature > 0.3F) {
                 return;
@@ -308,7 +308,7 @@ public class WildCropWorldGenerator implements IWorldGenerator {
         if (!canGenerateWildCrop(Configuration.wildBeetrootsGeneration, biomeId, dimension)) {
             return;
         }
-        if (!shouldUseConfiguredBiomeSelection(Configuration.wildBeetrootsGeneration) && !BiomeDictionary.hasType(biome, BiomeDictionary.Type.BEACH)) {
+        if (!Configuration.wildBeetrootsGeneration.usesBiomeWhitelist() && !BiomeDictionary.hasType(biome, BiomeDictionary.Type.BEACH)) {
             return;
         }
         generatePatch(world, random, chunkX, chunkZ, Configuration.wildBeetrootsGeneration.getChance(), 64, 6, 3,
@@ -321,7 +321,7 @@ public class WildCropWorldGenerator implements IWorldGenerator {
         if (!canGenerateWildCrop(Configuration.wildRiceGeneration, biomeId, dimension)) {
             return;
         }
-        if (!shouldUseConfiguredBiomeSelection(Configuration.wildRiceGeneration) && !BiomeDictionary.hasType(biome, BiomeDictionary.Type.WET)) {
+        if (!Configuration.wildRiceGeneration.usesBiomeWhitelist() && !BiomeDictionary.hasType(biome, BiomeDictionary.Type.WET)) {
             return;
         }
         int wildRiceChance = Configuration.wildRiceGeneration.getChance();
@@ -341,9 +341,6 @@ public class WildCropWorldGenerator implements IWorldGenerator {
         return settings.canGenerateInDimension(dimension) && settings.canGenerateInBiome(biomeId);
     }
 
-    private boolean shouldUseConfiguredBiomeSelection(Configuration.WildCropGenerationSettings settings) {
-        return settings.usesBiomeWhitelist();
-    }
 
     private void generateWildRiceWithFluidlogged(World world, Random random, int chunkX, int chunkZ) {
         BlockPos origin = randomSurfaceOrigin(world, random, chunkX, chunkZ);

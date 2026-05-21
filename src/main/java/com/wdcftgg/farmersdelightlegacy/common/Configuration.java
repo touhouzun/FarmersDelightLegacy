@@ -9,6 +9,10 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemSoup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.biome.Biome;
+import net.minecraftforge.common.BiomeDictionary;
+import net.minecraftforge.common.config.ConfigCategory;
+import net.minecraftforge.common.config.Property;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -25,7 +29,11 @@ import java.util.Set;
 public final class Configuration {
 
     private static final int[] defaultWildCropDimensions = new int[]{0};
-    private static final String[] defaultWildCropBiomes = new String[0];
+    private static final String[] emptyWildCropBiomes = new String[0];
+    private static final String[] wildCropGenerationCategoryPaths = new String[]{
+            "wild_cabbages", "wild_beetroots", "wild_potatoes", "wild_carrots",
+            "wild_onions", "wild_tomatoes", "wild_rice"
+    };
 
     public static final String CATEGORY_SETTINGS = "settings";
     public static boolean enableVanillaCropCrates = true;
@@ -89,6 +97,7 @@ public final class Configuration {
     private static final Set<Item> STACK_SIZE_OVERRIDDEN_SOUPS = new HashSet<>();
     private static net.minecraftforge.common.config.Configuration config;
     private static File configDirectory;
+    private static boolean wildCropBiomeDefaultInitializationReady;
 
     private Configuration() {
     }
@@ -96,7 +105,32 @@ public final class Configuration {
     public static void load(File configFile) {
         config = new net.minecraftforge.common.config.Configuration(configFile);
         configDirectory = configFile.getParentFile();
+        wildCropBiomeDefaultInitializationReady = false;
         sync();
+    }
+
+    public static void syncAfterBiomeRegistration() {
+        wildCropBiomeDefaultInitializationReady = true;
+        sync();
+    }
+
+    public static void loadSettingsOnly(File configFile) {
+        config = new net.minecraftforge.common.config.Configuration(configFile);
+        configDirectory = configFile.getParentFile();
+        syncSettingsOnly();
+    }
+
+    private static void syncSettingsOnly() {
+        if (config == null) {
+            return;
+        }
+
+        config.load();
+        skipFutureMcOceanicExpanseCheck = config.getBoolean("skipFutureMcOceanicExpanseCheck", CATEGORY_SETTINGS, true,
+                "Should Future MC ignore its Oceanic Expanse stripped-log gating so stripped logs stay registered when Oceanic Expanse is present?");
+        if (config.hasChanged()) {
+            config.save();
+        }
     }
 
     public static void sync() {
@@ -173,6 +207,7 @@ public final class Configuration {
         generateRedMushroomColonies = config.getBoolean("genRedMushroomColony", CATEGORY_WORLD + ".red_mushroom_colonies", true,
                 "Generate red mushroom colonies on mushroom fields.");
         chanceRedMushroomColonies = getWorldChance("red_mushroom_colonies", 15);
+        removeGeneratedDefaultBiomesProperties();
 
         nourishmentHungerOverlay = config.getBoolean("nourishmentHungerOverlay", CATEGORY_CLIENT, true,
                 "Should the hunger bar have a gilded overlay when the player has the Nourishment effect?");
@@ -188,7 +223,7 @@ public final class Configuration {
 
     private static int getWorldChance(String categoryPath, int defaultValue) {
         return config.getInt("chance", CATEGORY_WORLD + "." + categoryPath, defaultValue, 0, Integer.MAX_VALUE,
-                "Chance of generating clusters. Smaller value = more frequent. Set to 0 to disable this generator in 1.12.2.");
+                "Chance of generating clusters. Smaller value = more frequent. Set to 0 to disable this generator.");
     }
 
     private static WildCropGenerationSettings getWildCropGenerationSettings(String categoryPath, int defaultChance) {
@@ -198,11 +233,121 @@ public final class Configuration {
                 "Dimension ids used by this wild crop generator. When dimensionsAreWhitelist is true, the crop only generates in these dimensions. When false, the crop skips these dimensions.").getIntList();
         boolean dimensionsAreWhitelist = config.getBoolean("dimensionsAreWhitelist", category, true,
                 "If true, dimensions is a whitelist. If false, dimensions is a blacklist.");
-        String[] biomes = config.getStringList("biomes", category, defaultWildCropBiomes,
-                "Biome registry ids used by this wild crop generator, such as minecraft:beaches. Empty blacklist keeps the built-in biome rules unchanged; a whitelist replaces the built-in biome selection.");
-        boolean biomesAreWhitelist = config.getBoolean("biomesAreWhitelist", category, false,
+        String[] defaultBiomes = getDefaultWildCropBiomes(categoryPath);
+        Property biomesInitializedProperty = config.get(category, "biomesInitialized", false,
+                "Internal marker used to decide whether this wild crop's biome list has already received its generated default values.");
+        boolean biomesInitialized = biomesInitializedProperty.getBoolean(false);
+        boolean biomePropertyExists = config.hasKey(category, "biomes");
+        boolean shouldInitializeBiomes = wildCropBiomeDefaultInitializationReady && !biomesInitialized;
+        Property biomeProperty = null;
+        if (shouldInitializeBiomes || biomePropertyExists) {
+            String[] biomeFallbackValues = shouldInitializeBiomes ? defaultBiomes : emptyWildCropBiomes;
+            biomeProperty = config.get(category, "biomes", biomeFallbackValues,
+                    "Biome registry ids used by this wild crop generator. When biomesInitialized is false, this list is regenerated from the built-in BiomeDictionary and temperature rules after biome registration is complete.");
+        }
+        Property biomesAreWhitelistProperty = config.get(category, "biomesAreWhitelist", true,
                 "If true, biomes is a whitelist. If false, biomes is a blacklist.");
+        boolean biomesAreWhitelist = biomesAreWhitelistProperty.getBoolean();
+        if (shouldInitializeBiomes) {
+            biomeProperty.set(defaultBiomes);
+            biomesAreWhitelist = true;
+            biomesAreWhitelistProperty.set(true);
+            biomesInitializedProperty.set(true);
+        }
+        String[] biomes = biomeProperty == null ? emptyWildCropBiomes : biomeProperty.getStringList();
         return new WildCropGenerationSettings(chance, dimensions, dimensionsAreWhitelist, normalizeConfiguredStringList(biomes), biomesAreWhitelist);
+    }
+
+    public static String[] getWildCropGenerationCategoryPaths() {
+        return wildCropGenerationCategoryPaths.clone();
+    }
+
+    public static int resetAllWildCropBiomesInitialized() {
+        return resetWildCropBiomesInitialized(wildCropGenerationCategoryPaths);
+    }
+
+    public static boolean resetWildCropBiomesInitialized(String categoryPath) {
+        String normalizedCategoryPath = normalizeWildCropGenerationCategoryPath(categoryPath);
+        if (normalizedCategoryPath.isEmpty()) {
+            return false;
+        }
+        return resetWildCropBiomesInitialized(new String[]{normalizedCategoryPath}) == 1;
+    }
+
+    private static int resetWildCropBiomesInitialized(String[] categoryPaths) {
+        if (config == null) {
+            return 0;
+        }
+
+        config.load();
+        int resetCount = 0;
+        for (String categoryPath : categoryPaths) {
+            String normalizedCategoryPath = normalizeWildCropGenerationCategoryPath(categoryPath);
+            if (normalizedCategoryPath.isEmpty()) {
+                continue;
+            }
+            String category = CATEGORY_WORLD + "." + normalizedCategoryPath;
+            Property biomesInitializedProperty = config.get(category, "biomesInitialized", false,
+                    "Internal marker used to decide whether this wild crop's biome list has already received its generated default values.");
+            biomesInitializedProperty.set(false);
+            resetCount++;
+        }
+
+        if (resetCount > 0) {
+            config.save();
+            sync();
+        }
+        return resetCount;
+    }
+
+    private static String normalizeWildCropGenerationCategoryPath(String categoryPath) {
+        if (categoryPath == null) {
+            return "";
+        }
+        String normalizedCategoryPath = categoryPath.trim().toLowerCase(Locale.ROOT);
+        for (String wildCropGenerationCategoryPath : wildCropGenerationCategoryPaths) {
+            if (wildCropGenerationCategoryPath.equals(normalizedCategoryPath)) {
+                return wildCropGenerationCategoryPath;
+            }
+        }
+        return "";
+    }
+
+    private static String[] getDefaultWildCropBiomes(String categoryPath) {
+        Set<String> biomeIds = new LinkedHashSet<>();
+        for (Biome biome : ForgeRegistries.BIOMES.getValuesCollection()) {
+            ResourceLocation biomeId = biome.getRegistryName();
+            if (biomeId != null && matchesDefaultWildCropBiome(categoryPath, biome)) {
+                biomeIds.add(biomeId.toString().toLowerCase(Locale.ROOT));
+            }
+        }
+        return biomeIds.toArray(new String[0]);
+    }
+
+    private static boolean matchesDefaultWildCropBiome(String categoryPath, Biome biome) {
+        if ("wild_cabbages".equals(categoryPath) || "wild_beetroots".equals(categoryPath)) {
+            return BiomeDictionary.hasType(biome, BiomeDictionary.Type.BEACH);
+        }
+        if ("wild_onions".equals(categoryPath) || "wild_carrots".equals(categoryPath)) {
+            return !BiomeDictionary.hasType(biome, BiomeDictionary.Type.MUSHROOM)
+                    && isBiomeTemperatureBetween(biome, 0.4F, 0.9F);
+        }
+        if ("wild_tomatoes".equals(categoryPath)) {
+            return BiomeDictionary.hasType(biome, BiomeDictionary.Type.HOT)
+                    && !BiomeDictionary.hasType(biome, BiomeDictionary.Type.WET);
+        }
+        if ("wild_potatoes".equals(categoryPath)) {
+            return isBiomeTemperatureBetween(biome, 0.1F, 0.3F);
+        }
+        if ("wild_rice".equals(categoryPath)) {
+            return BiomeDictionary.hasType(biome, BiomeDictionary.Type.WET);
+        }
+        return false;
+    }
+
+    private static boolean isBiomeTemperatureBetween(Biome biome, float minimumTemperature, float maximumTemperature) {
+        float temperature = biome.getDefaultTemperature();
+        return temperature >= minimumTemperature && temperature <= maximumTemperature;
     }
 
     private static String[] normalizeConfiguredStringList(String[] values) {
@@ -217,6 +362,15 @@ public final class Configuration {
             }
         }
         return normalizedValues.toArray(new String[0]);
+    }
+
+    private static void removeGeneratedDefaultBiomesProperties() {
+        for (String categoryPath : wildCropGenerationCategoryPaths) {
+            ConfigCategory category = config.getCategory(CATEGORY_WORLD + "." + categoryPath);
+            if (category.containsKey("generatedDefaultBiomes")) {
+                category.remove("generatedDefaultBiomes");
+            }
+        }
     }
 
     public static void applyRuntimeOverrides() {
@@ -337,7 +491,7 @@ public final class Configuration {
         }
 
         private static WildCropGenerationSettings createDefault(int chance) {
-            return new WildCropGenerationSettings(chance, defaultWildCropDimensions, true, defaultWildCropBiomes, false);
+            return new WildCropGenerationSettings(chance, defaultWildCropDimensions, true, emptyWildCropBiomes, true);
         }
 
         private static Set<Integer> createDimensionSet(int[] dimensions) {
@@ -383,7 +537,7 @@ public final class Configuration {
             if (!FarmersDelightLegacy.MOD_ID.equals(event.getModID())) {
                 return;
             }
-            sync();
+            syncAfterBiomeRegistration();
             applyRuntimeOverrides();
             if (configDirectory != null) {
                 WanderingTradersBackportCompat.syncTradeTable(configDirectory);
