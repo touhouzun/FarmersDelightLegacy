@@ -137,6 +137,46 @@ public final class CuttingBoardRecipeManager {
         return true;
     }
 
+    public static boolean registerScriptRecipe(String key, ItemStack[] inputStacks, ItemStack[] toolStacks,
+                                               ItemStack[] resultStacks, float[] resultChances) {
+        if (key == null || key.isEmpty() || inputStacks == null || resultStacks == null || resultStacks.length == 0) {
+            return false;
+        }
+
+        IngredientMatcher inputMatcher = IngredientMatcher.fromStacks(inputStacks, false);
+        IngredientMatcher toolMatcher;
+        if (toolStacks == null) {
+            toolMatcher = IngredientMatcher.fromToken(DEFAULT_TOOL_TOKEN, FarmersDelightLegacy.MOD_ID);
+        } else if (toolStacks.length == 0) {
+            toolMatcher = IngredientMatcher.noTool();
+        } else {
+            toolMatcher = IngredientMatcher.fromStacks(toolStacks, false);
+        }
+        if (!inputMatcher.isValid() || !toolMatcher.isValid()) {
+            return false;
+        }
+
+        List<ResultEntry> resultEntries = new ArrayList<>();
+        for (int i = 0; i < resultStacks.length; i++) {
+            ItemStack resultStack = resultStacks[i];
+            if (resultStack == null || resultStack.isEmpty()) {
+                return false;
+            }
+
+            float chance = 1.0F;
+            if (resultChances != null && i < resultChances.length) {
+                chance = clampChance(resultChances[i]);
+            }
+            resultEntries.add(new ResultEntry(resultStack.copy(), chance));
+        }
+
+        CuttingRecipeEntry recipeEntry = new CuttingRecipeEntry(key, inputMatcher, toolMatcher, resultEntries);
+        synchronized (SCRIPT_RECIPES) {
+            SCRIPT_RECIPES.put(key, recipeEntry);
+        }
+        return true;
+    }
+
     public static boolean unregisterScriptRecipe(String key) {
         if (key == null || key.isEmpty()) {
             return false;
@@ -542,6 +582,35 @@ public final class CuttingBoardRecipeManager {
             return new IngredientMatcher(itemStacks, oreDictNames, false);
         }
 
+        private static IngredientMatcher fromStacks(ItemStack[] stacks, boolean noToolRequired) {
+            if (noToolRequired) {
+                return noTool();
+            }
+            if (stacks == null || stacks.length == 0) {
+                return invalid();
+            }
+
+            List<ItemStack> itemStacks = new ArrayList<>();
+            for (ItemStack stack : stacks) {
+                if (stack == null || stack.isEmpty()) {
+                    continue;
+                }
+                ItemStack matcherStack = stack.copy();
+                matcherStack.setCount(1);
+                boolean duplicate = false;
+                for (ItemStack candidate : itemStacks) {
+                    if (isItemAndMetaMatch(candidate, matcherStack) && isItemAndMetaMatch(matcherStack, candidate)) {
+                        duplicate = true;
+                        break;
+                    }
+                }
+                if (!duplicate) {
+                    itemStacks.add(matcherStack);
+                }
+            }
+            return new IngredientMatcher(itemStacks, Collections.<String>emptyList(), false);
+        }
+
         private static IngredientMatcher fromJson(JsonElement element, String defaultNamespace) {
             if (element == null || element.isJsonNull()) {
                 return invalid();
@@ -702,7 +771,7 @@ public final class CuttingBoardRecipeManager {
             return false;
         }
 
-        private boolean isItemAndMetaMatch(ItemStack candidate, ItemStack target) {
+        private static boolean isItemAndMetaMatch(ItemStack candidate, ItemStack target) {
             if (candidate.isEmpty() || target.isEmpty() || candidate.getItem() != target.getItem()) {
                 return false;
             }

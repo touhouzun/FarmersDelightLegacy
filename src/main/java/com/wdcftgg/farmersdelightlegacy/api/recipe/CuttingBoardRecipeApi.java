@@ -53,6 +53,38 @@ public final class CuttingBoardRecipeApi {
     }
 
     /**
+     * Registers a runtime recipe with concrete item stacks.
+     *
+     * @param key The unique recipe or predicate id used by the backing manager.
+     * @param inputStacks Input item stacks accepted by the recipe; stack size is ignored for matching.
+     * @param toolStacks Tool item stacks accepted by the recipe; {@code null} uses the default knife tool and an empty array requires no tool.
+     * @param resultStacks Result item stacks produced by the recipe, preserving stack size and metadata.
+     * @param resultChances Result chances aligned by index with {@code resultStacks}, using the 0.0 to 1.0 range.
+     * @return The result produced by this API method.
+     */
+    public static boolean registerRecipe(String key, ItemStack[] inputStacks, ItemStack[] toolStacks,
+                                         ItemStack[] resultStacks, float[] resultChances) {
+        return CuttingBoardRecipeManager.registerScriptRecipe(key, inputStacks, toolStacks, resultStacks, resultChances);
+    }
+
+    /**
+     * Registers a runtime recipe with concrete item stacks.
+     *
+     * @param key The unique recipe or predicate id used by the backing manager.
+     * @param inputStack The input item stack accepted by the recipe; stack size is ignored for matching.
+     * @param toolStack The tool item stack accepted by the recipe; {@link ItemStack#EMPTY} requires no tool.
+     * @param resultStack The result item stack produced by the recipe.
+     * @param resultChance The result chance, using the 0.0 to 1.0 range.
+     * @return The result produced by this API method.
+     */
+    public static boolean registerRecipe(String key, ItemStack inputStack, ItemStack toolStack, ItemStack resultStack,
+                                         float resultChance) {
+        ItemStack[] toolStacks = toolStack == null ? null : toolStack.isEmpty() ? new ItemStack[0] : new ItemStack[] {toolStack};
+        return registerRecipe(key, new ItemStack[] {inputStack}, toolStacks, new ItemStack[] {resultStack},
+                new float[] {resultChance});
+    }
+
+    /**
      * Unregisters a recipe by key.
      *
      * @param key The unique recipe or predicate id used by the backing manager.
