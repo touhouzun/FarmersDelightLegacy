@@ -1,17 +1,14 @@
 {
   "conditions": [
     {
-      "type": "forge:not",
-      "value": {
-        "type": "forge:mod_loaded",
-        "modid": "campfire"
-      }
+      "type": "forge:mod_loaded",
+      "modid": "futuremc"
     },
     {
       "type": "forge:not",
       "value": {
         "type": "forge:mod_loaded",
-        "modid": "futuremc"
+        "modid": "campfire"
       }
     }
   ],
@@ -27,9 +24,19 @@
       },
       "trigger": "minecraft:inventory_changed"
     },
+    "has_campfire": {
+      "conditions": {
+        "items": [
+          {
+            "item": "futuremc:campfire"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "farmersdelight:stove"
+        "recipe": "farmersdelight:stove_futuremc_campfire"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -37,12 +44,13 @@
   "requirements": [
     [
       "has_bricks",
+      "has_campfire",
       "has_the_recipe"
     ]
   ],
   "rewards": {
     "recipes": [
-      "farmersdelight:stove"
+      "farmersdelight:stove_futuremc_campfire"
     ]
   }
 }

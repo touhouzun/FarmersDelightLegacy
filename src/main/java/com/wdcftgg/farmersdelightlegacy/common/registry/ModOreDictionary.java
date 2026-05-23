@@ -45,6 +45,7 @@ public final class ModOreDictionary {
 
         registerTrapdoorOreGroups();
         registerCherryPlankOreGroup();
+        registerCampfireOreGroup();
 
         compatRegistered = true;
     }
@@ -108,6 +109,10 @@ public final class ModOreDictionary {
     private static void registerCherryPlankOreGroup() {
         registerOptionalOre("cherryPlank", "sakura", "plank_sakura");
         registerOptionalOre("cherryPlank", "suikecherry", "cherry_planks");
+    }
+
+    private static void registerCampfireOreGroup() {
+        registerOptionalOre("campfire", "futuremc", "campfire");
     }
 
     private static void registerTrapdoorOreGroups() {
