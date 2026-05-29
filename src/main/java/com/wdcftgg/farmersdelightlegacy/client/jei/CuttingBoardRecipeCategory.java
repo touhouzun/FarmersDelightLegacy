@@ -53,7 +53,7 @@ public final class CuttingBoardRecipeCategory implements IRecipeCategory<Cutting
 
     @Override
     public void setRecipe(IRecipeLayout recipeLayout, CuttingBoardJeiRecipe recipeWrapper, IIngredients ingredients) {
-        recipeLayout.getItemStacks().init(0, true, 16, 8);
+        recipeLayout.getItemStacks().init(0, true, 15, 7);
         recipeLayout.getItemStacks().init(1, true, 16, 27);
 
         int outputCount = recipeWrapper.getOutputCount();
