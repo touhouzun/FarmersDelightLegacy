@@ -82,6 +82,9 @@ dependencies {
     //燐/Hesperus
     implementation rfg.deobf("curse.maven:Hesperus-620262:4724647")
 
+    //Nyx
+    implementation rfg.deobf("curse.maven:Nyx-349214:3161738")
+
     //crt
     implementation rfg.deobf('CraftTweaker2:CraftTweaker2-MC1120-Main:1.12-4.1.20.698')
 

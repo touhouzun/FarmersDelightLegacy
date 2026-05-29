@@ -1,14 +1,17 @@
 package com.wdcftgg.farmersdelightlegacy.common.block;
 
+import com.wdcftgg.farmersdelightlegacy.common.compat.NyxSandyShrubBonemealCompat;
 import net.minecraft.block.BlockBush;
 import net.minecraft.block.IGrowable;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.init.Blocks;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.Loader;
 
 import java.util.Random;
 
@@ -29,12 +32,12 @@ public class BlockSandyShrub extends BlockBush implements IGrowable {
 
     @Override
     protected boolean canSustainBush(IBlockState state) {
-        return state.getBlock() == net.minecraft.init.Blocks.SAND;
+        return state.getBlock() == Blocks.SAND;
     }
 
     @Override
     public boolean canGrow(World worldIn, BlockPos pos, IBlockState state, boolean isClient) {
-        return true;
+        return !Loader.isModLoaded(NyxSandyShrubBonemealCompat.NyxModId);
     }
 
     @Override
