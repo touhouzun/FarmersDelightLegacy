@@ -2,6 +2,7 @@ package com.wdcftgg.farmersdelightlegacy.common.block.sign;
 
 import com.wdcftgg.farmersdelightlegacy.FarmersDelightLegacy;
 import com.wdcftgg.farmersdelightlegacy.common.tile.TileEntityCanvasSign;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumFacing;
@@ -25,6 +26,7 @@ public class BlockCanvasWallSign extends BlockWallSign {
     public BlockCanvasWallSign(ResourceLocation textureLocation, String standingSignPath) {
         this.textureLocation = textureLocation;
         this.standingSignPath = standingSignPath;
+        this.setSoundType(SoundType.WOOD);
     }
 
     public ResourceLocation getTextureLocation() {
