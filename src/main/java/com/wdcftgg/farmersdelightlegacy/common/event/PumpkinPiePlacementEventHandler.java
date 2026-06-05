@@ -88,6 +88,26 @@ public final class PumpkinPiePlacementEventHandler {
         event.setCancellationResult(EnumActionResult.SUCCESS);
     }
 
+    @SubscribeEvent
+    public static void onRightClickItem(PlayerInteractEvent.RightClickItem event) {
+        if (Configuration.enablePumpkinPieDirectEating || event.getHand() != EnumHand.MAIN_HAND) {
+            return;
+        }
+
+        EntityPlayer player = event.getEntityPlayer();
+        if (player == null) {
+            return;
+        }
+
+        ItemStack heldStack = player.getHeldItem(event.getHand());
+        if (heldStack.isEmpty() || heldStack.getItem() != Items.PUMPKIN_PIE) {
+            return;
+        }
+
+        event.setCanceled(true);
+        event.setCancellationResult(EnumActionResult.FAIL);
+    }
+
     private static BlockPos getPumpkinPiePlacePos(World world, BlockPos clickedPos, EnumFacing clickedFace) {
         if (clickedFace == null) {
             return null;

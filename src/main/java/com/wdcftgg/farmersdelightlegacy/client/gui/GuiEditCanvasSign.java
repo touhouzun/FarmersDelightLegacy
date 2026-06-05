@@ -113,7 +113,14 @@ public class GuiEditCanvasSign extends GuiScreen {
         }
         GlStateManager.popMatrix();
         this.drawEditorTextOverlay();
+        this.prepareGuiControlRenderState();
         super.drawScreen(mouseX, mouseY, partialTicks);
+    }
+
+    private void prepareGuiControlRenderState() {
+        GlStateManager.disableLighting();
+        GlStateManager.disableDepth();
+        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
     }
 
     private void drawCanvasSign() {

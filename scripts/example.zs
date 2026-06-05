@@ -38,6 +38,34 @@ mods.farmersdelight.HeatSource.addOffsetBlock(
     "minecraft:hopper"
 );
 
+// 将岩浆块从默认直接热源中移除。
+// Remove magma blocks from the default direct heat sources.
+mods.farmersdelight.HeatSource.removeDefaultDirectHeatSourceBlock(
+    "example:remove_magma_direct_heat",
+    "minecraft:magma"
+);
+
+// 将指定 metadata 的方块从默认直接热源中移除。
+// Remove a block with exact metadata from the default direct heat sources.
+mods.farmersdelight.HeatSource.removeDefaultDirectHeatSourceBlockWithMeta(
+    "example:remove_lit_furnace_meta_0_direct_heat",
+    "minecraft:lit_furnace",
+    0
+);
+
+// 通过回调动态判定要从默认直接热源中移除的方块。
+// Dynamically determine default direct heat sources to remove with a callback.
+mods.farmersdelight.HeatSource.removeDefaultDirectHeatSourcePredicate(
+    "example:remove_lava_direct_heat",
+    function(world as IWorld, pos as IBlockPos, state as IBlockState) as bool {
+        return state.block.definition.id == "minecraft:lava" || state.block.definition.id == "minecraft:flowing_lava";
+    }
+);
+
+// 恢复指定 key 移除的默认直接热源。
+// Restore default direct heat sources removed by the given key.
+// mods.farmersdelight.HeatSource.restoreDefaultDirectHeatSourceBlock("example:remove_magma_direct_heat");
+
 // 通过回调动态判定直接热源。
 // Dynamically determine direct heat sources with a callback.
 mods.farmersdelight.HeatSource.addDirectHeatSourcePredicate(

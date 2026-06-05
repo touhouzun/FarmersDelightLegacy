@@ -26,6 +26,10 @@ public final class HeatSourceHelper {
             return true;
         }
 
+        if (HeatSourceApi.isRemovedAsDirectHeatSource(world, pos, state)) {
+            return false;
+        }
+
         return isBuiltInDirectHeatSource(state);
     }
 

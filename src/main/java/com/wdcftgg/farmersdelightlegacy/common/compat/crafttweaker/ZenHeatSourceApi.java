@@ -3,6 +3,7 @@ package com.wdcftgg.farmersdelightlegacy.common.compat.crafttweaker;
 import com.wdcftgg.farmersdelightlegacy.FarmersDelightLegacy;
 import com.wdcftgg.farmersdelightlegacy.api.heat.HeatSourceApi;
 import com.wdcftgg.farmersdelightlegacy.api.heat.HeatSourceOffsetApi;
+import com.wdcftgg.farmersdelightlegacy.common.util.HeatSourceHelper;
 import crafttweaker.annotations.ZenRegister;
 import crafttweaker.api.minecraft.CraftTweakerMC;
 import crafttweaker.api.world.IWorld;
@@ -57,6 +58,41 @@ public final class ZenHeatSourceApi {
     }
 
     @ZenMethod
+    public static boolean removeDefaultDirectHeatSourceBlock(String key, String blockId) {
+        return removeDefaultDirectHeatSourceBlockWithMeta(key, blockId, -1);
+    }
+
+    @ZenMethod
+    public static boolean removeDefaultDirectHeatSourceBlockWithMeta(String key, String blockId, int metadata) {
+        Block block = CraftTweakerCompatHelper.blockOf(blockId);
+        if (key == null || key.isEmpty() || block == null) {
+            return false;
+        }
+
+        HeatSourceApi.registerDirectHeatSourceRemovalPredicate(key, (world, pos, state) -> matchesBlockAndMeta(state, block, metadata));
+        return true;
+    }
+
+    @ZenMethod
+    public static boolean removeDefaultDirectHeatSourcePredicate(String key, ZenDirectHeatSourcePredicate predicate) {
+        if (key == null || key.isEmpty() || predicate == null) {
+            return false;
+        }
+
+        HeatSourceApi.registerDirectHeatSourceRemovalPredicate(key, (world, pos, state) -> invokeDefaultRemovalPredicate(key, predicate, world, pos, state));
+        return true;
+    }
+
+    @ZenMethod
+    public static boolean restoreDefaultDirectHeatSourceBlock(String key) {
+        if (key == null || key.isEmpty()) {
+            return false;
+        }
+        HeatSourceApi.unregisterDirectHeatSourceRemovalPredicate(key);
+        return true;
+    }
+
+    @ZenMethod
     public static boolean addOffsetBlock(String key, String blockId) {
         return addOffsetBlockWithMeta(key, blockId, -1);
     }
@@ -104,8 +140,7 @@ public final class ZenHeatSourceApi {
         if (!nativeWorld.isBlockLoaded(pos)) {
             return false;
         }
-        IBlockState state = nativeWorld.getBlockState(pos);
-        return HeatSourceApi.isRegisteredAsDirectHeatSource(nativeWorld, pos, state);
+        return HeatSourceHelper.isDirectHeatSource(nativeWorld, pos);
     }
 
     @ZenMethod
@@ -137,6 +172,15 @@ public final class ZenHeatSourceApi {
             return invokeCallback(predicate, world, pos, state);
         } catch (Throwable throwable) {
             FarmersDelightLegacy.LOGGER.error("CraftTweaker direct heat source callback failed: {}", key, throwable);
+            return false;
+        }
+    }
+
+    private static boolean invokeDefaultRemovalPredicate(String key, ZenDirectHeatSourcePredicate predicate, World world, BlockPos pos, IBlockState state) {
+        try {
+            return invokeCallback(predicate, world, pos, state);
+        } catch (Throwable throwable) {
+            FarmersDelightLegacy.LOGGER.error("CraftTweaker default heat source removal callback failed: {}", key, throwable);
             return false;
         }
     }
