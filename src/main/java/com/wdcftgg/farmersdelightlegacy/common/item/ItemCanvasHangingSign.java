@@ -38,6 +38,10 @@ public class ItemCanvasHangingSign extends ItemBlock {
         }
 
         IBlockState targetState = worldIn.getBlockState(pos);
+        if (player.isSneaking() && targetState.getBlock().onBlockActivated(worldIn, pos, targetState, player, hand, facing, hitX, hitY, hitZ)) {
+            return EnumActionResult.PASS;
+        }
+
         boolean canReplace = targetState.getBlock().isReplaceable(worldIn, pos);
         BlockPos placePos = canReplace ? pos : pos.offset(facing);
 

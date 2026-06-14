@@ -164,7 +164,7 @@ public class TileEntityCanvasSignRenderer extends TileEntitySpecialRenderer<Tile
             }
         }
 
-        String[] suffixes = new String[]{"_canvas_sign", "_canvas_wall_sign", "_hanging_canvas_sign", "_wall_hanging_canvas_sign"};
+        String[] suffixes = new String[]{"_wall_hanging_canvas_sign", "_hanging_canvas_sign", "_canvas_wall_sign", "_canvas_sign"};
         for (String suffix : suffixes) {
             if (path.endsWith(suffix)) {
                 return path.substring(0, path.length() - suffix.length());

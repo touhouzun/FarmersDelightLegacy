@@ -6,6 +6,7 @@ import com.wdcftgg.farmersdelightlegacy.common.tile.TileEntityCanvasSign;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.math.BlockPos;
@@ -46,8 +47,14 @@ final class CanvasSignInteractionHelper {
                 return;
             }
 
+            EntityPlayer player = event.getEntityPlayer();
             World world = event.getWorld();
             BlockPos pos = event.getPos();
+            ItemStack heldStack = player.getHeldItem(event.getHand());
+            if (player.isSneaking() && !heldStack.doesSneakBypassUse(world, pos, player)) {
+                return;
+            }
+
             IBlockState state = world.getBlockState(pos);
             if (!(state.getBlock() instanceof BlockCanvasStandingSign)
                     && !(state.getBlock() instanceof BlockCanvasWallSign)
@@ -61,7 +68,7 @@ final class CanvasSignInteractionHelper {
                 return;
             }
 
-            openEditor(world, pos, event.getEntityPlayer());
+            openEditor(world, pos, player);
             event.setUseBlock(Event.Result.DENY);
             event.setCanceled(true);
             event.setCancellationResult(EnumActionResult.SUCCESS);

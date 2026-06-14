@@ -9,6 +9,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.common.IPlantable;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -38,8 +39,7 @@ public class ItemPlantableFood extends ItemFoodTooltip {
             return EnumActionResult.FAIL;
         }
 
-        IBlockState soilState = worldIn.getBlockState(pos);
-        if (!this.validSoils.contains(soilState.getBlock())) {
+        if (!this.canPlantOnSoil(worldIn, pos)) {
             return EnumActionResult.FAIL;
         }
         if (!worldIn.isAirBlock(plantPos) || !this.cropBlock.canPlaceBlockAt(worldIn, plantPos)) {
@@ -51,5 +51,13 @@ public class ItemPlantableFood extends ItemFoodTooltip {
             stack.shrink(1);
         }
         return EnumActionResult.SUCCESS;
+    }
+
+    private boolean canPlantOnSoil(World worldIn, BlockPos soilPos) {
+        IBlockState soilState = worldIn.getBlockState(soilPos);
+        if (this.cropBlock instanceof IPlantable) {
+            return soilState.getBlock().canSustainPlant(soilState, worldIn, soilPos, EnumFacing.UP, (IPlantable) this.cropBlock);
+        }
+        return this.validSoils.contains(soilState.getBlock());
     }
 }

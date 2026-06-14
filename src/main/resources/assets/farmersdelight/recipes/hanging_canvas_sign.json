@@ -1,0 +1,30 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "futuremc"
+    }
+  ],
+  "pattern": [
+    "c c",
+    "w#w",
+    "w#w"
+  ],
+  "key": {
+    "#": {
+      "item": "farmersdelight:canvas"
+    },
+    "c": {
+      "item": "futuremc:chain"
+    },
+    "w": {
+      "type": "forge:ore_dict",
+      "ore": "logWood"
+    }
+  },
+  "result": {
+    "item": "farmersdelight:hanging_canvas_sign",
+    "count": 6
+  }
+}

@@ -36,17 +36,6 @@ public class ItemDogFood extends ItemBowlFoodTooltip {
     }
 
     @Override
-    public void onFoodEaten(ItemStack stack, World worldIn, EntityPlayer player) {
-        super.onFoodEaten(stack, worldIn, player);
-        if (worldIn.isRemote) {
-            return;
-        }
-        for (PotionEffect effect : FEEDING_EFFECTS) {
-            player.addPotionEffect(new PotionEffect(effect));
-        }
-    }
-
-    @Override
     public boolean itemInteractionForEntity(ItemStack stack, EntityPlayer playerIn, EntityLivingBase target, EnumHand hand) {
         if (!(target instanceof EntityWolf)) {
             return false;
