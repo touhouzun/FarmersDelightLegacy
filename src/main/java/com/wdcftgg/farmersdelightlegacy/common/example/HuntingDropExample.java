@@ -1,17 +1,5 @@
 package com.wdcftgg.farmersdelightlegacy.common.example;
 
-import com.wdcftgg.farmersdelightlegacy.api.recipe.knife.HuntingDropOutput;
-import com.wdcftgg.farmersdelightlegacy.api.recipe.knife.HuntingDropRecipeApi;
-import net.minecraft.entity.passive.EntityPig;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.init.MobEffects;
-import net.minecraft.item.ItemStack;
-import net.minecraft.potion.PotionEffect;
-import net.minecraft.util.ResourceLocation;
-
-import java.util.Arrays;
-
 public final class HuntingDropExample {
 
     private HuntingDropExample() {

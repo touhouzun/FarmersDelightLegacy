@@ -1,16 +1,15 @@
 package com.wdcftgg.farmersdelightlegacy.common.compat.crafttweaker;
 
-import com.wdcftgg.farmersdelightlegacy.common.recipe.CookingPotRecipeManager;
 import com.wdcftgg.farmersdelightlegacy.common.recipe.CookingPotRecipe.IngredientEntry;
+import com.wdcftgg.farmersdelightlegacy.common.recipe.CookingPotRecipeManager;
 import crafttweaker.annotations.ZenRegister;
 import crafttweaker.api.item.IIngredient;
 import crafttweaker.api.item.IItemStack;
 import net.minecraft.item.ItemStack;
-
-import java.util.List;
-
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
+
+import java.util.List;
 
 @ZenRegister
 @ZenClass("mods.farmersdelight.CookingPot")

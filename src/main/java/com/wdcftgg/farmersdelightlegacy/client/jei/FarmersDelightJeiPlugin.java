@@ -1,11 +1,9 @@
 package com.wdcftgg.farmersdelightlegacy.client.jei;
 
 import com.wdcftgg.farmersdelightlegacy.FarmersDelightLegacy;
-import com.wdcftgg.farmersdelightlegacy.client.gui.GuiCookingPot;
 import com.wdcftgg.farmersdelightlegacy.api.knife.IKnifeItem;
-import com.wdcftgg.farmersdelightlegacy.common.inventory.ContainerCookingPot;
+import com.wdcftgg.farmersdelightlegacy.client.gui.GuiCookingPot;
 import com.wdcftgg.farmersdelightlegacy.common.item.ItemCookingPot;
-import com.wdcftgg.farmersdelightlegacy.common.item.ItemKnife;
 import com.wdcftgg.farmersdelightlegacy.common.recipe.*;
 import com.wdcftgg.farmersdelightlegacy.common.registry.ModBlocks;
 import com.wdcftgg.farmersdelightlegacy.common.registry.ModItems;
@@ -27,13 +25,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.oredict.OreDictionary;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 @JEIPlugin
 public final class FarmersDelightJeiPlugin implements IModPlugin {
