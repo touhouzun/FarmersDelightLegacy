@@ -9,7 +9,7 @@ import java.util.Random;
 /**
  * Cutting Board recipe registration API.
  * <p>
- * inputTokens, toolTokens, and resultTokens support {@code modid:item}, {@code modid:item:meta}, and {@code ore:oreName}.
+ * inputTokens, toolTokens, and resultTokens support {@code modid:item}, {@code modid:item@meta}, and {@code ore:oreName}.
  * Passing {@code null} for toolTokens uses the default {@code ore:toolKnife}; passing an empty array means no tool is required.
  */
 public final class CuttingBoardRecipeApi {

@@ -145,6 +145,15 @@ mods.farmersdelight.CookingPot.addRecipeWithoutContainer(
     <minecraft:bread>
 );
 
+// 输入返还物：支持 CraftTweaker 的 transformReplace。
+// Input remainder: CraftTweaker transformReplace is supported.
+mods.farmersdelight.CookingPot.addRecipeWithContainer(
+    "example:pot_transform_replace",
+    [<minecraft:milk_bucket>.transformReplace(<minecraft:bucket>)] as IIngredient[],
+    <minecraft:cookie>,
+    <minecraft:bowl>
+);
+
 // 字符串版模板。
 // String overload templates.
 // 字符串物品 token 使用 modid:item@meta 表示精确 metadata。

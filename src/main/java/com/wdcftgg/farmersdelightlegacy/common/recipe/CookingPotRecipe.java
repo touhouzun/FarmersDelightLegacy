@@ -63,11 +63,22 @@ public class CookingPotRecipe {
         private final Item item;
         private final String oreDictName;
         private final int metadata;
+        private final IngredientStackMatcher stackMatcher;
+        private final IngredientRemainderProvider remainderProvider;
+        private final List<ItemStack> displayStacks;
 
         private IngredientEntry(Item item, String oreDictName, int metadata) {
+            this(item, oreDictName, metadata, null, null, null);
+        }
+
+        private IngredientEntry(Item item, String oreDictName, int metadata, IngredientStackMatcher stackMatcher,
+                                IngredientRemainderProvider remainderProvider, List<ItemStack> displayStacks) {
             this.item = item;
             this.oreDictName = oreDictName;
             this.metadata = metadata;
+            this.stackMatcher = stackMatcher;
+            this.remainderProvider = remainderProvider;
+            this.displayStacks = copyDisplayStacks(displayStacks);
         }
 
         public static IngredientEntry forItem(Item item) {
@@ -82,6 +93,13 @@ public class CookingPotRecipe {
             return new IngredientEntry(null, Objects.requireNonNull(oreDictName), OreDictionary.WILDCARD_VALUE);
         }
 
+        public static IngredientEntry forCustom(IngredientStackMatcher stackMatcher,
+                                                IngredientRemainderProvider remainderProvider,
+                                                List<ItemStack> displayStacks) {
+            return new IngredientEntry(null, null, OreDictionary.WILDCARD_VALUE,
+                    Objects.requireNonNull(stackMatcher), remainderProvider, displayStacks);
+        }
+
         public Item getItem() {
             return this.item;
         }
@@ -94,9 +112,28 @@ public class CookingPotRecipe {
             return this.metadata;
         }
 
+        public List<ItemStack> getDisplayStacks() {
+            return copyDisplayStacks(this.displayStacks);
+        }
+
+        public boolean hasCustomRemainderProvider() {
+            return this.remainderProvider != null;
+        }
+
+        public ItemStack getCustomRemainder(ItemStack stack) {
+            if (this.remainderProvider == null || stack.isEmpty()) {
+                return ItemStack.EMPTY;
+            }
+            ItemStack remainderStack = this.remainderProvider.getRemainder(stack.copy());
+            return remainderStack == null || remainderStack.isEmpty() ? ItemStack.EMPTY : remainderStack.copy();
+        }
+
         public boolean matches(ItemStack stack) {
             if (stack.isEmpty()) {
                 return false;
+            }
+            if (this.stackMatcher != null) {
+                return this.stackMatcher.matches(stack);
             }
             if (this.item != null) {
                 return stack.getItem() == this.item
@@ -111,6 +148,27 @@ public class CookingPotRecipe {
             }
             return false;
         }
+
+        private static List<ItemStack> copyDisplayStacks(List<ItemStack> displayStacks) {
+            if (displayStacks == null || displayStacks.isEmpty()) {
+                return Collections.emptyList();
+            }
+            List<ItemStack> copiedStacks = new ArrayList<>();
+            for (ItemStack displayStack : displayStacks) {
+                if (displayStack != null && !displayStack.isEmpty()) {
+                    copiedStacks.add(displayStack.copy());
+                }
+            }
+            return Collections.unmodifiableList(copiedStacks);
+        }
+    }
+
+    public interface IngredientStackMatcher {
+        boolean matches(ItemStack stack);
+    }
+
+    public interface IngredientRemainderProvider {
+        ItemStack getRemainder(ItemStack stack);
     }
 }
 

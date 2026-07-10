@@ -87,50 +87,6 @@ public class ItemKnife extends ItemKnifeBase {
         }
 
         @SubscribeEvent
-        public static void onCakeInteraction(PlayerInteractEvent.RightClickBlock event) {
-            EntityPlayer player = event.getEntityPlayer();
-            ItemStack toolStack = player.getHeldItem(event.getHand());
-            if (!ItemKnife.isKnife(toolStack)) {
-                return;
-            }
-
-            World world = event.getWorld();
-            BlockPos pos = event.getPos();
-            IBlockState state = world.getBlockState(pos);
-            if (state.getBlock() != Blocks.CAKE) {
-                return;
-            }
-
-            if (!world.isRemote) {
-                int bites = state.getValue(BlockCake.BITES);
-                if (bites < 6) {
-                    world.setBlockState(pos, state.withProperty(BlockCake.BITES, bites + 1), 3);
-                } else {
-                    world.setBlockToAir(pos);
-                }
-
-                Item sliceItem = ModItems.get("cake_slice");
-                if (sliceItem != null) {
-                    double offset = bites * 0.1D;
-                    EntityItem drop = new EntityItem(world, pos.getX() + 0.5D + offset, pos.getY() + 0.2D,
-                            pos.getZ() + 0.5D, new ItemStack(sliceItem));
-                    drop.motionX = -0.05D;
-                    drop.motionY = 0.0D;
-                    drop.motionZ = 0.0D;
-                    world.spawnEntity(drop);
-                }
-
-                SoundType soundType = Blocks.WOOL.getSoundType(state, world, pos, player);
-                world.playSound(null, pos, soundType.getBreakSound(), SoundCategory.PLAYERS, 0.8F, 0.8F);
-                player.getCooldownTracker().setCooldown(toolStack.getItem(), 4);
-            }
-
-            player.swingArm(event.getHand());
-            event.setCanceled(true);
-            event.setCancellationResult(EnumActionResult.SUCCESS);
-        }
-
-        @SubscribeEvent
         public static void onLivingDrops(LivingDropsEvent event) {
             Entity source = event.getSource().getTrueSource();
             if (!(source instanceof EntityLivingBase)) {

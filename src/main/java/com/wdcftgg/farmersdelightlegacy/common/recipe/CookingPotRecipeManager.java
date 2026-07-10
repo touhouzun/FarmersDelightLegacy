@@ -62,14 +62,29 @@ public final class CookingPotRecipeManager {
                 continue;
             }
 
-            Item ingredientItem = itemOf(ingredientPath, FarmersDelightLegacy.MOD_ID);
-            if (ingredientItem == null) {
+            ParsedItemToken parsedItemToken = parseItemToken(ingredientPath, FarmersDelightLegacy.MOD_ID);
+            if (parsedItemToken == null || parsedItemToken.item == null) {
                 return false;
             }
-            ingredients.add(CookingPotRecipe.IngredientEntry.forItem(ingredientItem));
+            ingredients.add(CookingPotRecipe.IngredientEntry.forItem(parsedItemToken.item, parsedItemToken.metadata));
         }
 
         if (ingredients.isEmpty()) {
+            return false;
+        }
+
+        CookingPotRecipe recipe = new CookingPotRecipe(key, ingredients, resultStack, outputContainer,
+                Math.max(1, cookTime), Math.max(0.0F, experience), hasContainerDefinition);
+        synchronized (SCRIPT_RECIPES) {
+            SCRIPT_RECIPES.put(key, recipe);
+        }
+        return true;
+    }
+
+    public static boolean registerScriptRecipe(String key, List<CookingPotRecipe.IngredientEntry> ingredients,
+                                               ItemStack resultStack, ItemStack outputContainer,
+                                               int cookTime, float experience, boolean hasContainerDefinition) {
+        if (key == null || key.isEmpty() || ingredients == null || ingredients.isEmpty() || resultStack.isEmpty()) {
             return false;
         }
 

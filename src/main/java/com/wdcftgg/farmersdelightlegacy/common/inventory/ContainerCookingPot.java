@@ -10,10 +10,12 @@ import net.minecraft.item.ItemStack;
 
 public class ContainerCookingPot extends Container {
 
-    private static final int INPUT_SLOT_COUNT = 6;
-    private static final int MEAL_DISPLAY_SLOT = 6;
-    private static final int CONTAINER_SLOT = 7;
-    private static final int OUTPUT_SLOT = 8;
+    public static final int INPUT_SLOT_COUNT = 6;
+    public static final int MEAL_DISPLAY_SLOT = 6;
+    public static final int CONTAINER_SLOT = 7;
+    public static final int OUTPUT_SLOT = 8;
+    public static final int PLAYER_INVENTORY_START_SLOT = 9;
+    public static final int PLAYER_INVENTORY_SLOT_COUNT = 36;
     private static final int INPUT_START_X = 30;
     private static final int INPUT_START_Y = 17;
     private static final int SLOT_SPACING = 18;

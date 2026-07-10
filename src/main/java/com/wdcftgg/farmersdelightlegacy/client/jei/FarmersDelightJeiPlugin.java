@@ -1,5 +1,6 @@
 package com.wdcftgg.farmersdelightlegacy.client.jei;
 
+import com.wdcftgg.farmersdelightlegacy.FarmersDelightLegacy;
 import com.wdcftgg.farmersdelightlegacy.client.gui.GuiCookingPot;
 import com.wdcftgg.farmersdelightlegacy.api.knife.IKnifeItem;
 import com.wdcftgg.farmersdelightlegacy.common.inventory.ContainerCookingPot;
@@ -22,6 +23,7 @@ import mezz.jei.api.recipe.VanillaRecipeCategoryUid;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -76,7 +78,7 @@ public final class FarmersDelightJeiPlugin implements IModPlugin {
         addKnifeRecipeCatalysts(registry);
 
         registry.addRecipeClickArea(GuiCookingPot.class, 89, 25, 24, 17, JeiUids.COOKING_POT);
-        registry.getRecipeTransferRegistry().addRecipeTransferHandler(ContainerCookingPot.class, JeiUids.COOKING_POT, 0, 6, 9, 36);
+        registry.getRecipeTransferRegistry().addRecipeTransferHandler(new CookingPotRecipeTransferInfo());
 
         addIngredientInfoItem(registry, "wheat_dough", "farmersdelight.jei.info.dough");
         addIngredientInfoItem(registry, "straw", "farmersdelight.jei.info.straw");
@@ -229,6 +231,11 @@ public final class FarmersDelightJeiPlugin implements IModPlugin {
     }
 
     private static void addWaterDoughRecipe(List<SpecialCraftingJeiRecipe> recipes) {
+        ResourceLocation recipeId = new ResourceLocation(FarmersDelightLegacy.MOD_ID, "wheat_dough_from_water");
+        if (!ForgeRegistries.RECIPES.containsKey(recipeId)) {
+            return;
+        }
+
         ItemStack wheatDough = stackFromItemName("wheat_dough");
         if (wheatDough.isEmpty()) {
             return;

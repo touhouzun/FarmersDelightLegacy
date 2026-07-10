@@ -1,10 +1,14 @@
 package com.wdcftgg.farmersdelightlegacy.common.compat.crafttweaker;
 
 import com.wdcftgg.farmersdelightlegacy.common.recipe.CookingPotRecipeManager;
+import com.wdcftgg.farmersdelightlegacy.common.recipe.CookingPotRecipe.IngredientEntry;
 import crafttweaker.annotations.ZenRegister;
 import crafttweaker.api.item.IIngredient;
 import crafttweaker.api.item.IItemStack;
 import net.minecraft.item.ItemStack;
+
+import java.util.List;
+
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
 
@@ -34,13 +38,13 @@ public final class ZenCookingPotRecipes {
     public static boolean addRecipeAdvanced(String key, IIngredient[] ingredients, IItemStack result,
                                             IItemStack outputContainerStack,
                                             int cookingTime, float experience, boolean hasContainerDefinition) {
-        String[] ingredientTokens = CraftTweakerCompatHelper.toStrictIngredientTokens(ingredients);
+        List<IngredientEntry> ingredientEntries = CraftTweakerCompatHelper.toCookingPotIngredients(ingredients);
         ItemStack resultStack = CraftTweakerCompatHelper.stackOf(result);
         ItemStack outputContainer = CraftTweakerCompatHelper.stackOf(outputContainerStack);
-        if (ingredientTokens == null || resultStack.isEmpty()) {
+        if (ingredientEntries == null || resultStack.isEmpty()) {
             return false;
         }
-        return CookingPotRecipeManager.registerScriptRecipe(key, ingredientTokens, resultStack, outputContainer,
+        return CookingPotRecipeManager.registerScriptRecipe(key, ingredientEntries, resultStack, outputContainer,
                 cookingTime, experience, hasContainerDefinition);
     }
 

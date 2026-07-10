@@ -358,7 +358,9 @@ public class TileEntityCookingPot extends TileEntity implements IInventory, ISid
                 if (inputStack.getCount() <= 0) {
                     this.itemStacks.set(i, ItemStack.EMPTY);
                 }
-                ItemStack ingredientRemainder = getIngredientRemainder(consumedStack);
+                ItemStack ingredientRemainder = ingredientEntry.hasCustomRemainderProvider()
+                        ? ingredientEntry.getCustomRemainder(consumedStack)
+                        : getIngredientRemainder(consumedStack);
                 if (!ingredientRemainder.isEmpty()) {
                     ejectIngredientRemainder(ingredientRemainder);
                 }

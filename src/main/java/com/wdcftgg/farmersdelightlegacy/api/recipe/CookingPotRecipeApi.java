@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * Cooking Pot recipe registration API.
  * <p>
- * ingredientTokens support {@code modid:item}, {@code modid:item:meta}, and {@code ore:oreName}.
+ * ingredientTokens support {@code modid:item}, {@code modid:item@meta}, and {@code ore:oreName}.
  */
 public final class CookingPotRecipeApi {
 
@@ -20,7 +20,7 @@ public final class CookingPotRecipeApi {
      * Registers a runtime recipe.
      *
      * @param key The unique recipe or predicate id used by the backing manager.
-     * @param ingredientTokens Ingredient token strings accepted by the recipe parser, such as {@code modid:item}, {@code modid:item:meta}, or {@code ore:name}.
+     * @param ingredientTokens Ingredient token strings accepted by the recipe parser, such as {@code modid:item}, {@code modid:item@meta}, or {@code ore:name}.
      * @param resultStack The item stack produced by the recipe.
      * @param outputContainer The container stack returned by the cooking pot recipe; an empty stack means no container is returned.
      * @param cookTime The cooking time in ticks.
@@ -37,7 +37,7 @@ public final class CookingPotRecipeApi {
      * Registers a runtime recipe.
      *
      * @param key The unique recipe or predicate id used by the backing manager.
-     * @param ingredientTokens Ingredient token strings accepted by the recipe parser, such as {@code modid:item}, {@code modid:item:meta}, or {@code ore:name}.
+     * @param ingredientTokens Ingredient token strings accepted by the recipe parser, such as {@code modid:item}, {@code modid:item@meta}, or {@code ore:name}.
      * @param resultStack The item stack produced by the recipe.
      * @param cookTime The cooking time in ticks.
      * @param experience The experience awarded when the recipe is taken.

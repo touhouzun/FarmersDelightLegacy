@@ -1,5 +1,6 @@
 package com.wdcftgg.farmersdelightlegacy.common.compat.crafttweaker;
 
+import com.wdcftgg.farmersdelightlegacy.common.recipe.CookingPotRecipe;
 import crafttweaker.api.item.IIngredient;
 import crafttweaker.api.item.IItemStack;
 import crafttweaker.api.minecraft.CraftTweakerMC;
@@ -10,6 +11,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.oredict.OreDictionary;
+
+import java.util.ArrayList;
+import java.util.List;
 
 final class CraftTweakerCompatHelper {
 
@@ -94,6 +98,22 @@ final class CraftTweakerCompatHelper {
         return tokens;
     }
 
+    static List<CookingPotRecipe.IngredientEntry> toCookingPotIngredients(IIngredient[] ingredients) {
+        if (ingredients == null || ingredients.length == 0) {
+            return null;
+        }
+
+        List<CookingPotRecipe.IngredientEntry> ingredientEntries = new ArrayList<>();
+        for (IIngredient ingredient : ingredients) {
+            CookingPotRecipe.IngredientEntry ingredientEntry = toCookingPotIngredient(ingredient);
+            if (ingredientEntry == null) {
+                return null;
+            }
+            ingredientEntries.add(ingredientEntry);
+        }
+        return ingredientEntries;
+    }
+
     static String[] toIngredientTokens(IIngredient[] ingredients) {
         if (ingredients == null || ingredients.length == 0) {
             return null;
@@ -156,6 +176,83 @@ final class CraftTweakerCompatHelper {
             return "ore:" + commandString.substring(5, commandString.length() - 1);
         }
         return null;
+    }
+
+    private static CookingPotRecipe.IngredientEntry toCookingPotIngredient(IIngredient ingredient) {
+        if (ingredient == null) {
+            return null;
+        }
+
+        String token = toStrictIngredientToken(ingredient);
+        if (token != null && !token.isEmpty() && !ingredient.hasNewTransformers() && !ingredient.hasTransformers()) {
+            return createCookingPotTokenIngredient(token);
+        }
+
+        List<ItemStack> displayStacks = getIngredientDisplayStacks(ingredient);
+        if (displayStacks.isEmpty()) {
+            return null;
+        }
+        return CookingPotRecipe.IngredientEntry.forCustom(
+                stack -> ingredient.matches(CraftTweakerMC.getIItemStack(stack)),
+                ingredient.hasNewTransformers() ? stack -> getIngredientTransformRemainder(ingredient, stack) : null,
+                displayStacks);
+    }
+
+    private static CookingPotRecipe.IngredientEntry createCookingPotTokenIngredient(String token) {
+        if (token.startsWith("ore:")) {
+            String oreName = token.substring(4);
+            return oreName.isEmpty() ? null : CookingPotRecipe.IngredientEntry.forOreDict(oreName);
+        }
+
+        ParsedItemToken parsedItemToken = parseItemToken(token);
+        if (parsedItemToken.itemId == null || parsedItemToken.itemId.isEmpty()) {
+            return null;
+        }
+
+        Item item = itemOf(parsedItemToken.itemId);
+        if (item == null) {
+            return null;
+        }
+        int metadata = parsedItemToken.hasMetadata ? parsedItemToken.metadata : OreDictionary.WILDCARD_VALUE;
+        return CookingPotRecipe.IngredientEntry.forItem(item, metadata);
+    }
+
+    private static List<ItemStack> getIngredientDisplayStacks(IIngredient ingredient) {
+        List<ItemStack> displayStacks = new ArrayList<>();
+        if (ingredient == null) {
+            return displayStacks;
+        }
+
+        IItemStack[] itemArray = ingredient.getItemArray();
+        if (itemArray != null) {
+            for (IItemStack itemStack : itemArray) {
+                ItemStack nativeStack = stackOf(itemStack);
+                if (!nativeStack.isEmpty()) {
+                    nativeStack.setCount(1);
+                    displayStacks.add(nativeStack);
+                }
+            }
+        }
+        return displayStacks;
+    }
+
+    private static ItemStack getIngredientTransformRemainder(IIngredient ingredient, ItemStack consumedStack) {
+        if (ingredient == null || consumedStack.isEmpty()) {
+            return ItemStack.EMPTY;
+        }
+
+        IItemStack craftTweakerStack = CraftTweakerMC.getIItemStack(consumedStack.copy());
+        if (craftTweakerStack == null) {
+            return ItemStack.EMPTY;
+        }
+
+        IItemStack transformedStack = ingredient.applyNewTransform(craftTweakerStack);
+        ItemStack remainderStack = stackOf(transformedStack);
+        if (remainderStack.isEmpty()) {
+            return ItemStack.EMPTY;
+        }
+        remainderStack.setCount(Math.max(1, remainderStack.getCount()));
+        return remainderStack;
     }
 
     static Block blockOf(String blockId) {
