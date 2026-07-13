@@ -51,7 +51,7 @@ public class TileEntityCanvasSignRenderer extends TileEntitySpecialRenderer<Tile
         } else if (wallHangingSign) {
             EnumFacing facing = state.getValue(BlockCanvasWallHangingSign.FACING);
             EnumFacing attachedFace = facing.getOpposite();
-            rotation = -attachedFace.getHorizontalAngle() - 90.0F;
+            rotation = -attachedFace.getHorizontalAngle();
             GlStateManager.translate(x + 0.5D, y + 0.9375D, z + 0.5D);
             GlStateManager.translate(0.0F, -0.3125F, 0.0F);
         } else {

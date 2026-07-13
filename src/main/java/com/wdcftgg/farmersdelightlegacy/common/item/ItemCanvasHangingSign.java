@@ -1,6 +1,7 @@
 package com.wdcftgg.farmersdelightlegacy.common.item;
 
 import com.wdcftgg.farmersdelightlegacy.common.block.sign.BlockCanvasWallHangingSign;
+import com.wdcftgg.farmersdelightlegacy.common.block.sign.BlockCanvasHangingSign;
 import com.wdcftgg.farmersdelightlegacy.common.network.ModNetworkHandler;
 import com.wdcftgg.farmersdelightlegacy.common.network.PacketOpenCanvasSignEditor;
 import com.wdcftgg.farmersdelightlegacy.common.tile.TileEntityCanvasSign;
@@ -18,6 +19,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 
 public class ItemCanvasHangingSign extends ItemBlock {
@@ -33,15 +35,11 @@ public class ItemCanvasHangingSign extends ItemBlock {
     @Override
     public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
         ItemStack stack = player.getHeldItem(hand);
-        if (!facing.getAxis().isHorizontal()) {
+        if (facing == EnumFacing.UP) {
             return EnumActionResult.FAIL;
         }
 
         IBlockState targetState = worldIn.getBlockState(pos);
-        if (player.isSneaking() && targetState.getBlock().onBlockActivated(worldIn, pos, targetState, player, hand, facing, hitX, hitY, hitZ)) {
-            return EnumActionResult.PASS;
-        }
-
         boolean canReplace = targetState.getBlock().isReplaceable(worldIn, pos);
         BlockPos placePos = canReplace ? pos : pos.offset(facing);
 
@@ -49,7 +47,7 @@ public class ItemCanvasHangingSign extends ItemBlock {
             return EnumActionResult.FAIL;
         }
 
-        PlacementSelection placementSelection = selectPlacement(facing);
+        PlacementSelection placementSelection = selectPlacement(worldIn, placePos, facing, player);
         if (placementSelection == null) {
             return EnumActionResult.FAIL;
         }
@@ -79,11 +77,24 @@ public class ItemCanvasHangingSign extends ItemBlock {
         return EnumActionResult.SUCCESS;
     }
 
-    private PlacementSelection selectPlacement(EnumFacing clickedFace) {
-        return createWallPlacement(clickedFace);
+    private PlacementSelection selectPlacement(World worldIn, BlockPos placePos, EnumFacing clickedFace, EntityPlayer player) {
+        if (clickedFace == EnumFacing.DOWN) {
+            return createCeilingPlacement(player);
+        }
+        return createWallPlacement(worldIn, placePos, clickedFace, player);
     }
 
-    private PlacementSelection createWallPlacement(EnumFacing clickedFace) {
+    private PlacementSelection createCeilingPlacement(EntityPlayer player) {
+        if (!(this.block instanceof BlockCanvasHangingSign)) {
+            return null;
+        }
+
+        int rotation = MathHelper.floor((player.rotationYaw + 180.0F) * 16.0F / 360.0F + 0.5D) & 15;
+        IBlockState placedState = this.block.getDefaultState().withProperty(BlockCanvasHangingSign.ROTATION, rotation);
+        return new PlacementSelection(this.block, placedState);
+    }
+
+    private PlacementSelection createWallPlacement(World worldIn, BlockPos placePos, EnumFacing clickedFace, EntityPlayer player) {
         if (!(wallBlock instanceof BlockCanvasWallHangingSign)) {
             return null;
         }
@@ -93,8 +104,23 @@ public class ItemCanvasHangingSign extends ItemBlock {
         }
 
         BlockCanvasWallHangingSign hangingWallBlock = (BlockCanvasWallHangingSign) wallBlock;
-        IBlockState placedState = hangingWallBlock.getDefaultState().withProperty(BlockCanvasWallHangingSign.FACING, clickedFace);
+        EnumFacing placementFacing = hangingWallBlock.resolvePlacementFacing(worldIn, placePos, clickedFace,
+                getNearestHorizontalDirections(player));
+        if (placementFacing == null) {
+            return null;
+        }
+        IBlockState placedState = hangingWallBlock.getDefaultState().withProperty(BlockCanvasWallHangingSign.FACING, placementFacing);
         return new PlacementSelection(hangingWallBlock, placedState);
+    }
+
+    private EnumFacing[] getNearestHorizontalDirections(EntityPlayer player) {
+        EnumFacing playerFacing = player.getHorizontalFacing();
+        return new EnumFacing[]{
+                playerFacing,
+                playerFacing.rotateY(),
+                playerFacing.rotateYCCW(),
+                playerFacing.getOpposite()
+        };
     }
 
     private void configureHangingTextFace(EntityPlayer player, BlockPos placePos, IBlockState placedState, TileEntityCanvasSign canvasSign) {
@@ -110,18 +136,13 @@ public class ItemCanvasHangingSign extends ItemBlock {
         int defaultScore = directionSimilarity(defaultTextFacing, playerSide);
         int flippedScore = directionSimilarity(flippedTextFacing, playerSide);
         boolean textOnBack = flippedScore > defaultScore;
-        EnumFacing blockFacing = placedState.getValue(BlockCanvasWallHangingSign.FACING);
-        // 仅 N/S 方向反转正反面判定，符合当前悬挂告示牌旋转链路。
-        if (blockFacing == EnumFacing.NORTH || blockFacing == EnumFacing.SOUTH) {
-            textOnBack = !textOnBack;
-        }
         canvasSign.setHangingTextOnBack(textOnBack);
     }
 
     private EnumFacing getWallHangingTextFacing(IBlockState placedState, boolean flipped) {
         EnumFacing facing = placedState.getValue(BlockCanvasWallHangingSign.FACING);
         EnumFacing attachedFace = facing.getOpposite();
-        float rotation = -attachedFace.getHorizontalAngle() - 90.0F;
+        float rotation = -attachedFace.getHorizontalAngle();
         if (flipped) {
             rotation += 180.0F;
         }
@@ -135,7 +156,7 @@ public class ItemCanvasHangingSign extends ItemBlock {
         double diffZ = player.posZ - centerZ;
 
         if (Math.abs(diffX) > Math.abs(diffZ)) {
-            return diffX >= 0.0D ? EnumFacing.EAST : EnumFacing.WEST;
+            return diffX >= 0.0D ? EnumFacing.WEST : EnumFacing.EAST;
         }
         return diffZ >= 0.0D ? EnumFacing.SOUTH : EnumFacing.NORTH;
     }

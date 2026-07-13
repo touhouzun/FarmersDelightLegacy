@@ -5,6 +5,7 @@ import com.wdcftgg.farmersdelightlegacy.common.advancement.ModAdvancements;
 import com.wdcftgg.farmersdelightlegacy.common.command.CommandFarmersDelightLegacy;
 import com.wdcftgg.farmersdelightlegacy.common.compat.CampfireCookingCompat;
 import com.wdcftgg.farmersdelightlegacy.common.compat.CampfireHeatSourceCompat;
+import com.wdcftgg.farmersdelightlegacy.common.compat.AnimalFoodCompat;
 import com.wdcftgg.farmersdelightlegacy.common.compat.VillageNamesVillageCompat;
 import com.wdcftgg.farmersdelightlegacy.common.compat.WanderingTradersBackportCompat;
 import com.wdcftgg.farmersdelightlegacy.common.compat.futuremc.FutureMcComposterCompat;
@@ -72,6 +73,7 @@ public class FarmersDelightLegacy {
 
     @Mod.EventHandler
     public void init(FMLInitializationEvent event) {
+        AnimalFoodCompat.registerAll();
         CampfireHeatSourceCompat.registerAll();
         FutureMcSmithingCompat.registerAll();
         FutureMcComposterCompat.registerAll();

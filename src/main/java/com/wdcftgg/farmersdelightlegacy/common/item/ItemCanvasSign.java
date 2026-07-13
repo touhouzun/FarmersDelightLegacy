@@ -47,20 +47,20 @@ public class ItemCanvasSign extends ItemBlock {
             return EnumActionResult.FAIL;
         }
 
-        if (!this.block.canPlaceBlockAt(worldIn, placePos)) {
-            return EnumActionResult.FAIL;
-        }
-
-        if (worldIn.isRemote) {
-            return EnumActionResult.SUCCESS;
-        }
-
         IBlockState placedState;
         if (facing == EnumFacing.UP) {
             int rotation = MathHelper.floor((player.rotationYaw + 180.0F) * 16.0F / 360.0F + 0.5D) & 15;
             placedState = this.block.getDefaultState().withProperty(BlockStandingSign.ROTATION, rotation);
         } else {
             placedState = wallBlock.getDefaultState().withProperty(BlockWallSign.FACING, facing);
+        }
+
+        if (!worldIn.mayPlace(placedState.getBlock(), placePos, false, facing, player)) {
+            return EnumActionResult.FAIL;
+        }
+
+        if (worldIn.isRemote) {
+            return EnumActionResult.SUCCESS;
         }
 
         worldIn.setBlockState(placePos, placedState, 11);

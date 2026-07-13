@@ -28,10 +28,8 @@ import java.util.Random;
 public class BlockCanvasWallHangingSign extends BlockContainer {
 
     public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
-    private static final AxisAlignedBB NORTH_SHAPE = new AxisAlignedBB(0.375D, 0.0D, 0.0D, 0.625D, 1.0D, 1.0D);
-    private static final AxisAlignedBB SOUTH_SHAPE = new AxisAlignedBB(0.375D, 0.0D, 0.0D, 0.625D, 1.0D, 1.0D);
-    private static final AxisAlignedBB WEST_SHAPE = new AxisAlignedBB(0.0D, 0.0D, 0.375D, 1.0D, 1.0D, 0.625D);
-    private static final AxisAlignedBB EAST_SHAPE = new AxisAlignedBB(0.0D, 0.0D, 0.375D, 1.0D, 1.0D, 0.625D);
+    private static final AxisAlignedBB X_AXIS_SHAPE = new AxisAlignedBB(0.0D, 0.0D, 0.375D, 1.0D, 1.0D, 0.625D);
+    private static final AxisAlignedBB Z_AXIS_SHAPE = new AxisAlignedBB(0.375D, 0.0D, 0.0D, 0.625D, 1.0D, 1.0D);
     private final ResourceLocation textureLocation;
     private final String itemPath;
 
@@ -66,16 +64,7 @@ public class BlockCanvasWallHangingSign extends BlockContainer {
 
     @Override
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
-        switch (state.getValue(FACING)) {
-            case SOUTH:
-                return SOUTH_SHAPE;
-            case WEST:
-                return WEST_SHAPE;
-            case EAST:
-                return EAST_SHAPE;
-            default:
-                return NORTH_SHAPE;
-        }
+        return state.getValue(FACING).getAxis() == EnumFacing.Axis.Z ? X_AXIS_SHAPE : Z_AXIS_SHAPE;
     }
 
     @Override
