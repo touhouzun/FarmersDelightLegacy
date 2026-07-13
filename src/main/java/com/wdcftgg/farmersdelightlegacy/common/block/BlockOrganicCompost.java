@@ -8,14 +8,11 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.SoundCategory;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.Random;
 
@@ -24,36 +21,10 @@ public class BlockOrganicCompost extends Block {
 
     public BlockOrganicCompost() {
         super(Material.GROUND);
-        this.setHardness(0.7F);
-        this.setResistance(2.7F);
-        this.setSoundType(SoundType.GROUND);
+        this.setHardness(1.2F);
+        this.setSoundType(SoundType.PLANT);
         this.setTickRandomly(true);
         this.setDefaultState(this.blockState.getBaseState().withProperty(LEVEL, 0));
-    }
-
-    @Override
-    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand,
-                                    EnumFacing facing, float hitX, float hitY, float hitZ) {
-        ItemStack heldItem = playerIn.getHeldItem(hand);
-        if (heldItem.isEmpty() || Item.getItemFromBlock(this) != heldItem.getItem()) {
-            return false;
-        }
-
-        int level = state.getValue(LEVEL);
-        if (level >= 7) {
-            return false;
-        }
-
-        if (!worldIn.isRemote) {
-            worldIn.setBlockState(pos, state.withProperty(LEVEL, level + 1), 2);
-            SoundType soundType = this.getSoundType(state, worldIn, pos, playerIn);
-            worldIn.playSound(null, pos, soundType.getPlaceSound(), SoundCategory.BLOCKS,
-                    (soundType.getVolume() + 1.0F) * 0.5F, soundType.getPitch() * 0.8F);
-            if (!playerIn.capabilities.isCreativeMode) {
-                heldItem.shrink(1);
-            }
-        }
-        return true;
     }
 
     @Override
@@ -87,6 +58,17 @@ public class BlockOrganicCompost extends Block {
     @Override
     public int getComparatorInputOverride(IBlockState blockState, World worldIn, BlockPos pos) {
         return getMaxCompostingStage() + 1 - blockState.getValue(LEVEL);
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void randomDisplayTick(IBlockState stateIn, World worldIn, BlockPos pos, Random rand) {
+        super.randomDisplayTick(stateIn, worldIn, pos, rand);
+        if (rand.nextInt(10) == 0) {
+            worldIn.spawnParticle(EnumParticleTypes.TOWN_AURA,
+                    pos.getX() + rand.nextFloat(), pos.getY() + 1.1D, pos.getZ() + rand.nextFloat(),
+                    0.0D, 0.0D, 0.0D);
+        }
     }
 
     @Override

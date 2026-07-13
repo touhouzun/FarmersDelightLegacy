@@ -22,6 +22,4 @@ eclipse
 run
 .tmp_upstream_fd
 /docs
-/.aiassistant
 /tools
-AGENTS.md
