@@ -9,7 +9,6 @@ import com.wdcftgg.farmersdelightlegacy.common.compat.AnimalFoodCompat;
 import com.wdcftgg.farmersdelightlegacy.common.compat.VillageNamesVillageCompat;
 import com.wdcftgg.farmersdelightlegacy.common.compat.WanderingTradersBackportCompat;
 import com.wdcftgg.farmersdelightlegacy.common.compat.futuremc.FutureMcComposterCompat;
-import com.wdcftgg.farmersdelightlegacy.common.compat.futuremc.FutureMcOceanicExpanseCompat;
 import com.wdcftgg.farmersdelightlegacy.common.compat.futuremc.FutureMcSmithingCompat;
 import com.wdcftgg.farmersdelightlegacy.common.event.ModVillagerTradeHandler;
 import com.wdcftgg.farmersdelightlegacy.common.example.HeatSourceExample;
@@ -17,6 +16,7 @@ import com.wdcftgg.farmersdelightlegacy.common.example.HuntingDropExample;
 import com.wdcftgg.farmersdelightlegacy.common.gui.ModGuiHandler;
 import com.wdcftgg.farmersdelightlegacy.common.network.ModNetworkHandler;
 import com.wdcftgg.farmersdelightlegacy.common.recipe.LegacyHeatingRecipe;
+import com.wdcftgg.farmersdelightlegacy.common.recipe.CuttingBoardRecipeManager;
 import com.wdcftgg.farmersdelightlegacy.common.registry.ModDispenserBehaviors;
 import com.wdcftgg.farmersdelightlegacy.common.registry.ModEntities;
 import com.wdcftgg.farmersdelightlegacy.common.registry.ModTileEntities;
@@ -52,7 +52,6 @@ public class FarmersDelightLegacy {
     @Mod.EventHandler
     public void construct(FMLConstructionEvent event) {
         Configuration.loadSettingsOnly(new java.io.File(Loader.instance().getConfigDir(), FarmersDelightLegacy.MOD_ID + ".cfg"));
-        FutureMcOceanicExpanseCompat.syncFutureMcConfig();
     }
 
     @Mod.EventHandler
@@ -88,6 +87,7 @@ public class FarmersDelightLegacy {
     @Mod.EventHandler
     public void postInit(FMLPostInitializationEvent event) {
         Configuration.syncAfterBiomeRegistration();
+        CuttingBoardRecipeManager.reloadBuiltInRecipes();
         CampfireCookingCompat.registerAll();
         ModDispenserBehaviors.registerAll();
     }

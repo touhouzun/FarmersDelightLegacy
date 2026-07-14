@@ -1,6 +1,6 @@
 {
   "conditions": {
-    "mod_loaded": "futuremc"
+    "block_registered": "futuremc:stripped_jungle_log"
   },
   "ingredients": [
     {

@@ -86,6 +86,12 @@ public final class CuttingBoardRecipeManager {
         return result;
     }
 
+    public static void reloadBuiltInRecipes() {
+        RECIPES.clear();
+        loadJsonRecipes();
+        loaded = true;
+    }
+
     public static boolean registerScriptRecipe(String key, String[] inputTokens, String[] toolTokens,
                                                String[] resultTokens, int[] resultCounts, float[] resultChances) {
         if (key == null || key.isEmpty() || inputTokens == null || resultTokens == null || resultTokens.length == 0) {
@@ -255,9 +261,7 @@ public final class CuttingBoardRecipeManager {
             return;
         }
 
-        RECIPES.clear();
-        loadJsonRecipes();
-        loaded = true;
+        reloadBuiltInRecipes();
     }
 
     private static void loadJsonRecipes() {
@@ -286,7 +290,9 @@ public final class CuttingBoardRecipeManager {
 
         JsonObject conditionsObject = recipeJson.getAsJsonObject("conditions");
         return matchesModCondition(conditionsObject.get("mod_loaded"), true)
-                && matchesModCondition(conditionsObject.get("mod_not_loaded"), false);
+                && matchesModCondition(conditionsObject.get("mod_not_loaded"), false)
+                && matchesBlockRegistrationCondition(conditionsObject.get("block_registered"), true)
+                && matchesBlockRegistrationCondition(conditionsObject.get("block_not_registered"), false);
     }
 
     private static boolean matchesModCondition(JsonElement conditionElement, boolean expectedLoaded) {
@@ -302,6 +308,29 @@ public final class CuttingBoardRecipeManager {
             }
         }
         return true;
+    }
+
+    private static boolean matchesBlockRegistrationCondition(JsonElement conditionElement, boolean expectedRegistered) {
+        if (conditionElement == null || conditionElement.isJsonNull()) {
+            return true;
+        }
+
+        List<String> blockIds = new ArrayList<>();
+        collectConditionStrings(conditionElement, blockIds);
+        for (String blockId : blockIds) {
+            if (isBlockRegistered(blockId) != expectedRegistered) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private static boolean isBlockRegistered(String blockId) {
+        try {
+            return ForgeRegistries.BLOCKS.containsKey(new ResourceLocation(blockId));
+        } catch (IllegalArgumentException ignored) {
+            return false;
+        }
     }
 
     private static void collectConditionStrings(JsonElement element, List<String> values) {
