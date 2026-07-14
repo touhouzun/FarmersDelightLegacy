@@ -22,5 +22,5 @@ jobs:
         run: ./gradlew --no-daemon build
       - uses: actions/upload-artifact@v4
         with:
-          name: TheOneProbe-CE
+          name: FarmersDelightLegacy
           path: build/libs
