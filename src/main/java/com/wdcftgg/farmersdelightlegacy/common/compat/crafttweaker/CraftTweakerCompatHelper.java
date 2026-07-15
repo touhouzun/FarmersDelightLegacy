@@ -1,6 +1,7 @@
 package com.wdcftgg.farmersdelightlegacy.common.compat.crafttweaker;
 
 import com.wdcftgg.farmersdelightlegacy.common.recipe.CookingPotRecipe;
+import com.wdcftgg.farmersdelightlegacy.api.recipe.knife.HuntingDropOutput;
 import crafttweaker.api.item.IIngredient;
 import crafttweaker.api.item.IItemStack;
 import crafttweaker.api.minecraft.CraftTweakerMC;
@@ -112,6 +113,25 @@ final class CraftTweakerCompatHelper {
             ingredientEntries.add(ingredientEntry);
         }
         return ingredientEntries;
+    }
+
+    static List<HuntingDropOutput> toDropOutputs(IItemStack[] outputStacks, float[] chances, float[] bonuses) {
+        if (outputStacks == null || outputStacks.length == 0) {
+            return null;
+        }
+
+        List<HuntingDropOutput> outputs = new ArrayList<>();
+        for (int index = 0; index < outputStacks.length; index++) {
+            ItemStack outputStack = stackOf(outputStacks[index]);
+            if (outputStack.isEmpty()) {
+                return null;
+            }
+
+            float chance = chances != null && index < chances.length ? chances[index] : 1.0F;
+            float bonus = bonuses != null && index < bonuses.length ? bonuses[index] : 0.0F;
+            outputs.add(new HuntingDropOutput(outputStack, chance, bonus));
+        }
+        return outputs;
     }
 
     static String[] toIngredientTokens(IIngredient[] ingredients) {
@@ -259,7 +279,12 @@ final class CraftTweakerCompatHelper {
         if (blockId == null || blockId.isEmpty()) {
             return null;
         }
-        return ForgeRegistries.BLOCKS.getValue(new ResourceLocation(blockId));
+        try {
+            ResourceLocation blockLocation = new ResourceLocation(blockId);
+            return ForgeRegistries.BLOCKS.containsKey(blockLocation) ? ForgeRegistries.BLOCKS.getValue(blockLocation) : null;
+        } catch (IllegalArgumentException ignored) {
+            return null;
+        }
     }
 
     private static String stripMetadataToken(String itemId) {

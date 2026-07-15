@@ -1,4 +1,5 @@
 import crafttweaker.block.IBlockState;
+import crafttweaker.entity.IEntity;
 import crafttweaker.item.IIngredient;
 import crafttweaker.item.IItemStack;
 import crafttweaker.world.IBlockPos;
@@ -18,6 +19,8 @@ import crafttweaker.world.IWorld;
 //    Cutting Board supports "default knife / explicit tool / explicitly no tool".
 // 5. 现在也支持“按输出物品批量删除配方”。
 //    Removing recipes by output item is also supported now.
+// 6. 狩猎掉落使用实体注册 ID；收获掉落使用方块注册 ID 和 metadata。
+//    Hunting Drops use entity registry IDs; Harvest Drops use block registry IDs and metadata.
 
 
 // =========================
@@ -248,6 +251,77 @@ mods.farmersdelight.CuttingBoard.addRecipeWithoutTool(
 
 
 // =========================
+// 狩猎掉落示例 / Hunting Drop Examples
+// =========================
+
+// 传入 CRT IEntityDefinition；用刀击杀奶牛时额外掉落皮革。
+// Pass a CraftTweaker IEntityDefinition; killing a cow with a knife drops extra leather.
+mods.farmersdelight.HuntingDrop.addRecipe(
+    "example:hunting_cow_leather",
+    <entity:minecraft:cow>,
+    <minecraft:leather>
+);
+
+// 完整写法：每个输出可分别指定基础掉率和每级抢夺加成。
+// Advanced form: each output can define a base chance and a Looting bonus per level.
+// mods.farmersdelight.HuntingDrop.addRecipeAdvanced(
+//     "yourpack:hunting_blaze_rewards",
+//     <entity:minecraft:blaze>,
+//     [<minecraft:blaze_rod>, <minecraft:glowstone_dust> * 2] as IItemStack[],
+//     [0.5, 1.0] as float[],
+//     [0.1, 0.0] as float[],
+//     true,
+//     true
+// );
+//
+// addJeiRecipe / addJeiRecipeAdvanced 只显示在 JEI，不会在游戏中实际掉落。
+// addJeiRecipe / addJeiRecipeAdvanced only display in JEI and never create in-game drops.
+
+// JEI 实体状态配置：回调只影响狩猎掉落 JEI 预览实体，不影响实际战斗或掉落。
+// JEI entity configuration: the callback only changes the Hunting Drop JEI preview entity, never real combat or drops.
+// mods.farmersdelight.HuntingDrop.addJeiRecipeWithEntityConfigurator(
+//     "yourpack:hunting_blaze_preview",
+//     <entity:minecraft:blaze>,
+//     <minecraft:blaze_rod>,
+//     function(entity as IEntity) {
+//         entity.setFire(1000000);
+//         entity.setCustomName("JEI Preview");
+//     }
+// );
+//
+// 高级配置器可传入 true 以在每个 JEI 更新周期重新应用状态。
+// Advanced configurators can pass true to reapply the state during every JEI update cycle.
+
+
+// =========================
+// 收获掉落示例 / Harvest Drop Examples
+// =========================
+
+// 传入 CRT IBlockState；用刀收获枯死灌木时额外掉落线。
+// Pass a CraftTweaker IBlockState; harvesting dead bushes with a knife drops extra string.
+mods.farmersdelight.HarvestDrop.addRecipe(
+    "example:harvest_dead_bush_string",
+    <blockstate:minecraft:deadbush>,
+    <minecraft:string>
+);
+
+// IBlockState 会完整匹配方块及其属性，可用于指定成熟度等状态。
+// IBlockState matches the complete block and property state, allowing specific maturity and similar states.
+// val grassState = <blockstate:minecraft:tallgrass>.withProperty("type", "grass");
+// mods.farmersdelight.HarvestDrop.addRecipeAdvanced(
+//     "yourpack:harvest_grass_rewards",
+//     grassState,
+//     [<minecraft:wheat_seeds>, <minecraft:string>] as IItemStack[],
+//     [0.25, 0.1] as float[],
+//     [0.05, 0.0] as float[],
+//     true
+// );
+//
+// addJeiRecipe / addJeiRecipeAdvanced 只显示在 JEI，不会在游戏中实际掉落。
+// addJeiRecipe / addJeiRecipeAdvanced only display in JEI and never create in-game drops.
+
+
+// =========================
 // 删除配方模板 / Recipe Removal Templates
 // =========================
 
@@ -256,6 +330,8 @@ mods.farmersdelight.CuttingBoard.addRecipeWithoutTool(
 // mods.farmersdelight.Campfire.removeRecipe("example:campfire_beef");
 // mods.farmersdelight.CookingPot.removeRecipe("example:pot_force_bowl");
 // mods.farmersdelight.CuttingBoard.removeRecipe("example:board_hand_only");
+// mods.farmersdelight.HuntingDrop.removeRecipe("example:hunting_cow_leather");
+// mods.farmersdelight.HarvestDrop.removeRecipe("example:harvest_dead_bush_string");
 
 // 按输出物品批量删除所有同产物配方。
 // Remove all recipes that share the same output item.
