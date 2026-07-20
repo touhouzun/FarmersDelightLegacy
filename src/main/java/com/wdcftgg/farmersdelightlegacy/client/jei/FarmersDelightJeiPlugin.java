@@ -4,11 +4,12 @@ import com.wdcftgg.farmersdelightlegacy.FarmersDelightLegacy;
 import com.wdcftgg.farmersdelightlegacy.api.knife.IKnifeItem;
 import com.wdcftgg.farmersdelightlegacy.client.gui.GuiCookingPot;
 import com.wdcftgg.farmersdelightlegacy.common.item.ItemCookingPot;
-import com.wdcftgg.farmersdelightlegacy.common.recipe.*;
+import com.wdcftgg.farmersdelightlegacy.common.recipe.CampfireCookingRecipe;
+import com.wdcftgg.farmersdelightlegacy.common.recipe.CookingPotRecipe;
+import com.wdcftgg.farmersdelightlegacy.common.recipe.manager.*;
 import com.wdcftgg.farmersdelightlegacy.common.registry.ModBlocks;
 import com.wdcftgg.farmersdelightlegacy.common.registry.ModItems;
 import com.wdcftgg.farmersdelightlegacy.common.tile.TileEntityCookingPot;
-import com.wdcftgg.farmersdelightlegacy.common.util.KnifeItemStacks;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.IModRegistry;
@@ -176,7 +177,7 @@ public final class FarmersDelightJeiPlugin implements IModPlugin {
     }
 
     private static void addKnifeRecipeCatalysts(IModRegistry registry) {
-        for (ItemStack stack : KnifeItemStacks.getJeiDisplayStacks()) {
+        for (ItemStack stack : KnifeItemManager.getJeiDisplayStacks()) {
             registry.addRecipeCatalyst(stack, JeiUids.HUNTING_DROPS);
             registry.addRecipeCatalyst(stack, JeiUids.harvestDrops);
         }
@@ -194,6 +195,9 @@ public final class FarmersDelightJeiPlugin implements IModPlugin {
                 stacks = Collections.singletonList(new ItemStack(item));
             }
             for (ItemStack stack : stacks) {
+                if (!KnifeItemManager.isKnife(stack)) {
+                    continue;
+                }
                 ItemStack infoStack = ((IKnifeItem) item).getKnifeJeiInfoStack(stack);
                 String infoStackKey = getItemStackInfoKey(infoStack);
                 if (!infoStack.isEmpty() && registeredInfoStacks.add(infoStackKey)) {

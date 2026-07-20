@@ -1,4 +1,4 @@
-package com.wdcftgg.farmersdelightlegacy.common.recipe;
+package com.wdcftgg.farmersdelightlegacy.common.recipe.manager;
 
 import com.wdcftgg.farmersdelightlegacy.common.registry.ModBlocks;
 import net.minecraft.block.Block;

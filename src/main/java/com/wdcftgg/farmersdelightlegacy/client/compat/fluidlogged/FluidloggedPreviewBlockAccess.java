@@ -1,7 +1,7 @@
 package com.wdcftgg.farmersdelightlegacy.client.compat.fluidlogged;
 
 import com.wdcftgg.farmersdelightlegacy.client.jei.HarvestDropJeiRecipe;
-import com.wdcftgg.farmersdelightlegacy.common.recipe.HarvestDropRecipeManager;
+import com.wdcftgg.farmersdelightlegacy.common.recipe.manager.HarvestDropRecipeManager;
 import git.jbredwards.fluidlogged_api.api.block.IFluidloggable;
 import git.jbredwards.fluidlogged_api.api.util.FluidState;
 import git.jbredwards.fluidlogged_api.api.world.IFluidStateProvider;

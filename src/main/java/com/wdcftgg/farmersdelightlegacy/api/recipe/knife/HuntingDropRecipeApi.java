@@ -1,6 +1,6 @@
 package com.wdcftgg.farmersdelightlegacy.api.recipe.knife;
 
-import com.wdcftgg.farmersdelightlegacy.common.recipe.HuntingDropRecipeManager;
+import com.wdcftgg.farmersdelightlegacy.common.recipe.manager.HuntingDropRecipeManager;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;

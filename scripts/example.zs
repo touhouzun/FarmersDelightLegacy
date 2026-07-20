@@ -251,6 +251,33 @@ mods.farmersdelight.CuttingBoard.addRecipeWithoutTool(
 
 
 // =========================
+// 小刀管理示例 / Knife Management Examples
+// =========================
+
+// 新增小刀：同时影响狩猎掉落、收获掉落与左侧 JEI 刀具输入。
+// Add a knife: affects Hunting Drops, Harvest Drops, and the left-hand JEI knife input.
+// mods.farmersdelight.Knife.addKnife(<minecraft:iron_sword>);
+
+// 精确移除一个物品和 metadata；若需匹配全部 metadata，可在物品堆叠中使用通配 metadata。
+// Remove one item and metadata exactly; use wildcard metadata in the item stack to match all metadata variants.
+// mods.farmersdelight.Knife.removeKnife(<minecraft:iron_sword>);
+
+// 按 Item 的运行时类移除：会移除所有 item instanceof 该物品类的小刀堆叠。
+// Remove by Item runtime class: removes every knife stack whose item is an instance of this item's class.
+// mods.farmersdelight.Knife.removeKnifeItem(<farmersdelight:iron_knife>);
+
+// 仅调整狩猎/收割 JEI 配方左侧刀具输入展示，不影响实际掉落资格。
+// Change only the left-hand knife input shown in Hunting Drops / Harvest Drops JEI recipes.
+// mods.farmersdelight.Knife.addJeiDisplayStack(<minecraft:iron_sword>);
+// mods.farmersdelight.Knife.removeJeiDisplayStack(<minecraft:iron_sword>);
+// mods.farmersdelight.Knife.removeJeiDisplayItem(<farmersdelight:iron_knife>);
+
+// 查询当前实际生效的小刀，以及 JEI 左侧显示的小刀。
+// Query gameplay-effective knives and the knives shown on the left side of JEI recipes.
+// val activeKnives = mods.farmersdelight.Knife.getHuntingAndHarvestKnifeStacks();
+// val jeiKnives = mods.farmersdelight.Knife.getJeiDisplayStacks();
+
+// =========================
 // 狩猎掉落示例 / Hunting Drop Examples
 // =========================
 

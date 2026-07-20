@@ -1,6 +1,6 @@
 package com.wdcftgg.farmersdelightlegacy.api.recipe.knife;
 
-import com.wdcftgg.farmersdelightlegacy.common.recipe.HarvestDropRecipeManager;
+import com.wdcftgg.farmersdelightlegacy.common.recipe.manager.HarvestDropRecipeManager;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 

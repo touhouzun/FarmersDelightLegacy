@@ -1,7 +1,7 @@
 package com.wdcftgg.farmersdelightlegacy.common.compat.crafttweaker;
 
-import com.wdcftgg.farmersdelightlegacy.common.recipe.CookingPotRecipe;
 import com.wdcftgg.farmersdelightlegacy.api.recipe.knife.HuntingDropOutput;
+import com.wdcftgg.farmersdelightlegacy.common.recipe.CookingPotRecipe;
 import crafttweaker.api.item.IIngredient;
 import crafttweaker.api.item.IItemStack;
 import crafttweaker.api.minecraft.CraftTweakerMC;

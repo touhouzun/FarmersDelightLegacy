@@ -11,7 +11,8 @@ import net.minecraft.world.World;
  *
  * <p>Items implementing this interface are treated as knives by the built-in knife features,
  * including knife-based hunting drops, harvest drops, cutting board recipes, cake and pie slicing,
- * knife knockback handling, and the Hunting Drops / Harvest Drops JEI knife displays.</p>
+ * knife knockback handling, and the Hunting Drops / Harvest Drops JEI knife displays. Use
+ * {@link KnifeItemApi} to add or remove knife eligibility and JEI display stacks at runtime.</p>
  */
 public interface IKnifeItem {
 

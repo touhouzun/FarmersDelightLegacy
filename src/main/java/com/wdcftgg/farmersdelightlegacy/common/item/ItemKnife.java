@@ -1,23 +1,20 @@
 package com.wdcftgg.farmersdelightlegacy.common.item;
 
 import com.wdcftgg.farmersdelightlegacy.FarmersDelightLegacy;
-import com.wdcftgg.farmersdelightlegacy.api.knife.IKnifeItem;
 import com.wdcftgg.farmersdelightlegacy.api.knife.ItemKnifeBase;
-import com.wdcftgg.farmersdelightlegacy.common.recipe.HarvestDropRecipeManager;
-import com.wdcftgg.farmersdelightlegacy.common.recipe.HuntingDropRecipeManager;
+import com.wdcftgg.farmersdelightlegacy.common.recipe.manager.HarvestDropRecipeManager;
+import com.wdcftgg.farmersdelightlegacy.common.recipe.manager.HuntingDropRecipeManager;
+import com.wdcftgg.farmersdelightlegacy.common.recipe.manager.KnifeItemManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.event.entity.living.LivingKnockBackEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.registry.ForgeRegistries;
-import net.minecraftforge.oredict.OreDictionary;
 
 public class ItemKnife extends ItemKnifeBase {
 
@@ -28,27 +25,7 @@ public class ItemKnife extends ItemKnifeBase {
     }
 
     public static boolean isKnife(ItemStack stack) {
-        if (stack.isEmpty()) {
-            return false;
-        }
-
-        if (stack.getItem() instanceof IKnifeItem) {
-            return true;
-        }
-
-        for (ItemStack oreStack : OreDictionary.getOres("toolKnife")) {
-            if (oreStack.isEmpty() || oreStack.getItem() != stack.getItem()) {
-                continue;
-            }
-
-            int oreMetadata = oreStack.getMetadata();
-            if (oreMetadata == OreDictionary.WILDCARD_VALUE || oreMetadata == stack.getMetadata()) {
-                return true;
-            }
-        }
-
-        ResourceLocation itemId = ForgeRegistries.ITEMS.getKey(stack.getItem());
-        return itemId != null && itemId.getPath().endsWith("_knife");
+        return KnifeItemManager.isKnife(stack);
     }
 
     @Mod.EventBusSubscriber(modid = FarmersDelightLegacy.MOD_ID)

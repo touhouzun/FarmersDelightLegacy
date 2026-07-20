@@ -1,4 +1,4 @@
-package com.wdcftgg.farmersdelightlegacy.common.recipe;
+package com.wdcftgg.farmersdelightlegacy.common.recipe.manager;
 
 import com.google.common.collect.ImmutableList;
 import com.wdcftgg.farmersdelightlegacy.api.recipe.knife.HuntingDropOutput;
@@ -6,7 +6,6 @@ import com.wdcftgg.farmersdelightlegacy.common.block.BlockRicePanicles;
 import com.wdcftgg.farmersdelightlegacy.common.block.BlockWildRice;
 import com.wdcftgg.farmersdelightlegacy.common.registry.ModBlocks;
 import com.wdcftgg.farmersdelightlegacy.common.registry.ModItems;
-import com.wdcftgg.farmersdelightlegacy.common.util.KnifeItemStacks;
 import net.minecraft.block.BlockCrops;
 import net.minecraft.block.BlockDoublePlant;
 import net.minecraft.block.BlockTallGrass;
@@ -306,7 +305,7 @@ public final class HarvestDropRecipeManager {
     }
 
     private static List<ItemStack> getKnifeToolOptions() {
-        return KnifeItemStacks.getJeiDisplayStacks();
+        return KnifeItemManager.getJeiDisplayStacks();
     }
 
     @FunctionalInterface

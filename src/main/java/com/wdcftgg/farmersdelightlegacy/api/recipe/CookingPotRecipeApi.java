@@ -1,7 +1,7 @@
 package com.wdcftgg.farmersdelightlegacy.api.recipe;
 
 import com.wdcftgg.farmersdelightlegacy.common.recipe.CookingPotRecipe;
-import com.wdcftgg.farmersdelightlegacy.common.recipe.CookingPotRecipeManager;
+import com.wdcftgg.farmersdelightlegacy.common.recipe.manager.CookingPotRecipeManager;
 import net.minecraft.item.ItemStack;
 
 import java.util.List;

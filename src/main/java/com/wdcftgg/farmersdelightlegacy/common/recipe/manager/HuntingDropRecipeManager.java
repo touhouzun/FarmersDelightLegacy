@@ -1,10 +1,9 @@
-package com.wdcftgg.farmersdelightlegacy.common.recipe;
+package com.wdcftgg.farmersdelightlegacy.common.recipe.manager;
 
 import com.google.common.collect.ImmutableList;
 import com.wdcftgg.farmersdelightlegacy.api.recipe.knife.HuntingDropOutput;
 import com.wdcftgg.farmersdelightlegacy.common.item.ItemKnife;
 import com.wdcftgg.farmersdelightlegacy.common.registry.ModItems;
-import com.wdcftgg.farmersdelightlegacy.common.util.KnifeItemStacks;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
@@ -486,6 +485,6 @@ public final class HuntingDropRecipeManager {
     }
 
     private static List<ItemStack> getKnifeToolOptions() {
-        return KnifeItemStacks.getJeiDisplayStacks();
+        return KnifeItemManager.getJeiDisplayStacks();
     }
 }
