@@ -12,7 +12,7 @@ import com.wdcftgg.farmersdelightlegacy.common.example.HuntingDropExample;
 import com.wdcftgg.farmersdelightlegacy.common.gui.ModGuiHandler;
 import com.wdcftgg.farmersdelightlegacy.common.network.ModNetworkHandler;
 import com.wdcftgg.farmersdelightlegacy.common.recipe.LegacyHeatingRecipe;
-import com.wdcftgg.farmersdelightlegacy.common.recipe.manager.CuttingBoardRecipeManager;
+import com.wdcftgg.farmersdelightlegacy.common.recipe.CuttingBoardRecipeManager;
 import com.wdcftgg.farmersdelightlegacy.common.registry.ModDispenserBehaviors;
 import com.wdcftgg.farmersdelightlegacy.common.registry.ModEntities;
 import com.wdcftgg.farmersdelightlegacy.common.registry.ModTileEntities;

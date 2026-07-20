@@ -1,7 +1,7 @@
 package com.wdcftgg.farmersdelightlegacy.common.compat.crafttweaker;
 
 import com.wdcftgg.farmersdelightlegacy.common.recipe.CookingPotRecipe.IngredientEntry;
-import com.wdcftgg.farmersdelightlegacy.common.recipe.manager.CookingPotRecipeManager;
+import com.wdcftgg.farmersdelightlegacy.common.recipe.CookingPotRecipeManager;
 import crafttweaker.annotations.ZenRegister;
 import crafttweaker.api.item.IIngredient;
 import crafttweaker.api.item.IItemStack;

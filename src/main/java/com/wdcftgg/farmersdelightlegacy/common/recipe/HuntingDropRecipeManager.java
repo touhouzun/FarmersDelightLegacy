@@ -1,4 +1,4 @@
-package com.wdcftgg.farmersdelightlegacy.common.recipe.manager;
+package com.wdcftgg.farmersdelightlegacy.common.recipe;
 
 import com.google.common.collect.ImmutableList;
 import com.wdcftgg.farmersdelightlegacy.api.recipe.knife.HuntingDropOutput;

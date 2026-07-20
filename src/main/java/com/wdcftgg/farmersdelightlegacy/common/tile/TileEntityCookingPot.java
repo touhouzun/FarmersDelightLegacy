@@ -4,7 +4,7 @@ import com.wdcftgg.farmersdelightlegacy.FarmersDelightLegacy;
 import com.wdcftgg.farmersdelightlegacy.common.block.BlockCookingPot;
 import com.wdcftgg.farmersdelightlegacy.common.block.BlockFeast;
 import com.wdcftgg.farmersdelightlegacy.common.recipe.CookingPotRecipe;
-import com.wdcftgg.farmersdelightlegacy.common.recipe.manager.CookingPotRecipeManager;
+import com.wdcftgg.farmersdelightlegacy.common.recipe.CookingPotRecipeManager;
 import com.wdcftgg.farmersdelightlegacy.common.util.CookingPotParticleDispatcher;
 import com.wdcftgg.farmersdelightlegacy.common.util.HeatSourceHelper;
 import net.minecraft.block.Block;

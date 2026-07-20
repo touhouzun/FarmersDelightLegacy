@@ -1,11 +1,9 @@
-package com.wdcftgg.farmersdelightlegacy.common.recipe.manager;
+package com.wdcftgg.farmersdelightlegacy.common.recipe;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.wdcftgg.farmersdelightlegacy.FarmersDelightLegacy;
-import com.wdcftgg.farmersdelightlegacy.common.recipe.CookingPotRecipe;
-import com.wdcftgg.farmersdelightlegacy.common.recipe.RecipeResourceScanner;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;

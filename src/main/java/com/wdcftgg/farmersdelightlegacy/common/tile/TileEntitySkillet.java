@@ -2,7 +2,7 @@ package com.wdcftgg.farmersdelightlegacy.common.tile;
 
 import com.wdcftgg.farmersdelightlegacy.common.block.BlockSkillet;
 import com.wdcftgg.farmersdelightlegacy.common.recipe.CampfireCookingRecipe;
-import com.wdcftgg.farmersdelightlegacy.common.recipe.manager.CampfireCookingRecipeManager;
+import com.wdcftgg.farmersdelightlegacy.common.recipe.CampfireCookingRecipeManager;
 import com.wdcftgg.farmersdelightlegacy.common.util.HeatSourceHelper;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.enchantment.EnchantmentHelper;

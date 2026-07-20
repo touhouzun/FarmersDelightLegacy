@@ -1,4 +1,4 @@
-package com.wdcftgg.farmersdelightlegacy.common.recipe.manager;
+package com.wdcftgg.farmersdelightlegacy.common.recipe;
 
 import com.wdcftgg.farmersdelightlegacy.api.knife.IKnifeItem;
 import net.minecraft.item.Item;

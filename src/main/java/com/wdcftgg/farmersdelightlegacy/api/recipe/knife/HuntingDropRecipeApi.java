@@ -1,6 +1,6 @@
 package com.wdcftgg.farmersdelightlegacy.api.recipe.knife;
 
-import com.wdcftgg.farmersdelightlegacy.common.recipe.manager.HuntingDropRecipeManager;
+import com.wdcftgg.farmersdelightlegacy.common.recipe.HuntingDropRecipeManager;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -334,6 +334,7 @@ public final class HuntingDropRecipeApi {
         return HuntingDropRecipeManager.registerRecipeJei(key, targetMatcher, outputs, preventDuplicateStacking,
                 entityId, jeiEntityConfigurator, runJeiEntityConfiguratorEveryTick, jeiDisplayTexts);
     }
+
     /**
      * Unregisters a recipe by key.
      *

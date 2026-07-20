@@ -1,7 +1,7 @@
 package com.wdcftgg.farmersdelightlegacy.common.compat.crafttweaker;
 
 import com.wdcftgg.farmersdelightlegacy.api.recipe.knife.HuntingDropOutput;
-import com.wdcftgg.farmersdelightlegacy.common.recipe.manager.HarvestDropRecipeManager;
+import com.wdcftgg.farmersdelightlegacy.common.recipe.HarvestDropRecipeManager;
 import crafttweaker.annotations.ZenRegister;
 import crafttweaker.api.block.IBlockState;
 import crafttweaker.api.item.IItemStack;

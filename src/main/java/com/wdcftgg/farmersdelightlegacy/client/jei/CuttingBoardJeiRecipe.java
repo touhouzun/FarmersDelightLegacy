@@ -1,6 +1,6 @@
 package com.wdcftgg.farmersdelightlegacy.client.jei;
 
-import com.wdcftgg.farmersdelightlegacy.common.recipe.manager.CuttingBoardRecipeManager;
+import com.wdcftgg.farmersdelightlegacy.common.recipe.CuttingBoardRecipeManager;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.ingredients.VanillaTypes;
 import mezz.jei.api.recipe.IRecipeWrapper;

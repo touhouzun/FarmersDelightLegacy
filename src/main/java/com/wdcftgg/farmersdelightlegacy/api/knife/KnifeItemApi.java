@@ -1,6 +1,6 @@
 package com.wdcftgg.farmersdelightlegacy.api.knife;
 
-import com.wdcftgg.farmersdelightlegacy.common.recipe.manager.KnifeItemManager;
+import com.wdcftgg.farmersdelightlegacy.common.recipe.KnifeItemManager;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 

@@ -2,7 +2,7 @@ package com.wdcftgg.farmersdelightlegacy.common.tile;
 
 import com.wdcftgg.farmersdelightlegacy.common.block.BlockStove;
 import com.wdcftgg.farmersdelightlegacy.common.recipe.CampfireCookingRecipe;
-import com.wdcftgg.farmersdelightlegacy.common.recipe.manager.CampfireCookingRecipeManager;
+import com.wdcftgg.farmersdelightlegacy.common.recipe.CampfireCookingRecipeManager;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.inventory.IInventory;

@@ -1,6 +1,6 @@
 package com.wdcftgg.farmersdelightlegacy.common.block;
 
-import com.wdcftgg.farmersdelightlegacy.common.recipe.manager.DecompositionRecipeManager;
+import com.wdcftgg.farmersdelightlegacy.common.recipe.DecompositionRecipeManager;
 import com.wdcftgg.farmersdelightlegacy.common.registry.ModBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;

@@ -2,7 +2,7 @@ package com.wdcftgg.farmersdelightlegacy.common.registry;
 
 import com.wdcftgg.farmersdelightlegacy.common.Configuration;
 import com.wdcftgg.farmersdelightlegacy.common.block.BlockCuttingBoard;
-import com.wdcftgg.farmersdelightlegacy.common.recipe.manager.CuttingBoardRecipeManager;
+import com.wdcftgg.farmersdelightlegacy.common.recipe.CuttingBoardRecipeManager;
 import com.wdcftgg.farmersdelightlegacy.common.tile.TileEntityCuttingBoard;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.block.state.IBlockState;

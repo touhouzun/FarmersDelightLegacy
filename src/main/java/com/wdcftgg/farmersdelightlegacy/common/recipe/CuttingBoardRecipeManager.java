@@ -1,4 +1,4 @@
-package com.wdcftgg.farmersdelightlegacy.common.recipe.manager;
+package com.wdcftgg.farmersdelightlegacy.common.recipe;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -6,7 +6,6 @@ import com.google.gson.JsonObject;
 import com.wdcftgg.farmersdelightlegacy.FarmersDelightLegacy;
 import com.wdcftgg.farmersdelightlegacy.common.Configuration;
 import com.wdcftgg.farmersdelightlegacy.common.item.ItemKnife;
-import com.wdcftgg.farmersdelightlegacy.common.recipe.RecipeResourceScanner;
 import com.wdcftgg.farmersdelightlegacy.common.registry.ModOreDictionary;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.init.Enchantments;
