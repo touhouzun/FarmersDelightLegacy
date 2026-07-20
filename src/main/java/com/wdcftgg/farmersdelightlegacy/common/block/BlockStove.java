@@ -28,6 +28,7 @@ import java.util.Random;
 public class BlockStove extends BlockHorizontal implements ITileEntityProvider {
 
     public static final PropertyBool LIT = PropertyBool.create("lit");
+    private static boolean preservingInventory;
 
     public BlockStove() {
         super(Material.ROCK);
@@ -81,13 +82,13 @@ public class BlockStove extends BlockHorizontal implements ITileEntityProvider {
         } else {
             if (heldItem instanceof ItemFlintAndSteel) {
                 worldIn.playSound(playerIn, pos, net.minecraft.init.SoundEvents.ITEM_FLINTANDSTEEL_USE, SoundCategory.BLOCKS, 1.0F, worldIn.rand.nextFloat() * 0.4F + 0.8F);
-                worldIn.setBlockState(pos, state.withProperty(LIT, true), 11);
+                updateLitState(state, worldIn, pos, true, 11);
                 heldStack.damageItem(1, playerIn);
                 return true;
             }
             if (heldItem instanceof ItemFireball) {
                 worldIn.playSound(null, pos, net.minecraft.init.SoundEvents.ITEM_FIRECHARGE_USE, SoundCategory.BLOCKS, 1.0F, (worldIn.rand.nextFloat() - worldIn.rand.nextFloat()) * 0.2F + 1.0F);
-                worldIn.setBlockState(pos, state.withProperty(LIT, true), 11);
+                updateLitState(state, worldIn, pos, true, 11);
                 if (!playerIn.capabilities.isCreativeMode) {
                     heldStack.shrink(1);
                 }
@@ -119,8 +120,23 @@ public class BlockStove extends BlockHorizontal implements ITileEntityProvider {
     }
 
     public void extinguish(IBlockState state, World world, BlockPos pos) {
-        world.setBlockState(pos, state.withProperty(LIT, false), 2);
+        updateLitState(state, world, pos, false, 2);
         world.playSound(null, pos, net.minecraft.init.SoundEvents.BLOCK_FIRE_EXTINGUISH, SoundCategory.BLOCKS, 0.5F, 2.6F);
+    }
+
+    private static void updateLitState(IBlockState state, World world, BlockPos pos, boolean lit, int updateFlags) {
+        TileEntity tileEntity = world.getTileEntity(pos);
+        preservingInventory = true;
+        try {
+            world.setBlockState(pos, state.withProperty(LIT, lit), updateFlags);
+        } finally {
+            preservingInventory = false;
+        }
+
+        if (tileEntity != null) {
+            tileEntity.validate();
+            world.setTileEntity(pos, tileEntity);
+        }
     }
 
     @Override
@@ -137,7 +153,7 @@ public class BlockStove extends BlockHorizontal implements ITileEntityProvider {
     @Override
     public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
         TileEntity tileEntity = worldIn.getTileEntity(pos);
-        if (tileEntity instanceof TileEntityStove) {
+        if (!preservingInventory && tileEntity instanceof TileEntityStove) {
             net.minecraft.inventory.InventoryHelper.dropInventoryItems(worldIn, pos, (TileEntityStove) tileEntity);
         }
         super.breakBlock(worldIn, pos, state);

@@ -25,10 +25,14 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import java.lang.reflect.Method;
+
 @Mod.EventBusSubscriber(modid = FarmersDelightLegacy.MOD_ID)
 public final class PumpkinPiePlacementEventHandler {
 
     private static final String PUMPKIN_PIE_PLACEABLE_TOOLTIP = "farmersdelight.tooltip.pumpkin_pie.placeable";
+    private static final String BLOCK_ACTIVATION_METHOD_NAME = "onBlockActivated";
+    private static final String BLOCK_ACTIVATION_SRG_METHOD_NAME = "func_180639_a";
 
     private PumpkinPiePlacementEventHandler() {
     }
@@ -52,7 +56,7 @@ public final class PumpkinPiePlacementEventHandler {
         }
 
         EntityPlayer player = event.getEntityPlayer();
-        if (player == null || Configuration.enablePumpkinPieSneakToPlace && !player.isSneaking()) {
+        if (player == null) {
             return;
         }
 
@@ -62,6 +66,11 @@ public final class PumpkinPiePlacementEventHandler {
         }
 
         World world = event.getWorld();
+        IBlockState clickedState = world.getBlockState(event.getPos());
+        if (!player.isSneaking() && (Configuration.enablePumpkinPieSneakToPlace || hasBlockActivation(clickedState.getBlock()))) {
+            return;
+        }
+
         BlockPos placePos = getPumpkinPiePlacePos(world, event.getPos(), event.getFace());
         if (placePos == null || !player.canPlayerEdit(placePos, event.getFace(), heldStack)) {
             return;
@@ -115,5 +124,28 @@ public final class PumpkinPiePlacementEventHandler {
         IBlockState clickedState = world.getBlockState(clickedPos);
         Block clickedBlock = clickedState.getBlock();
         return clickedBlock.isReplaceable(world, clickedPos) ? clickedPos : clickedPos.offset(clickedFace);
+    }
+
+    private static boolean hasBlockActivation(Block block) {
+        Class<?> blockClass = block.getClass();
+        while (blockClass != Block.class) {
+            if (declaresBlockActivation(blockClass, BLOCK_ACTIVATION_METHOD_NAME)
+                    || declaresBlockActivation(blockClass, BLOCK_ACTIVATION_SRG_METHOD_NAME)) {
+                return true;
+            }
+            blockClass = blockClass.getSuperclass();
+        }
+        return false;
+    }
+
+    private static boolean declaresBlockActivation(Class<?> blockClass, String methodName) {
+        try {
+            Method activationMethod = blockClass.getDeclaredMethod(methodName, World.class, BlockPos.class,
+                    IBlockState.class, EntityPlayer.class, EnumHand.class, EnumFacing.class,
+                    float.class, float.class, float.class);
+            return activationMethod != null;
+        } catch (NoSuchMethodException exception) {
+            return false;
+        }
     }
 }

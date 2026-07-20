@@ -69,7 +69,7 @@ public class TileEntityStove extends TileEntity implements IInventory, ITickable
 
     private void animationTick() {
         IBlockState state = this.world.getBlockState(this.pos);
-        if (!(state.getBlock() instanceof BlockStove)) {
+        if (!(state.getBlock() instanceof BlockStove) || !state.getValue(BlockStove.LIT)) {
             return;
         }
 
