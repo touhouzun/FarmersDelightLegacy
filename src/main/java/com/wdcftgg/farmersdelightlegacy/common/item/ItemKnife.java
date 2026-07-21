@@ -2,9 +2,9 @@ package com.wdcftgg.farmersdelightlegacy.common.item;
 
 import com.wdcftgg.farmersdelightlegacy.FarmersDelightLegacy;
 import com.wdcftgg.farmersdelightlegacy.api.knife.ItemKnifeBase;
-import com.wdcftgg.farmersdelightlegacy.common.recipe.HarvestDropRecipeManager;
-import com.wdcftgg.farmersdelightlegacy.common.recipe.HuntingDropRecipeManager;
-import com.wdcftgg.farmersdelightlegacy.common.recipe.KnifeItemManager;
+import com.wdcftgg.farmersdelightlegacy.common.recipe.manager.HarvestDropRecipeManager;
+import com.wdcftgg.farmersdelightlegacy.common.recipe.manager.HuntingDropRecipeManager;
+import com.wdcftgg.farmersdelightlegacy.common.recipe.manager.KnifeItemManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;

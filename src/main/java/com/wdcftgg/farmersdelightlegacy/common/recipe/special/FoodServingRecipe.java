@@ -1,4 +1,4 @@
-package com.wdcftgg.farmersdelightlegacy.common.recipe;
+package com.wdcftgg.farmersdelightlegacy.common.recipe.special;
 
 import com.wdcftgg.farmersdelightlegacy.common.item.ItemCookingPot;
 import com.wdcftgg.farmersdelightlegacy.common.registry.ModBlocks;

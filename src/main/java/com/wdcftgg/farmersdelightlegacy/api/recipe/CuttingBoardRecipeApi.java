@@ -1,6 +1,6 @@
 package com.wdcftgg.farmersdelightlegacy.api.recipe;
 
-import com.wdcftgg.farmersdelightlegacy.common.recipe.CuttingBoardRecipeManager;
+import com.wdcftgg.farmersdelightlegacy.common.recipe.manager.CuttingBoardRecipeManager;
 import net.minecraft.item.ItemStack;
 
 import java.util.List;

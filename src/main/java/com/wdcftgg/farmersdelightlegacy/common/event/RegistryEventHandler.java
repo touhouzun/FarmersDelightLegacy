@@ -2,8 +2,8 @@ package com.wdcftgg.farmersdelightlegacy.common.event;
 
 import com.wdcftgg.farmersdelightlegacy.FarmersDelightLegacy;
 import com.wdcftgg.farmersdelightlegacy.common.Configuration;
-import com.wdcftgg.farmersdelightlegacy.common.recipe.FoodServingRecipe;
-import com.wdcftgg.farmersdelightlegacy.common.recipe.WaterDoughRecipe;
+import com.wdcftgg.farmersdelightlegacy.common.recipe.special.FoodServingRecipe;
+import com.wdcftgg.farmersdelightlegacy.common.recipe.special.WaterDoughRecipe;
 import com.wdcftgg.farmersdelightlegacy.common.registry.*;
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;

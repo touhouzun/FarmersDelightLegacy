@@ -1,6 +1,6 @@
 package com.wdcftgg.farmersdelightlegacy.common.compat.crafttweaker;
 
-import com.wdcftgg.farmersdelightlegacy.common.recipe.CampfireCookingRecipeManager;
+import com.wdcftgg.farmersdelightlegacy.common.recipe.manager.CampfireCookingRecipeManager;
 import crafttweaker.annotations.ZenRegister;
 import crafttweaker.api.item.IIngredient;
 import crafttweaker.api.item.IItemStack;

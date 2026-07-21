@@ -3,7 +3,7 @@ package com.wdcftgg.farmersdelightlegacy.client.jei;
 import com.google.common.collect.ImmutableList;
 import com.wdcftgg.farmersdelightlegacy.FarmersDelightLegacy;
 import com.wdcftgg.farmersdelightlegacy.api.recipe.knife.HuntingDropOutput;
-import com.wdcftgg.farmersdelightlegacy.common.recipe.HarvestDropRecipeManager;
+import com.wdcftgg.farmersdelightlegacy.common.recipe.manager.HarvestDropRecipeManager;
 import mezz.jei.api.gui.IDrawable;
 import mezz.jei.api.gui.IGuiItemStackGroup;
 import mezz.jei.api.ingredients.IIngredients;

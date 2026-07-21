@@ -2,7 +2,7 @@ package com.wdcftgg.farmersdelightlegacy.common.compat;
 
 import com.wdcftgg.farmersdelightlegacy.FarmersDelightLegacy;
 import com.wdcftgg.farmersdelightlegacy.common.recipe.CampfireCookingRecipe;
-import com.wdcftgg.farmersdelightlegacy.common.recipe.CampfireCookingRecipeManager;
+import com.wdcftgg.farmersdelightlegacy.common.recipe.manager.CampfireCookingRecipeManager;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraftforge.fml.common.Loader;

@@ -1,7 +1,6 @@
 package com.wdcftgg.farmersdelightlegacy.common.registry;
 
 import com.wdcftgg.farmersdelightlegacy.FarmersDelightLegacy;
-import com.wdcftgg.farmersdelightlegacy.common.ModCreativeTab;
 import com.wdcftgg.farmersdelightlegacy.common.block.*;
 import com.wdcftgg.farmersdelightlegacy.common.block.sign.BlockCanvasHangingSign;
 import com.wdcftgg.farmersdelightlegacy.common.block.sign.BlockCanvasStandingSign;

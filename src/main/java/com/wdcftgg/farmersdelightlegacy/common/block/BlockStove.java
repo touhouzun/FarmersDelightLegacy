@@ -1,7 +1,7 @@
 package com.wdcftgg.farmersdelightlegacy.common.block;
 
 import com.wdcftgg.farmersdelightlegacy.common.recipe.CampfireCookingRecipe;
-import com.wdcftgg.farmersdelightlegacy.common.recipe.CampfireCookingRecipeManager;
+import com.wdcftgg.farmersdelightlegacy.common.recipe.manager.CampfireCookingRecipeManager;
 import com.wdcftgg.farmersdelightlegacy.common.registry.ModSounds;
 import com.wdcftgg.farmersdelightlegacy.common.tile.TileEntityStove;
 import net.minecraft.block.BlockHorizontal;

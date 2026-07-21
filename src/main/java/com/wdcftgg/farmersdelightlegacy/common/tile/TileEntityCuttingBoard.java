@@ -1,6 +1,6 @@
 package com.wdcftgg.farmersdelightlegacy.common.tile;
 
-import com.wdcftgg.farmersdelightlegacy.common.recipe.CuttingBoardRecipeManager;
+import com.wdcftgg.farmersdelightlegacy.common.recipe.manager.CuttingBoardRecipeManager;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;

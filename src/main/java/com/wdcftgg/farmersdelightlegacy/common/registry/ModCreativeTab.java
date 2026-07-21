@@ -1,4 +1,4 @@
-package com.wdcftgg.farmersdelightlegacy.common;
+package com.wdcftgg.farmersdelightlegacy.common.registry;
 
 import com.wdcftgg.farmersdelightlegacy.FarmersDelightLegacy;
 import net.minecraft.creativetab.CreativeTabs;

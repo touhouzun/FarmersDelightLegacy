@@ -1,4 +1,4 @@
-package com.wdcftgg.farmersdelightlegacy.common.recipe;
+package com.wdcftgg.farmersdelightlegacy.common.recipe.condition;
 
 import com.google.gson.JsonObject;
 import com.wdcftgg.farmersdelightlegacy.common.Configuration;

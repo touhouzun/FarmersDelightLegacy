@@ -1,6 +1,6 @@
 package com.wdcftgg.farmersdelightlegacy.api.recipe;
 
-import com.wdcftgg.farmersdelightlegacy.common.recipe.DecompositionRecipeManager;
+import com.wdcftgg.farmersdelightlegacy.common.recipe.manager.DecompositionRecipeManager;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;

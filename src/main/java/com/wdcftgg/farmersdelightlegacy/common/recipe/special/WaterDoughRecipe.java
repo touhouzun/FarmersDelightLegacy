@@ -1,4 +1,4 @@
-package com.wdcftgg.farmersdelightlegacy.common.recipe;
+package com.wdcftgg.farmersdelightlegacy.common.recipe.special;
 
 import com.wdcftgg.farmersdelightlegacy.common.registry.ModItems;
 import net.minecraft.init.Items;
