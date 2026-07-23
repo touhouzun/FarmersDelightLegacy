@@ -26,6 +26,7 @@ public final class HuntingDropRecipeManager {
     private static final float HAM_DROP_CHANCE = 0.5F;
     private static final float LOOTING_BONUS = 0.1F;
     private static final Map<String, HuntingDropRecipe> RECIPES = new LinkedHashMap<>();
+    private static final Set<String> REMOVED_RECIPE_KEYS = new HashSet<>();
     private static boolean defaultsRegistered;
 
     private HuntingDropRecipeManager() {
@@ -165,6 +166,9 @@ public final class HuntingDropRecipeManager {
         if (key == null || key.trim().isEmpty() || targetMatcher == null) {
             return false;
         }
+        if (REMOVED_RECIPE_KEYS.contains(key)) {
+            return false;
+        }
 
         List<HuntingDropOutput> resultOutputs = copyOutputs(outputs);
         if (resultOutputs.isEmpty()) {
@@ -178,8 +182,14 @@ public final class HuntingDropRecipeManager {
     }
 
     public static synchronized boolean unregisterRecipe(String key) {
+        if (key == null || key.trim().isEmpty()) {
+            return false;
+        }
+
         registerDefaults();
-        return RECIPES.remove(key) != null;
+        boolean removedRecipe = RECIPES.remove(key) != null;
+        boolean addedRemovalKey = REMOVED_RECIPE_KEYS.add(key);
+        return removedRecipe || addedRemovalKey;
     }
 
     public static void addDrops(LivingDropsEvent event, EntityLivingBase attacker, ItemStack toolStack) {

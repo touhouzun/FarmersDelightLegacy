@@ -27,6 +27,7 @@ public final class CuttingBoardRecipeManager {
 
     private static final List<CuttingRecipeEntry> RECIPES = new ArrayList<>();
     private static final Map<String, CuttingRecipeEntry> SCRIPT_RECIPES = new LinkedHashMap<>();
+    private static final List<ItemStack> REMOVED_BUILT_IN_OUTPUT_STACKS = new ArrayList<>();
     private static boolean loaded;
 
     private CuttingBoardRecipeManager() {
@@ -199,6 +200,7 @@ public final class CuttingBoardRecipeManager {
             return 0;
         }
 
+        addRemovedBuiltInOutputStack(outputStack);
         int removedCount = 0;
         synchronized (SCRIPT_RECIPES) {
             java.util.Iterator<Map.Entry<String, CuttingRecipeEntry>> iterator = SCRIPT_RECIPES.entrySet().iterator();
@@ -278,10 +280,34 @@ public final class CuttingBoardRecipeManager {
         IngredientMatcher inputMatcher = readInput(recipeJson, defaultNamespace);
         IngredientMatcher toolMatcher = readTool(recipeJson, defaultNamespace);
         List<ResultEntry> resultEntries = readResults(recipeJson, defaultNamespace);
-        if (!inputMatcher.isValid() || !toolMatcher.isValid() || resultEntries.isEmpty()) {
+        if (!inputMatcher.isValid() || !toolMatcher.isValid() || resultEntries.isEmpty()
+                || hasRemovedBuiltInOutput(resultEntries)) {
             return;
         }
         RECIPES.add(new CuttingRecipeEntry(recipeId, inputMatcher, toolMatcher, resultEntries));
+    }
+
+    private static void addRemovedBuiltInOutputStack(ItemStack outputStack) {
+        for (ItemStack removedOutputStack : REMOVED_BUILT_IN_OUTPUT_STACKS) {
+            if (ItemStack.areItemsEqual(removedOutputStack, outputStack)) {
+                return;
+            }
+        }
+
+        ItemStack copiedStack = outputStack.copy();
+        copiedStack.setCount(1);
+        REMOVED_BUILT_IN_OUTPUT_STACKS.add(copiedStack);
+    }
+
+    private static boolean hasRemovedBuiltInOutput(List<ResultEntry> resultEntries) {
+        for (ResultEntry resultEntry : resultEntries) {
+            for (ItemStack removedOutputStack : REMOVED_BUILT_IN_OUTPUT_STACKS) {
+                if (ItemStack.areItemsEqual(resultEntry.stack, removedOutputStack)) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     private static boolean passesConditions(JsonObject recipeJson) {

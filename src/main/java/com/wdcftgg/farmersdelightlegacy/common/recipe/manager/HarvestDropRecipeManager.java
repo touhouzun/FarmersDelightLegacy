@@ -21,6 +21,7 @@ public final class HarvestDropRecipeManager {
 
     private static final float grassStrawDropChance = 0.2F;
     private static final Map<String, HarvestDropRecipe> recipes = new LinkedHashMap<>();
+    private static final Set<String> removedRecipeKeys = new HashSet<>();
     private static boolean defaultsRegistered;
 
     private HarvestDropRecipeManager() {
@@ -118,8 +119,14 @@ public final class HarvestDropRecipeManager {
     }
 
     public static synchronized boolean unregisterRecipe(String key) {
+        if (key == null || key.trim().isEmpty()) {
+            return false;
+        }
+
         registerDefaults();
-        return key != null && recipes.remove(key) != null;
+        boolean removedRecipe = recipes.remove(key) != null;
+        boolean addedRemovalKey = removedRecipeKeys.add(key);
+        return removedRecipe || addedRemovalKey;
     }
 
     public static void addDrops(BlockEvent.HarvestDropsEvent event, ItemStack toolStack) {
@@ -177,6 +184,9 @@ public final class HarvestDropRecipeManager {
                                                   List<HarvestDropDisplayBlockState> displayBlockStates,
                                                   IBlockState displaySupportBlockState, boolean jeiOnly) {
         if (key == null || key.trim().isEmpty() || targetMatcher == null) {
+            return false;
+        }
+        if (removedRecipeKeys.contains(key)) {
             return false;
         }
         List<HuntingDropOutput> copiedOutputs = copyOutputs(outputs);
