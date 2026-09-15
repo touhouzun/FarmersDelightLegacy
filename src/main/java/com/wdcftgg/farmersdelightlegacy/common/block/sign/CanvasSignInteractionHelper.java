@@ -1,5 +1,6 @@
 package com.wdcftgg.farmersdelightlegacy.common.block.sign;
 
+import com.wdcftgg.farmersdelightlegacy.common.Configuration;
 import com.wdcftgg.farmersdelightlegacy.common.network.ModNetworkHandler;
 import com.wdcftgg.farmersdelightlegacy.common.network.PacketOpenCanvasSignEditor;
 import com.wdcftgg.farmersdelightlegacy.common.tile.TileEntityCanvasSign;
@@ -23,6 +24,9 @@ final class CanvasSignInteractionHelper {
     }
 
     static boolean openEditor(World worldIn, BlockPos pos, EntityPlayer playerIn) {
+        if (!Configuration.enableCanvasSignEditing) {
+            return false;
+        }
         if (worldIn.isRemote) {
             return true;
         }
@@ -60,6 +64,10 @@ final class CanvasSignInteractionHelper {
                     && !(state.getBlock() instanceof BlockCanvasWallSign)
                     && !(state.getBlock() instanceof BlockCanvasHangingSign)
                     && !(state.getBlock() instanceof BlockCanvasWallHangingSign)) {
+                return;
+            }
+
+            if (!Configuration.enableCanvasSignEditing) {
                 return;
             }
 

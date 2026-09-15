@@ -52,6 +52,7 @@ public final class Configuration {
     public static boolean vanillaSoupExtraEffects = true;
     public static boolean rabbitStewJumpBoost = true;
     public static boolean dispenserUsesToolsOnCuttingBoard = true;
+    public static boolean enableCanvasSignEditing = true;
     public static boolean enablePumpkinPieSneakToPlace = false;
     public static boolean enablePumpkinPieDirectEating = false;
 
@@ -165,6 +166,8 @@ public final class Configuration {
                 "Should Rabbit Stew grant users the jumping prowess of a rabbit when eaten?");
         dispenserUsesToolsOnCuttingBoard = config.getBoolean("dispenserUsesToolsOnCuttingBoard", CATEGORY_OVERRIDES, true,
                 "Should the Dispenser be able to operate a Cutting Board in front of it? (Kept for upstream parity; dispenser cutting is not present in this 1.12.2 port.)");
+        enableCanvasSignEditing = config.getBoolean("enableCanvasSignEditing", CATEGORY_OVERRIDES, true,
+                "If enabled, right-clicking a Canvas Sign opens its text editor.");
         enablePumpkinPieSneakToPlace = config.getBoolean("enablePumpkinPieSneakToPlace", CATEGORY_OVERRIDES, false,
                 "If enabled, Pumpkin Pie will require the user to sneak to place it down as a block.");
         enablePumpkinPieDirectEating = config.getBoolean("enablePumpkinPieDirectEating", CATEGORY_OVERRIDES, false,
