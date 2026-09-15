@@ -343,29 +343,43 @@ public class TileEntityCookingPot extends TileEntity implements IInventory, ISid
         this.useDefaultMealContainer = !recipe.hasContainerDefinition();
         this.storedExperience += recipe.getExperience() * resultStack.getCount();
 
-        for (CookingPotRecipe.IngredientEntry ingredientEntry : recipe.getIngredients()) {
-            consumeOneIngredient(ingredientEntry);
+        List<CookingPotRecipe.IngredientEntry> remainingIngredients = new ArrayList<>(recipe.getIngredients());
+        for (int slot = 0; slot < INPUT_SLOT_COUNT; slot++) {
+            ItemStack inputStack = this.itemStacks.get(slot);
+            if (inputStack.isEmpty()) {
+                continue;
+            }
+
+            int matchedIndex = -1;
+            for (int index = 0; index < remainingIngredients.size(); index++) {
+                if (remainingIngredients.get(index).matches(inputStack)) {
+                    matchedIndex = index;
+                    break;
+                }
+            }
+            if (matchedIndex >= 0) {
+                consumeIngredientAtSlot(remainingIngredients.remove(matchedIndex), slot);
+            }
         }
     }
 
-    private void consumeOneIngredient(CookingPotRecipe.IngredientEntry ingredientEntry) {
-        for (int i = 0; i < INPUT_SLOT_COUNT; i++) {
-            ItemStack inputStack = this.itemStacks.get(i);
-            if (!inputStack.isEmpty() && ingredientEntry.matches(inputStack)) {
-                ItemStack consumedStack = inputStack.copy();
-                consumedStack.setCount(1);
-                inputStack.shrink(1);
-                if (inputStack.getCount() <= 0) {
-                    this.itemStacks.set(i, ItemStack.EMPTY);
-                }
-                ItemStack ingredientRemainder = ingredientEntry.hasCustomRemainderProvider()
-                        ? ingredientEntry.getCustomRemainder(consumedStack)
-                        : getIngredientRemainder(consumedStack);
-                if (!ingredientRemainder.isEmpty()) {
-                    ejectIngredientRemainder(ingredientRemainder);
-                }
-                return;
-            }
+    private void consumeIngredientAtSlot(CookingPotRecipe.IngredientEntry ingredientEntry, int slot) {
+        ItemStack inputStack = this.itemStacks.get(slot);
+        if (inputStack.isEmpty()) {
+            return;
+        }
+
+        ItemStack consumedStack = inputStack.copy();
+        consumedStack.setCount(1);
+        inputStack.shrink(1);
+        if (inputStack.getCount() <= 0) {
+            this.itemStacks.set(slot, ItemStack.EMPTY);
+        }
+        ItemStack ingredientRemainder = ingredientEntry.hasCustomRemainderProvider()
+                ? ingredientEntry.getCustomRemainder(consumedStack)
+                : getIngredientRemainder(consumedStack);
+        if (!ingredientRemainder.isEmpty()) {
+            ejectIngredientRemainder(ingredientRemainder);
         }
     }
 
