@@ -8,9 +8,9 @@ import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemHoe;
+import net.minecraft.item.ItemPickaxe;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemSword;
-import net.minecraft.item.ItemTool;
 import net.minecraft.util.EnumFacing;
 
 public class TileEntityCuttingBoardRenderer extends TileEntitySpecialRenderer<TileEntityCuttingBoard> {
@@ -61,10 +61,8 @@ public class TileEntityCuttingBoardRenderer extends TileEntitySpecialRenderer<Ti
         GlStateManager.rotate(-facing.getOpposite().getHorizontalAngle() + 180.0F, 0.0F, 1.0F, 0.0F);
 
         float poseAngle;
-        if (stack.getItem() instanceof ItemTool) {
+        if (stack.getItem() instanceof ItemPickaxe || stack.getItem() instanceof ItemHoe) {
             poseAngle = 225.0F;
-        } else if (stack.getItem() instanceof ItemSword) {
-            poseAngle = 180.0F;
         } else {
             poseAngle = 180.0F;
         }

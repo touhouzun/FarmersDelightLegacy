@@ -193,10 +193,13 @@ public final class CampfireCookingRecipeManager {
             return;
         }
         if (itemElement.isJsonPrimitive()) {
+            String itemPath = itemElement.getAsString();
             ParsedItemToken parsedItemToken = parseItemToken(
-                    composeItemToken(itemElement.getAsString(), metadata, hasMetadata),
+                    composeItemToken(itemPath, metadata, hasMetadata),
                     defaultNamespace);
-            if (parsedItemToken != null && parsedItemToken.item != null) {
+            boolean metadataSpecified = hasMetadata || itemPath.lastIndexOf('@') >= 0;
+            if (parsedItemToken != null && parsedItemToken.item != null
+                    && (!parsedItemToken.item.getHasSubtypes() || metadataSpecified)) {
                 target.add(CampfireCookingRecipe.IngredientEntry.forItem(parsedItemToken.item, parsedItemToken.metadata));
             }
             return;
@@ -214,7 +217,12 @@ public final class CampfireCookingRecipeManager {
             return ItemStack.EMPTY;
         }
         if (resultElement.isJsonPrimitive()) {
-            return stackOf(resultElement.getAsString(), 1, defaultNamespace);
+            String resultId = resultElement.getAsString();
+            Item resultItem = itemOf(resultId, defaultNamespace);
+            if (resultItem == null || resultItem.getHasSubtypes()) {
+                return ItemStack.EMPTY;
+            }
+            return stackOf(resultId, 1, defaultNamespace);
         }
         if (!resultElement.isJsonObject()) {
             return ItemStack.EMPTY;
@@ -227,6 +235,10 @@ public final class CampfireCookingRecipeManager {
 
         String resultId = resultObject.get("item").getAsString();
         int resultCount = resultObject.has("count") ? Math.max(1, resultObject.get("count").getAsInt()) : 1;
+        Item resultItem = itemOf(resultId, defaultNamespace);
+        if (resultItem == null || (resultItem.getHasSubtypes() && !resultObject.has("data"))) {
+            return ItemStack.EMPTY;
+        }
         return stackOf(resultId, resultCount, readMetadata(resultObject), resultObject.has("data"), defaultNamespace);
     }
 

@@ -11,6 +11,7 @@ import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
@@ -245,6 +246,11 @@ public class BlockCuttingBoard extends BlockHorizontal implements ITileEntityPro
     }
 
     @Override
+    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
+        return BlockFaceShape.UNDEFINED;
+    }
+
+    @Override
     public boolean hasComparatorInputOverride(IBlockState state) {
         return true;
     }
@@ -292,12 +298,14 @@ public class BlockCuttingBoard extends BlockHorizontal implements ITileEntityPro
         }
     }
 
-    private static boolean isCarvingTool(ItemStack stack) {
+    static boolean isCarvingTool(ItemStack stack) {
         if (stack.isEmpty()) {
             return false;
         }
+        // 上游 1.20 的 TieredItem 在 1.12.2 中由 ItemTool、ItemSword 和 ItemHoe 分别表示。
         return stack.getItem() instanceof ItemTool
                 || stack.getItem() instanceof ItemSword
+                || stack.getItem() instanceof ItemHoe
                 || stack.getItem() instanceof ItemShears;
     }
 
