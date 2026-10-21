@@ -102,14 +102,13 @@ public final class ClientRegistryHandler {
 
     @SubscribeEvent
     public static void onTextureStitch(TextureStitchEvent.Pre event) {
+        particleFactoriesBound = false;
         CookingPotParticleBridge.registerTextures(event.getMap());
     }
 
     @SubscribeEvent
     public static void onTextureStitchPost(TextureStitchEvent.Post event) {
-        if (!particleFactoriesBound) {
-            particleFactoriesBound = CookingPotParticleBridge.registerFactories();
-        }
+        particleFactoriesBound = CookingPotParticleBridge.registerFactories();
     }
 
     @SubscribeEvent

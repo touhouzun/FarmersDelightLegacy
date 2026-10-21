@@ -88,6 +88,16 @@ dependencies {
     //crt
     implementation rfg.deobf('CraftTweaker2:CraftTweaker2-MC1120-Main:1.12-4.1.20.698')
 
+    //林业 与 Binnie
+    runtimeOnly rfg.deobf('curse.maven:forestry-59751:2918418')
+    runtimeOnly rfg.deobf('curse.maven:binnies-mods-patched-899182:5492997')
+
+    //懒人厨房
+    runtimeOnly rfg.deobf('curse.maven:cooking-for-blockheads-231484:2862651')
+//    runtimeOnly rfg.deobf('curse.maven:delightful-cuisine-for-woodheads-805622:6997581')
+    runtimeOnly rfg.deobf('curse.maven:lemonskin-1337144:7763338')
+    runtimeOnly rfg.deobf('curse.maven:harvest-festival-legacy-342649:8191153')
+
     //季节
     compileOnly rfg.deobf('curse.maven:Serene Seasons-291874:2799213')
 

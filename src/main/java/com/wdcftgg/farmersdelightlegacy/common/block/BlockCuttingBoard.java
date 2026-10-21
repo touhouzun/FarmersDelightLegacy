@@ -132,7 +132,6 @@ public class BlockCuttingBoard extends BlockHorizontal implements ITileEntityPro
                 return true;
             }
 
-            // 与上游 CONSUME 语义对齐：砧板占用时吞掉无效交互，防止误放置方块。
             return true;
         }
 
@@ -189,6 +188,18 @@ public class BlockCuttingBoard extends BlockHorizontal implements ITileEntityPro
     private static void damageTool(World world, EntityPlayer player, ItemStack toolStack) {
         if (toolStack.getItem() instanceof IKnifeItem) {
             ((IKnifeItem) toolStack.getItem()).onCuttingBoardRecipeProcessed(toolStack, world, player);
+            return;
+        }
+
+        if (toolStack.getMaxDamage() <= 0) {
+            return;
+        }
+
+        if (player != null) {
+            toolStack.damageItem(1, player);
+        } else if (toolStack.attemptDamageItem(1, world.rand, null)) {
+            toolStack.shrink(1);
+            toolStack.setItemDamage(0);
         }
     }
 
@@ -302,7 +313,6 @@ public class BlockCuttingBoard extends BlockHorizontal implements ITileEntityPro
         if (stack.isEmpty()) {
             return false;
         }
-        // 上游 1.20 的 TieredItem 在 1.12.2 中由 ItemTool、ItemSword 和 ItemHoe 分别表示。
         return stack.getItem() instanceof ItemTool
                 || stack.getItem() instanceof ItemSword
                 || stack.getItem() instanceof ItemHoe

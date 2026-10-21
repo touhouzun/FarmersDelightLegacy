@@ -118,7 +118,7 @@ public class LegacyHeatingRecipe extends IForgeRegistryEntry.Impl<IRecipe> imple
 
     @Override
     public ItemStack getRecipeOutput() {
-        return recipeOutput.copy();
+        return ItemStack.EMPTY;
     }
 
     @Override
